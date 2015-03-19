@@ -13,7 +13,7 @@ develop-eggs/
 dist/
 downloads/
 eggs/
-lib/
+/lib/
 lib64/
 parts/
 sdist/
@@ -52,3 +52,6 @@ docs/_build/
 
 # PyBuilder
 target/
+
+notes.txt
+.uploads/

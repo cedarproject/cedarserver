@@ -1,0 +1,7 @@
+<template name="setAction">
+    {{#if actionType 'media'}}
+        {{#with getMedia}}
+            {{> mediaItem media=this}}
+        {{/with}}
+    {{/if}}
+</template>

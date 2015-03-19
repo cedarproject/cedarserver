@@ -1,0 +1,62 @@
+<template name="stagesList">
+    {{#each stages}}
+        <h3>
+            {{title}}
+            <button type="button" class="stage-settings btn btn-default" style="float: right">
+                <span class="glyphicon glyphicon-cog"></span>
+            </button>
+        </h3>
+        
+        <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Stage Settings</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <label>Title:</label>
+                        <input class="stage-title form-control" type="text" value={{title}}>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button class="stage-settings-delete btn btn-danger" style="float: left">Delete</button>
+                        <button class="stage-settings-cancel btn">Cancel</button>                       
+                        <button class="stage-settings-save btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>                    
+                    
+        <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Confirm Delete</h4>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="alert alert-danger"><p>The stage <b>"{{title}}"</b> will be permanently deleted.</p></div>
+                        <div class="alert alert-info"><p>Any minions on this stage will be moved to <b>Unassigned</b></p></div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button class="stage-delete-cancel btn">Cancel</button>
+                        <button class="stage-delete-confirm btn btn-danger">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {{> minionsList}}            
+
+    {{/each}}
+    
+    <h3>Unassigned</h3>
+    {{> minionsList}}
+
+    <button class="stages-new btn btn-primary">
+        <span class="glyphicon glyphicon-plus"></span>Add Stage
+    </button>
+    
+</template>

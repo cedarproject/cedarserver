@@ -1,0 +1,9 @@
+<template name="media">
+    <ul class="list-group">
+        {{#each media}}
+            <li class="list-group-item">
+                {{> mediaItem media=this settings=true}}
+            </li>
+        {{/each}}
+    </ul>
+</template>

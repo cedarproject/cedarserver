@@ -1,0 +1,72 @@
+<template name="set">
+    <div class="container">
+        <h3>
+            {{title}}
+            <button type="button" class="set-settings btn btn-default" style="float: right">
+                <span class="glyphicon glyphicon-cog"></span>
+            </button>
+        </h3>
+
+        <p><small>Stage: {{stageTitle stage}}</small></p>
+
+        <ul class="list-group">
+            {{#each actions}}
+                <li class="set-action list-group-item {{isActive}}">{{> setAction}}</li>
+            {{/each}}
+        </ul>
+        
+        <button type="button" class="set-add-item btn btn-primary">
+            <span class="glyphicon glyphicon-plus"></span> Add Item
+        </button>
+        
+        {{> actionSelector}}
+        
+        <div class="set-settings-modal modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Set Settings</h4>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <label>Title:</label>
+                        <input class="set-title form-control" type="text" value={{title}}>
+
+                        <label>Stage:</label>
+                        <select class="set-stage form-control">
+                            <option value="{{stage}}" selected>{{stageTitle stage}}</option>
+                            {{#each stages}}
+                                <option value="{{_id}}">{{title}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button class="set-settings-delete btn btn-danger" style="float: left">Delete</button>
+                        <button class="set-settings-cancel btn">Cancel</button>                       
+                        <button class="set-settings-save btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Confirm Delete</h4>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="alert alert-danger"><p>The set <b>"{{title}}"</b> will be permanently deleted.</p></div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button class="set-delete-cancel btn">Cancel</button>
+                        <button class="set-delete-confirm btn btn-danger">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

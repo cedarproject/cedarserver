@@ -1,0 +1,67 @@
+<template name="minion">
+    <div class="minion">
+        <h4>
+            {{name}}
+            
+            <small>
+                {{#if connected}}
+                    <span class="label label-success">Connected</span>
+                {{else}}
+                    <span class="label label-danger">Disconnected</span>
+                {{/if}}
+            </small>
+
+            <button type="button" class="minion-settings btn btn-default" style="float: right">
+                <span class="glyphicon glyphicon-cog"></span>
+            </button>
+        </h4>
+        
+        
+        <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Minion Settings</h4>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <label>Name:</label>
+                        <input class="minion-name form-control" type="text" value={{name}}>
+                        <label>Stage:</label>
+                        <select class="minion-stage form-control">
+                            <option value="{{stage}}" selected>{{titleOf stage}}</option>
+                            {{#each stages}}
+                                <option value="{{_id}}">{{title}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button class="minion-settings-delete btn btn-danger" style="float: left">Delete</button>
+                        <button class="minion-settings-cancel btn">Cancel</button>                       
+                        <button class="minion-settings-save btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Confirm Delete</h4>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="alert alert-danger"><p>The minion <b>"{{name}}"</b> will be permanently deleted.</p></div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button class="minion-delete-cancel btn">Cancel</button>
+                        <button class="minion-delete-confirm btn btn-danger">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>                    
+    </div>
+</template>

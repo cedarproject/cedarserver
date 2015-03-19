@@ -1,0 +1,28 @@
+<template name="mediaItem">
+    {{! This uses the media namespace instead of just using "this" because of the "add" keywork argument}}
+    <div class="media">
+        {{#if add}}
+            <button type="button" class="media-item-add btn btn-primary" style="float: right" data-mediaid={{media._id}}>
+                <span class="glyphicon glyphicon-plus"></span>
+            </button>
+        {{/if}}
+        
+        {{#if settings}}
+            <button type="button" class="media-item-add btn btn-default" style="float: right">
+                <span class="glyphicon glyphicon-cog"></span>
+            </button>
+        {{/if}}
+
+        <div class="media-left">
+            <a href="/media/static/{{media.location}}" target="_blank">
+                {{#if media.thumbnail}}
+                    <img class="media-object" src="/media/static/{{media.thumbnail}}" style="width: 64px; height: 64px">
+                {{/if}}
+            </a>
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading">{{media.title}}</h4>
+            <p><small>{{media.type}}</small></p>
+        </div>
+    </div>
+</template>

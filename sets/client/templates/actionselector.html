@@ -1,0 +1,47 @@
+<template name="actionSelector">
+    <div class="action-selector-modal modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Select Item</h3>
+                </div>
+            
+                <div class="modal-body">
+                    <div role="tabpanel">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#media" role="tab" data-toggle="tab">Media</a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#lights" role="tab" data-toggle="tab">Lights</a>
+                            </li>
+                        </ul>
+                    
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="media">
+                                <input type="text" class="action-selector-media-title form-control" placeholder="Title">
+                                <input type="text" class="action-selector-media-tag form-control" placeholder="Tag">
+                                
+                                <ul class="list-group">
+                                    {{#each filteredMedia}}
+                                        <li class="list-group-item">
+                                            {{> mediaItem media=this add=true}}
+                                        </li>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                            
+                            <div role="tabpanel" class="tab-pane fade" id="lights">
+                                <p>Lights!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="action-selector-cancel btn btn-default">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
