@@ -57,9 +57,9 @@ Meteor.methods({
     
     minionSetting: function (minionid, key, value) {
         var minion = checkMinion(minionid);
-        var set = {};
-        set[key] = value;
-        minions.update(minion, {$set: set});
+        var s = {};
+        s['settings.' + key] = value;
+        minions.update(minion, {$set: s});
     },
     
     minionAddAction: function (minionid, action) {
