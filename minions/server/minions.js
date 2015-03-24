@@ -46,8 +46,12 @@ Meteor.methods({
     },
     
     minionStage: function (minionid, stageid) {
-        var minion = checkMinion(minionid)
-        minions.update(minion, {$set: {stage: stageid}});
+        var minion = checkMinion(minionid);
+        var stage = stages.findOne(stageid);
+        if (stage) {
+            minions.update(minion, {$set: {stage: stageid}});
+        };
+        // Silently fail on invalid stage id, because of how I coded the <select> on the client
     },
     
     minionRoles: function (minionid, groups) {

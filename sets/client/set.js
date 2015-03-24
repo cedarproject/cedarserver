@@ -29,6 +29,7 @@ Template.set.helpers({
 });
 
 Template.set.events({
+    // TODO: figure out how to properly attach the keydown handler to this function
     'keydown': function (event) {
         console.log(event.key);
         if (this.active) {

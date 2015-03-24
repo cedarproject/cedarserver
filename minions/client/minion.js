@@ -32,15 +32,6 @@ Template.minion.events({
         var stageid = modalbody.children('.minion-stage').val();
         if (stageid) Meteor.call('minionStage', this._id, stageid);
         
-        Meteor.call('minionSetting', this._id, 'width',
-                    modalbody.children('.minion-res-width').val());
-
-        Meteor.call('minionSetting', this._id, 'height',
-                    modalbody.children('.minion-res-height').val());
-
-        Meteor.call('minionSetting', this._id, 'framerate',
-                    modalbody.children('.minion-framerate').val());
-
         modalbody.parents('.modal').modal('hide');
     },
     
