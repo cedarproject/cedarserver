@@ -43,7 +43,8 @@ Meteor.methods({
     },
     
     setActivate: function (setid, actionindex) {
-        var set = sets.findOne(setid);
+        // TODO: Redo all this code, put most of it in the Stage or Minion functions instead, make utility functions to reduce repeated code
+        var set = checkSet(setid);
         var action = set.actions[actionindex];
         
         sets.update(set, {$set: {active: actionindex}});
@@ -77,5 +78,25 @@ Meteor.methods({
                 Meteor.call('minionAddAction', minionid, action);
             });
         }
-    },            
+    },
+    
+    setDeactivate: function (setid) {
+        var set = checkSet(setid);
+        if (set.active !== null) {
+            var action = set.actions[set.active];
+            sets.update(set, {$set: {active: null}});
+
+            if (action.type == 'media') {
+                if (action.minions.length > 0) {
+                    var targets = action.minions;
+                } else {
+                    var targets = minions.find({stage: set.stage, roles: {$all: [action.role]}}).fetch();
+                }
+                
+                targets.forEach(function (minion) {
+                    minions.update(minion._id, {$set: {actions: []}});
+                });
+            }
+        }
+    }
 });

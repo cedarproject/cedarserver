@@ -73,6 +73,10 @@ Template.set.events({
         return false;
     },
 
+    'click .set-clear': function (event) {
+        Meteor.call('setDeactivate', this._id);
+    },
+
     'click .set-settings': function (event) {
         $(event.target).parent().siblings('.set-settings-modal').modal('show');
     },
