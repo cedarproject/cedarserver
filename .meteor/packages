@@ -6,9 +6,8 @@
 
 meteor-platform
 iron:router
-less
-nemo64:bootstrap
 fish:ffmpeg
 tomi:upload-server
 tomi:upload-jquery
 reactive-var
+twbs:bootstrap

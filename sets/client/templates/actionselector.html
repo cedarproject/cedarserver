@@ -25,7 +25,12 @@
                                 <ul class="list-group">
                                     {{#each filteredMedia}}
                                         <li class="list-group-item">
-                                            {{> mediaItem media=this add=true}}
+                                            <div class="media">
+                                                <button type="button" class="media-item-add btn btn-primary" style="float: right" data-mediaid={{_id}}>
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                                {{> mediaItem}}
+                                            </div>
                                         </li>
                                     {{/each}}
                                 </ul>

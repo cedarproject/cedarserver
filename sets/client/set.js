@@ -15,16 +15,6 @@ Template.set.helpers({
         } else {
             return false;
         }
-    },
-    
-    isActive: function () {
-        var set = Template.parentData()
-        
-        if (set.active == set.actions.indexOf(this)) {
-            return 'active';
-        } else {
-            return null;
-        }
     }
 });
 

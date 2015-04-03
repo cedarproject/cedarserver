@@ -1,7 +1,32 @@
 <template name="setAction">
     {{#if actionType 'media'}}
         {{#with getMedia}}
-            {{> mediaItem media=this}}
+            <button type="button" class="set-action-settings btn btn-default" style="float: right">
+                <span class="glyphicon glyphicon-cog"></span>
+            </button>
+            <div class="media {{isActive}}">
+                {{> mediaItem}}
+            </div>
         {{/with}}
     {{/if}}
+    
+    <div class="set-action-modal modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Action Options</h4>
+                </div>
+                
+                <div class="modal-body">
+                    <p>Nothing here yet... Delete button works!</p>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="set-action-delete btn btn-danger" style="float: left">Delete</button>
+                    <button class="set-action-cancel btn">Cancel</button>                       
+                    <button class="set-action-save btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>

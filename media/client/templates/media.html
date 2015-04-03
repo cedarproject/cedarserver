@@ -2,7 +2,12 @@
     <ul class="list-group">
         {{#each media}}
             <li class="list-group-item">
-                {{> mediaItem media=this settings=true}}
+                <div class="media">
+                    <button type="button" class="media-item-settings btn btn-default" style="float: right">
+                        <span class="glyphicon glyphicon-cog"></span>
+                    </button>        
+                    {{> mediaItem}}
+                </div>
             </li>
         {{/each}}
     </ul>

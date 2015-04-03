@@ -39,7 +39,7 @@ Meteor.methods({
     
     setRemove: function (setid, actionindex) {
         var set = checkSet(setid);
-        sets.update(set, {$pull: {$position: actionindex}});
+        sets.update(set, {$pull: {actions: set.actions[actionindex]}});
     },
     
     setActivate: function (setid, actionindex) {
