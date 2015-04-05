@@ -14,9 +14,8 @@ Template.setAction.helpers({
     isActive: function () {
         var action = Template.parentData();
         var set = Template.parentData(2);
-        console.log(set._id);
         
-        if (set.active == set.actions.indexOf(action)) {
+        if (set.active == action._id) {
             return 'bg-primary';
         } else {
             return '';
@@ -36,10 +35,19 @@ Template.setAction.events({
     },
     
     'click .set-action-delete': function (event) {
-        var set = Template.parentData();
-        var actionindex = set.actions.indexOf(this);
-        Meteor.call('setRemove', set._id, actionindex);
         $(event.target).parents('.modal').modal('hide');
+        var set = Template.parentData();
+        Meteor.call('actionRemove', this._id);
+        return false;
+    },
+    
+    'click .action-move-up': function (event) { 
+        Meteor.call('actionMove', this._id, this.order - 1);
+        return false;
+    },
+    
+    'click .action-move-down': function (event) {
+        Meteor.call('actionMove', this._id, this.order + 1);
         return false;
     }
 });

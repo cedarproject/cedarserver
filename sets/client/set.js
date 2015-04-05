@@ -9,36 +9,40 @@ Template.set.helpers({
         return stages.find({_id: {$ne: this.stage}});
     },
     
-    actionType: function (type) {
-        if (type == this.type) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    actions: function () {
+        return actions.find({set: this._id}, {sort: {order: 1}});
+    },
 });
 
-Template.set.events({
-    // TODO: figure out how to properly attach the keydown handler to this function
-    'keydown': function (event) {
+// TODO fix -- this is complicated
+/*Template.set.onRendered(function () {
+    $('body').keypress(function (event, set) {
         console.log(event.key);
-        if (this.active) {
+        console.log(this);
+        var set = this;
+        if (set.active) {
             if (event.key == 'ArrowUp' || event.key == 'Up' &&
-                    this.active > 0) {
-                Meteor.call('setActivate', set._id, set.active + 1);
+                    set.active > 0) {
+                var currAction = actions.findOne(set.active);
+                var prevAction = actions.findOne({order: currAction.order - 1});
+                if (prevAction) Meteor.call('setActivate', set._id, prevAction._id);
             }
 
             else if (event.key == 'ArrowDown' || event.key == 'Down' && 
-                    this.active < this.actions.length - 1) {
-                Meteor.call('setActivate', set._id, set.active + 1);
+                    set.active < this.actions.length - 1) {
+                var currAction = actions.findOne(set.active);
+                var nextAction = actions.findOne({order: currAction.order + 1});
+                if (nextAction) Meteor.call('setActivate', set._id, nextAction._id);
             }
         }
-    },
-    
+    }, Template.currentData());
+});*/
+
+Template.set.events({    
     'click .set-action': function (event) {
         var set = Template.parentData();
-        var actionindex = set.actions.indexOf(this);
-        Meteor.call('setActivate', set._id, actionindex);    
+        Meteor.call('setActivate', set._id, this._id);
+        return false;
     },
     
     'click .set-add-item': function (event) {
@@ -48,8 +52,15 @@ Template.set.events({
     'click .media-item-add': function (event) {
         var mediaid = $(event.target).data('mediaid');
         var mediatype = media.findOne(mediaid).type;
-        var stageid = Template.parentData()._id;
-        Meteor.call('setAdd', stageid, {
+        var setid = Template.parentData()._id;
+
+        var a = actions.findOne({set: setid}, {sort: {order: -1}, fields: {order: 1}});
+        if (a) var order = a.order + 1;
+        else var order = 0;
+
+        Meteor.call('actionAdd', {
+            set: setid,
+            order: order,
             type: 'media',
             media: mediaid,
             mediatype: mediatype,

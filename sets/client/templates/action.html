@@ -1,7 +1,15 @@
 <template name="setAction">
+    <div class="btn-group btn-group-xs pull-right" role="group">
+        <button type="button" class="action-move-up btn btn-default">
+            <span class="glyphicon glyphicon-chevron-up"></span>
+        </button>
+        <button type="button" class="action-move-down btn btn-default">
+            <span class="glyphicon glyphicon-chevron-down"></span>
+        </button>
+    </div>
     {{#if actionType 'media'}}
-        {{#with getMedia}}
-            <button type="button" class="set-action-settings btn btn-default" style="float: right">
+        {{#with getMedia}}            
+            <button type="button" class="set-action-settings btn btn-default pull-right">
                 <span class="glyphicon glyphicon-cog"></span>
             </button>
             <div class="media {{isActive}}">
@@ -22,7 +30,7 @@
                 </div>
                 
                 <div class="modal-footer">
-                    <button class="set-action-delete btn btn-danger" style="float: left">Delete</button>
+                    <button class="set-action-delete btn btn-danger pull-left">Delete</button>
                     <button class="set-action-cancel btn">Cancel</button>                       
                     <button class="set-action-save btn btn-primary">Save</button>
                 </div>

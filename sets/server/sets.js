@@ -12,14 +12,14 @@ Meteor.methods({
         sets.insert({
             title: 'New Set',
             stage: null,
-            active: null,
-            contents: []
+            active: null
         });
     },
     
     setDelete: function (setid) {
         var set = checkSet(setid);
         sets.remove(set);
+        actions.remove({set: setid});
     },
     
     setTitle: function (setid, newtitle) {
@@ -32,22 +32,32 @@ Meteor.methods({
         sets.update(set, {$set: {stage: stageid}});
     },
     
-    setAdd: function (setid, action) {
-        var set = checkSet(setid);
-        sets.update(set, {$push: {actions: action}});
+    actionAdd: function (action) {
+        actions.insert(action);
     },
     
-    setRemove: function (setid, actionindex) {
-        var set = checkSet(setid);
-        sets.update(set, {$pull: {actions: set.actions[actionindex]}});
+    actionRemove: function (actionid) {
+        var index = actions.findOne(actionid).order;
+        actions.remove(actionid);
+        actions.update({order: {$gte: index}}, {$inc: {order: -1}}, {multi: true});
     },
     
-    setActivate: function (setid, actionindex) {
+    actionMove: function (actionid, index) {
+        // This took way too long for me to figure out... - isaac
+        var action = actions.findOne(actionid);
+        if (index >= 0 && index < actions.find({set: action.set}).count()) {
+            if (action.order > index) actions.update({order: {$gte: index, $lt: action.order}}, {$inc: {order: 1}}, {multi: true});
+            else actions.update({order: {$lte: index, $gte: action.order}}, {$inc: {order: -1}}, {multi: true});
+            actions.update({_id: actionid}, {$set: {order: index}});
+        }
+    },
+    
+    setActivate: function (setid, actionid) {
         // TODO: Redo all this code, put most of it in the Stage or Minion functions instead, make utility functions to reduce repeated code
         var set = checkSet(setid);
-        var action = set.actions[actionindex];
+        var action = actions.findOne(actionid);
         
-        sets.update(set, {$set: {active: actionindex}});
+        sets.update(set, {$set: {active: actionid}});
         
         if (action.type == 'media') {
             if (action.minions.length > 0) {
@@ -83,7 +93,7 @@ Meteor.methods({
     setDeactivate: function (setid) {
         var set = checkSet(setid);
         if (set.active !== null) {
-            var action = set.actions[set.active];
+            var action = actions.findOne(set.active);
             sets.update(set, {$set: {active: null}});
 
             if (action.type == 'media') {
