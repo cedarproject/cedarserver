@@ -41,7 +41,10 @@ Template.set.helpers({
 Template.set.events({    
     'click .set-action': function (event) {
         var set = Template.parentData();
-        Meteor.call('setActivate', set._id, this._id);
+        var actionindex = set.actions.indexOf(this);
+        if (actionindex != set.active) {
+            Meteor.call('setActivate', set._id, actionindex);
+        };
         return false;
     },
     
