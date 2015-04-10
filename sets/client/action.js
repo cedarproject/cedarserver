@@ -39,15 +39,5 @@ Template.setAction.events({
         var set = Template.parentData();
         Meteor.call('actionRemove', this._id);
         return false;
-    },
-    
-    'click .action-move-up': function (event) { 
-        Meteor.call('actionMove', this._id, this.order - 1);
-        return false;
-    },
-    
-    'click .action-move-down': function (event) {
-        Meteor.call('actionMove', this._id, this.order + 1);
-        return false;
     }
 });

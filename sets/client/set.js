@@ -12,6 +12,10 @@ Template.set.helpers({
     actions: function () {
         return actions.find({set: this._id}, {sort: {order: 1}});
     },
+    
+    plusOne: function (n) {
+        return n + 1;
+    },
 });
 
 // TODO fix -- this is complicated
@@ -38,7 +42,31 @@ Template.set.helpers({
     }, Template.currentData());
 });*/
 
-Template.set.events({    
+Template.set.events({
+    'click .moving': function (event) {
+        $('.set-action').removeClass('moving').removeClass('movetarget');
+        event.stopImmediatePropagation();
+        return false;
+    },
+    
+    'click .movetarget': function (event) {
+        var movingid = $('.set-action.moving').data('actionid');
+        
+        Meteor.call('actionMove', movingid, this.order);
+        
+        $('.set-action').removeClass('moving').removeClass('movetarget');
+        event.stopImmediatePropagation();
+        return false;
+    },
+
+    'click .action-move': function (event) {
+        var target = $(event.target).parents('.set-action');
+        target.addClass('moving');
+        $('.set-action').not(target).addClass('movetarget').addClass('disabled');
+        event.stopImmediatePropagation();
+        return false;
+    },
+    
     'click .set-action': function (event) {
         var set = Template.parentData();
         if (this._id != set.active) {

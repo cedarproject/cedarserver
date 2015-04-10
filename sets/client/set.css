@@ -1,0 +1,34 @@
+.set-action {
+    transition: opacity 1s, transform 1s, box-shadow 0.25s;
+    border: 1px solid rgba(200, 200, 200, 1);
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.set-action.moving {
+    transform: scale(1.1, 1.1);
+}
+
+.set-action.movetarget {
+    opacity: 0.5;
+}
+
+.set-action.movetarget:hover {
+    box-shadow: 0 0 10px blue;
+}
+
+.dragmarker {
+    transition: border .5s, height .25s, background 0.25s;
+    border: 0px;
+    height: 1em;
+    width: 90%;
+}
+
+.dragmarker.dragging {
+    border: 2px dashed blue;
+    height: 20px;
+}    
+
+.dragmarker.over {
+    background-color: blue;
+}

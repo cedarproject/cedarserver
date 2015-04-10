@@ -45,11 +45,15 @@ Meteor.methods({
     actionMove: function (actionid, index) {
         // This took way too long for me to figure out... - isaac
         var action = actions.findOne(actionid);
-        if (index >= 0 && index < actions.find({set: action.set}).count()) {
-            if (action.order > index) actions.update({order: {$gte: index, $lt: action.order}}, {$inc: {order: 1}}, {multi: true});
-            else actions.update({order: {$lte: index, $gte: action.order}}, {$inc: {order: -1}}, {multi: true});
-            actions.update({_id: actionid}, {$set: {order: index}});
-        }
+        var setid = action.set;
+
+        var max = actions.find({set: setid}).count() - 1;
+        if (index < 0) index = 0;
+        if (index > max) index = max;
+
+        if (action.order > index) {actions.update({set: setid, order: {$gte: index, $lt: action.order}}, {$inc: {order: 1}}, {multi: true}); console.log(1);}
+        else if (action.order < index) {actions.update({set: setid, order: {$lte: index, $gt: action.order}}, {$inc: {order: -1}}, {multi: true}); console.log(2);}
+        actions.update({_id: actionid}, {$set: {order: index}});
     },
     
     setActivate: function (setid, actionid) {

@@ -13,11 +13,10 @@
 
         <p><small>Stage: {{stageTitle stage}}</small></p>
 
-        <ul class="list-group">
-            {{#each actions}}
-                <li class="set-action list-group-item" draggable="true">{{> setAction}}</li>
-            {{/each}}
-        </ul>
+
+        {{#each actions}}
+            <div class="set-action" data-actionid={{_id}}>{{> setAction}}</div>
+        {{/each}}
         
         <button type="button" class="set-add-item btn btn-primary">
             <span class="glyphicon glyphicon-plus"></span> Add Item
