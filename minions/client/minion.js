@@ -11,6 +11,10 @@ Template.minion.helpers({
     
     getSetting: function (setting) {
         return this.settings[setting];
+    },
+    
+    typeIs: function (type) {
+        return type == this.type;
     }
 });
 
@@ -26,10 +30,10 @@ Template.minion.events({
     'click .minion-settings-save': function (event) {
         var modalbody = $(event.target).parent().prev('.modal-body');
         
-        var newname = modalbody.children('.minion-name').val();
+        var newname = modalbody.find('.minion-name').val();
         Meteor.call('minionName', this._id, newname);
 
-        var stageid = modalbody.children('.minion-stage').val();
+        var stageid = modalbody.find('.minion-stage').val();
         if (stageid) Meteor.call('minionStage', this._id, stageid);
         
         modalbody.parents('.modal').modal('hide');

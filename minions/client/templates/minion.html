@@ -18,23 +18,40 @@
         
         
         <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4>Minion Settings</h4>
                     </div>
                     
                     <div class="modal-body">
-                        <label>Name:</label>
-                        <input class="minion-name form-control" type="text" value={{name}}>
+                        <div role="tabpanel">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active"><a href="#{{_id}}-main" role="tab" data-toggle="tab">Main</a></li>
+                                {{#if typeIs 'media'}}
+                                    <li role="presentation"><a href="#{{_id}}-display" role="tab" data-toggle="tab">Display</a></li>
+                                {{/if}}
+                            </ul>
+                        
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="{{_id}}-main">
+                                    <label>Name:</label>
+                                    <input class="minion-name form-control" type="text" value={{name}}>
 
-                        <label>Stage:</label>
-                        <select class="minion-stage form-control">
-                            <option value="{{stage}}" selected>{{titleOf stage}}</option>
-                            {{#each stages}}
-                                <option value="{{_id}}">{{title}}</option>
-                            {{/each}}
-                        </select>
+                                    <label>Stage:</label>
+                                    <select class="minion-stage form-control">
+                                        <option value="{{stage}}" selected>{{titleOf stage}}</option>
+                                        {{#each stages}}
+                                            <option value="{{_id}}">{{title}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                
+                                {{#if typeIs 'media'}}
+                                    <div role="tabpanel" class="tab-pane" id="{{_id}}-display">{{> minionsettingsdisplay}}</div>
+                                {{/if}}
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="modal-footer">
