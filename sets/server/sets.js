@@ -51,8 +51,8 @@ Meteor.methods({
         if (index < 0) index = 0;
         if (index > max) index = max;
 
-        if (action.order > index) {actions.update({set: setid, order: {$gte: index, $lt: action.order}}, {$inc: {order: 1}}, {multi: true}); console.log(1);}
-        else if (action.order < index) {actions.update({set: setid, order: {$lte: index, $gt: action.order}}, {$inc: {order: -1}}, {multi: true}); console.log(2);}
+        if (action.order > index) actions.update({set: setid, order: {$gte: index, $lt: action.order}}, {$inc: {order: 1}}, {multi: true});
+        else if (action.order < index) actions.update({set: setid, order: {$lte: index, $gt: action.order}}, {$inc: {order: -1}}, {multi: true});
         actions.update({_id: actionid}, {$set: {order: index}});
     },
     

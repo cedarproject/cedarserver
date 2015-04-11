@@ -60,9 +60,11 @@ Template.set.events({
     },
 
     'click .action-move': function (event) {
-        var target = $(event.target).parents('.set-action');
-        target.addClass('moving');
-        $('.set-action').not(target).addClass('movetarget').addClass('disabled');
+        if (!$(event.target).parents('.set-action').hasClass('movetarget')) {
+            var target = $(event.target).parents('.set-action');
+            target.addClass('moving');
+            $('.set-action').not(target).addClass('movetarget').addClass('disabled');
+        }
         event.stopImmediatePropagation();
         return false;
     },
@@ -109,7 +111,7 @@ Template.set.events({
     },
 
     'click .set-settings': function (event) {
-        $(event.target).parent().siblings('.set-settings-modal').modal('show');
+        $(event.target).siblings('.set-settings-modal').modal('show');
     },
     
     'click .set-settings-cancel': function (event) {
