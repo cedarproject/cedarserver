@@ -8,6 +8,12 @@ Template.minionsettingsdisplay.helpers({
     }
 });
 
+Template.displayforminput.helpers({
+    get: function (attr) {
+        return Template.parentData()[attr];
+    }
+});
+
 Template.minionsettingsdisplay.events({
     'click .add-block': function (event) {
         var blocks = this.settings.blocks;
@@ -32,21 +38,21 @@ Template.minionsettingsdisplay.events({
         var row = $(event.target).parents('.row');
 
         blocks[row.data('blocknum')] = {
-            left: row.find('.disp-left').val(),
-            right: row.find('.disp-right').val(),
-            top: row.find('.disp-top').val(),
-            bottom: row.find('.disp-bottom').val(),
-            'translation-x': row.find('.disp-trans-x').val(),
-            'translation-y': row.find('.disp-trans-y').val(),
-            'translation-z': row.find('.disp-trans-z').val(),
-            'rotation-x': row.find('.disp-rot-x').val(),
-            'rotation-y': row.find('.disp-rot-y').val(),
-            'rotation-z': row.find('.disp-rot-z').val(),
-            'scale-x': row.find('.disp-scale-x').val(),
-            'scale-y': row.find('.disp-scale-y').val(),
-            xpos: row.find('.disp-xpos').val(),
-            ypos: row.find('.disp-ypos').val(),
-            zorder: row.find('.disp-zorder').val()
+            left: parseInt(row.find('.disp-left').val()) || 0,
+            right: parseInt(row.find('.disp-right').val()) || 0,
+            top: parseInt(row.find('.disp-top').val()) || 0,
+            bottom: parseInt(row.find('.disp-bottom').val()) || 0,
+            'translation-x': parseFloat(row.find('.disp-trans-x').val()) || 0,
+            'translation-y': parseFloat(row.find('.disp-trans-y').val()) || 0,
+            'translation-z': parseFloat(row.find('.disp-trans-z').val()) || 0,
+            'rotation-x': parseFloat(row.find('.disp-rot-x').val()) || 0,
+            'rotation-y': parseFloat(row.find('.disp-rot-y').val()) || 0,
+            'rotation-z': parseFloat(row.find('.disp-rot-z').val()) || 0,
+            'scale-x': parseFloat(row.find('.disp-scale-x').val()) || 0,
+            'scale-y': parseFloat(row.find('.disp-scale-y').val()) || 0,
+            xpos: parseInt(row.find('.disp-xpos').val()) || 0,
+            ypos: parseInt(row.find('.disp-ypos').val()) || 0,
+            zorder: parseInt(row.find('.disp-zorder').val()) || 0
         };
 
         Meteor.call('minionSetting', this._id, 'blocks', blocks);
