@@ -111,7 +111,7 @@ Template.set.events({
     },
 
     'click .set-settings': function (event) {
-        $(event.target).siblings('.set-settings-modal').modal('show');
+        $(event.target).parent().siblings('.set-settings-modal').modal('show');
     },
     
     'click .set-settings-cancel': function (event) {
