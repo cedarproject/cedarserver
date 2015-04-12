@@ -1,0 +1,73 @@
+<template name="minionsettingsdisplay">
+    <div class="btn-group btn-group-xs pull-left" role="group">
+        <button type="button" class="add-block btn btn-default">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+        <button type="button" class="del-block btn btn-default">
+            <span class="glyphicon glyphicon-minus"></span>
+        </button>
+    </div>
+
+    <p>Blocks: {{numBlocks}}</p>
+    
+    <ul class="block-list list-group">
+        {{#each settings.blocks}}
+            <li class="list-group-item">
+                <div class="row" data-blocknum={{blockNum this}}>
+                    <div class="col-lg-2">
+                        <h4>Box</h4>
+                        <form class="form-horizontal">
+                            {{> displayforminput title='Top' class='disp-top' value=top}}
+                            {{> displayforminput title='Bottom' class='disp-bottom' value=bottom}}
+                            {{> displayforminput title='Left' class='disp-left' value=left}}
+                            {{> displayforminput title='Right' class='disp-right' value=right}}
+                        </form>
+                    </div>
+                    
+                    <div class="col-lg-2">
+                        <h4>Translation</h4>
+                        <form class="form-horizontal">
+                            {{> displayforminput title='X' class='disp-trans-x' value=this.['translation-x']}}
+                            {{> displayforminput title='Y' class='disp-trans-y' value=this.['translation-y']}}
+                            {{> displayforminput title='Z' class='disp-trans-z' value=this.['translation-z']}}
+                        </form>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <h4>Rotation</h4>
+                        <form class="form-horizontal">
+                            {{> displayforminput title='X' class='disp-rot-x' value=this.['rotation-x']}}
+                            {{> displayforminput title='Y' class='disp-rot-y' value=this.['rotation-y']}}
+                            {{> displayforminput title='Z' class='disp-rot-z' value=this.['rotation-z']}}
+                        </form>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <h4>Scale</h4>
+                        <form class="form-horizontal">
+                            {{> displayforminput title='X' class='disp-scale-x' value=this.['scale-x']}}
+                            {{> displayforminput title='Y' class='disp-scale-y' value=this.['scale-y']}}
+                        </form>
+                    </div>
+                    
+                    <div class="col-lg-2">
+                        <h4>Position</h4>
+                        <form class="form-horizontal">
+                            {{> displayforminput title='X' class='disp-xpos' value=xpos}}
+                            {{> displayforminput title='Y' class='disp-ypos' value=ypos}}
+                            {{> displayforminput title='Z order' class='disp-zorder' value=zorder}}
+                        </form>
+                    </div>
+                </div>
+            </li>
+        {{/each}}
+    </ul>
+</template>
+
+<template name="displayforminput">
+    <div class="input-group">
+        <span class="input-group-addon">{{title}}</span>
+        <input type="number" class="{{class}} disp-setting form-control" value={{value}}>
+    </div>
+</template>
+
