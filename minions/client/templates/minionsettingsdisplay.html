@@ -15,12 +15,22 @@
             <li class="list-group-item">
                 <div class="row" data-blocknum={{blockNum this}}>
                     <div class="col-lg-2">
-                        <h4>Box</h4>
+                        <h4>Pre Box</h4>
                         <form class="form-horizontal">
                             {{> displayforminput title='Top' class='disp-top' value='top'}}
                             {{> displayforminput title='Bottom' class='disp-bottom' value='bottom'}}
                             {{> displayforminput title='Left' class='disp-left' value='left'}}
                             {{> displayforminput title='Right' class='disp-right' value='right'}}
+                        </form>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <h4>Post Box</h4>
+                        <form class="form-horizontal">
+                            {{> displayforminput title='Top' class='disp-post-top' value='post-top'}}
+                            {{> displayforminput title='Bottom' class='disp-post-bottom' value='post-bottom'}}
+                            {{> displayforminput title='Left' class='disp-post-left' value='post-left'}}
+                            {{> displayforminput title='Right' class='disp-post-right' value='post-right'}}
                         </form>
                     </div>
                     
@@ -66,7 +76,7 @@
 
 <template name="displayforminput">
     <div class="input-group">
-        <span class="input-group-addon">{{title}}</span>
+        <span class="input-group-addon"><sm>{{title}}</sm></span>
         <input type="number" class="{{class}} disp-setting form-control" value={{get value}}>
     </div>
 </template>
