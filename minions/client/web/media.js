@@ -9,8 +9,6 @@ var render = function () {
             var currtime = window.performance.now();
             var elapsed = (currtime - fade.time) * 0.001;
             
-            console.log(elapsed);
-
             if (fade.curr < fade.end) {
                 fade.curr = fade.end / (fade.length / elapsed);
                 if (fade.curr > fade.end || isNaN(fade.curr)) fade.curr = fade.end;
@@ -21,17 +19,75 @@ var render = function () {
                 if (fade.curr < fade.end || isNaN(fade.curr)) fade.curr = fade.end;
             }
             
-            console.log(fade.curr);
             fade.callback(fade.curr);
             if (fade.curr == fade.end) this.fades.pop(i);
         }
         
         this.renderer.render(this.scene, this.camera);
     }
-} 
+}
+
+var create_blocks = function (play) {
+    var meshes = [];
+    for (var i = 0; i < this.blocks.length; i++) {
+        var block = this.blocks[i];
+        
+        var plane = new THREE.PlaneGeometry(this.media_width * block.width * block.scalex,
+                                            this.media_height * block.height * block.scaley);
+                
+        var coords = [
+            new THREE.Vector2(block.x, block.y + block.height),
+            new THREE.Vector2(block.x, block.y),
+            new THREE.Vector2(block.x + block.width, block.y),
+            new THREE.Vector2(block.x + block.width, block.y + block.height)
+        ];
+        
+        plane.faceVertexUvs[0][0] = [coords[0], coords[1], coords[3]];
+        plane.faceVertexUvs[0][1] = [coords[1], coords[2], coords[3]];
+
+        plane.applyMatrix(new THREE.Matrix4().set(
+            1, block.skewx, 0, 0,
+            block.skewy, 1, 0, 0,
+            0, 0, 1, 0,
+            0, 0, 0, 1
+        ));
+                
+        var mesh = new THREE.Mesh(plane, play.material);
+        
+        mesh.position.x = block.transx;
+        mesh.position.y = block.transy;
+        mesh.position.z = block.transz;
+
+        mesh.rotation.x = block.rotx;
+        mesh.rotation.y = block.roty;
+        mesh.rotation.z = block.rotz;
+                
+        mesh.updateMatrix();
+        
+        meshes.push(mesh);
+        this.scene.add(mesh);
+    }
+    return meshes;
+}
 
 var changed = function (id, fields) {
+    var newsettings = fields['settings'];
     var actions = fields['actions'];
+    
+    if (newsettings) {
+        if (newsettings['blocks']) {
+            this.blocks = newsettings.blocks;
+            for (var i = 0; i < this.playing.length; i++) {
+                var play = this.playing[i];
+                if (play.type == 'video' || play.type == 'image') {
+                    for (var i = 0; i < play.meshes.length; i++) {
+                        this.scene.remove(play.meshes[i]);
+                    }
+                    play.meshes = this.create_blocks(play);
+                }
+            }
+        }
+    }
     
     var activeactions = [];
     if (actions) for (var i = 0; i < actions.length; i++) {
@@ -54,33 +110,33 @@ var changed = function (id, fields) {
                 play.video.controls = false;
                 play.video.autoplay = true;
                 
-                play.video.addEventListener('loadedmetadata', function (play) {
-                    play.texture = new THREE.VideoTexture(play.video);
-                    play.texture.minFilter = THREE.LinearFilter;
-                    play.texture.magFilter = THREE.LinearFilter;
-                    play.texture.format = THREE.RGBFormat;
-                    
-                    play.plane = new THREE.PlaneGeometry(this.media_width, this.media_height);
-                    play.material = new THREE.MeshLambertMaterial({map: play.texture, transparent: true, opacity: 0});
-                    play.mesh = new THREE.Mesh(play.plane, play.material);
-                    
-                    this.scene.add(play.mesh);
-                    this.fades.push({
-                        start: 0, end: 1,
-                        length: play.options['fade'] || 1,
-                        time: window.performance.now(),
-                        callback: function (m,v) {console.log(m, v); m.opacity = v}.bind(this, play.material)
-                    });
+                play.texture = new THREE.VideoTexture(play.video);
+                play.texture.minFilter = THREE.LinearFilter;
+                play.texture.magFilter = THREE.LinearFilter;
 
-                }.bind(this, play));
+                play.material = new THREE.MeshLambertMaterial({map: play.texture, transparent: true, opacity: 0});
+                
+                play.meshes = this.create_blocks(play);
+                                                
+                this.fades.push({
+                    start: 0, end: 1,
+                    length: play.options['fade'] || 1,
+                    time: window.performance.now(),
+                    callback: function (m,v) {m.opacity = v}.bind(this, play.material)
+                });
+
             }
             
             else if (m.type == 'image') {
                 play.type = 'image';
                 play.texture = THREE.ImageUtils.loadTexture(settings.findOne({key: 'mediaurl'}).value + m.location);
+                play.texture.minFilter = THREE.LinearFilter;
+                play.texture.magFilter = THREE.LinearFilter;
+
                 play.material = new THREE.MeshLambertMaterial({map: play.texture, transparent: true, opacity: 0});
                 play.plane = new THREE.PlaneGeometry(this.media_width, this.media_height);
                 play.mesh = new THREE.Mesh(play.plane, play.material);
+
                 this.scene.add(play.mesh);
                 this.fades.push({
                     start: 0, end: 1,
@@ -110,7 +166,7 @@ var changed = function (id, fields) {
         this.playing.push(play);
     }
 
-    for (var i = this.playing.length - 1; i >= 0; i--) {
+    if (actions) for (var i = this.playing.length - 1; i >= 0; i--) {
         var play = this.playing[i];
 
         if (activeactions.indexOf(play._id) == -1) {
@@ -172,11 +228,11 @@ var resize = function () {
     
     for (var i = 0; i < this.playing.length; i++) {
         var play = this.playing[i];
-        if (play['plane']) {
-            play.plane.dynamic = true;
-            play.plane.width = this.media_width;
-            play.plane.height = this.media_height;
-            play.plane.verticesNeedUpdate = true;
+        if (play.type == 'video' || play.type == 'image') {
+            for (var i = 0; i < play.meshes.length; i++) {
+                this.scene.remove(play.meshes[i]);
+            }
+            play.meshes = this.create_blocks(play);            
         }
     }
 }
@@ -184,10 +240,12 @@ var resize = function () {
 Template.webminionmedia.onRendered(function () {
     $('body').addClass('no-scrollbars');
     this.render = render;
+    this.create_blocks = create_blocks;
     
     this.playing = [];
     this.playing_ids = [];
     this.fades = [];
+    this.blocks = [];
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -206,7 +264,7 @@ Template.webminionmedia.onRendered(function () {
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     $('.media-container').append(this.renderer.domElement);
-
+    
     this.continue = true;    
     this.render();
     
