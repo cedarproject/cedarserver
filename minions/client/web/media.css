@@ -1,4 +1,10 @@
 .media-container {
-    width: 100vw;
+    width: 99vw;
+    height: 99vh;
+}
+
+.no-scrollbars {
+    overflow: hidden;
+    width: 100vh;
     height: 100vh;
 }

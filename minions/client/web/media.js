@@ -1,9 +1,34 @@
 var render = function () {
     if (this.continue) {
-        requestAnimationFrame(this.render.bind(this));        
+        requestAnimationFrame(this.render.bind(this));
+        
+        for (i = this.fades.length-1; i >= 0; i--) {
+            var fade = this.fades[i];
+            if (!fade['curr']) fade.curr = fade.start;
+            
+            var currtime = window.performance.now();
+            var elapsed = (currtime - fade.time) * 0.001;
+            
+            console.log(elapsed);
+
+            if (fade.curr < fade.end) {
+                fade.curr = fade.end / (fade.length / elapsed);
+                if (fade.curr > fade.end || isNaN(fade.curr)) fade.curr = fade.end;
+            }
+                
+            else if (fade.curr > fade.end) {
+                fade.curr = 1.0 / (fade.length / (fade.length - elapsed));
+                if (fade.curr < fade.end || isNaN(fade.curr)) fade.curr = fade.end;
+            }
+            
+            console.log(fade.curr);
+            fade.callback(fade.curr);
+            if (fade.curr == fade.end) this.fades.pop(i);
+        }
+        
         this.renderer.render(this.scene, this.camera);
     }
-}
+} 
 
 var changed = function (id, fields) {
     var actions = fields['actions'];
@@ -16,7 +41,7 @@ var changed = function (id, fields) {
         if (this.playing_ids.indexOf(action._id) > -1) continue;
         this.playing_ids.push(action._id);
 
-        var play = {_id: action._id};
+        var play = {_id: action._id, options: action.options};
 
         if (action.type == 'media') {
             var m = media.findOne(action.media);
@@ -36,20 +61,33 @@ var changed = function (id, fields) {
                     play.texture.format = THREE.RGBFormat;
                     
                     play.plane = new THREE.PlaneGeometry(this.media_width, this.media_height);
-                    play.material = new THREE.MeshLambertMaterial({map: play.texture});
+                    play.material = new THREE.MeshLambertMaterial({map: play.texture, transparent: true, opacity: 0});
                     play.mesh = new THREE.Mesh(play.plane, play.material);
                     
                     this.scene.add(play.mesh);
+                    this.fades.push({
+                        start: 0, end: 1,
+                        length: play.options['fade'] || 1,
+                        time: window.performance.now(),
+                        callback: function (m,v) {console.log(m, v); m.opacity = v}.bind(this, play.material)
+                    });
+
                 }.bind(this, play));
             }
             
             else if (m.type == 'image') {
                 play.type = 'image';
                 play.texture = THREE.ImageUtils.loadTexture(settings.findOne({key: 'mediaurl'}).value + m.location);
-                play.material = new THREE.MeshLambertMaterial({map: play.texture});
+                play.material = new THREE.MeshLambertMaterial({map: play.texture, transparent: true, opacity: 0});
                 play.plane = new THREE.PlaneGeometry(this.media_width, this.media_height);
                 play.mesh = new THREE.Mesh(play.plane, play.material);
                 this.scene.add(play.mesh);
+                this.fades.push({
+                    start: 0, end: 1,
+                    length: play.options['fade'] || 1,
+                    time: window.performance.now(),
+                    callback: function (m, v) {m.opacity = v}.bind(this, play.material)
+                });
             }
             
             else if (m.type == 'audio') {
@@ -59,6 +97,13 @@ var changed = function (id, fields) {
                 play.audio.loop = true;
                 play.audio.controls = false;
                 play.audio.autoplay = true;
+                play.audio.volume = 0;
+                this.fades.push({
+                    start: 0, end: 1,
+                    length: play.options['fade'] || 1,
+                    time: window.performance.now(),
+                    callback: function (m, v) {m.volume = v}.bind(this, play.audio)
+                });
             }                
         }
 
@@ -70,16 +115,46 @@ var changed = function (id, fields) {
 
         if (activeactions.indexOf(play._id) == -1) {
             if (play.type == 'video') {
-                this.scene.remove(play.mesh);
-                play.video.pause();
+                this.fades.push({
+                    start: 1, end: 0,
+                    length: play.options['fade'] || 1,
+                    time: window.performance.now(),
+                    callback: function (play,v) {
+                        play.material.opacity = v;
+                        if (v == 0) {
+                            this.scene.remove(play.mesh);
+                            play.video.pause();
+                        }
+                    }.bind(this, play)
+                });
             }
             
             else if (play.type == 'image') {
-                this.scene.remove(play.mesh);
+                this.fades.push({
+                    start: 1, end: 0,
+                    length: play.options['fade'] || 1,
+                    time: window.performance.now(),
+                    callback: function (play,v) {
+                        play.material.opacity = v;
+                        if (v == 0) {
+                            this.scene.remove(play.mesh);
+                        }
+                    }.bind(this, play)
+                });
             }
             
             else if (play.type == 'audio') {
-                play.audio.pause();
+                this.fades.push({
+                    start: 1, end: 0,
+                    length: play.options['fade'] || 1,
+                    time: window.performance.now(),
+                    callback: function (play,v) {
+                        play.audio.volume = v;
+                        if (v == 0) {
+                            play.audio.pause();
+                        }
+                    }.bind(this, play)
+                });
             }
 
             this.playing.pop(i);
@@ -107,10 +182,12 @@ var resize = function () {
 }
 
 Template.webminionmedia.onRendered(function () {
+    $('body').addClass('no-scrollbars');
     this.render = render;
     
     this.playing = [];
     this.playing_ids = [];
+    this.fades = [];
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -140,5 +217,6 @@ Template.webminionmedia.onRendered(function () {
 });
 
 Template.webminionmedia.onDestroyed(function () {
+    $('body').removeClass('no-scrollbars');
     this.continue = false;
 });
