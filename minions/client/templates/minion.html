@@ -45,6 +45,11 @@
                                             <option value="{{_id}}">{{title}}</option>
                                         {{/each}}
                                     </select>
+                                    
+                                    {{#if typeIs 'media'}}
+                                        <p><a href={{pathFor 'webminionmedia' _id}}>Open Player</a></p>
+                                        <p><pre>URL: {{urlFor 'webminionmedia' _id}}</pre></p>
+                                    {{/if}}
                                 </div>
                                 
                                 {{#if typeIs 'media'}}

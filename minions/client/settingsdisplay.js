@@ -1,6 +1,7 @@
 Template.minionsettingsdisplay.helpers({
     numBlocks: function () {
-        return this.settings.blocks.length;
+        if (this.settings['blocks']) return this.settings.blocks.length;
+        else return 0;
     },
     
     blockNum: function (block) {

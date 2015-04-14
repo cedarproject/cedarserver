@@ -9,6 +9,10 @@ Template.stagesList.events({
         Meteor.call('stageNew');
     },
     
+    'click .web-minion-new': function (event) {
+        Meteor.call('minionNew', 'media');
+    },
+    
     'click .stage-settings': function (event) {
         $(event.target).parent().next('.modal').modal('show');
     },
