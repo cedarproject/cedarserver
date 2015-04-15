@@ -247,7 +247,7 @@ Template.webminionmedia.onRendered(function () {
     this.light = new THREE.AmbientLight(0xFFFFFF);
     this.scene.add(this.light);
     
-    this.renderer = new THREE.WebGLRenderer();
+    this.renderer = new THREE.WebGLRenderer({antialias: true});
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     $('.media-container').append(this.renderer.domElement);
