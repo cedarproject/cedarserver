@@ -1,0 +1,63 @@
+<template name="minionsettings">
+    <div class="container">
+        <h4>Minion Settings</h4>
+        
+        <div role="tabpanel">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#{{_id}}-main" role="tab" data-toggle="tab">Main</a></li>
+                {{#if typeIs 'media'}}
+                    <li role="presentation"><a href="#{{_id}}-display" role="tab" data-toggle="tab">Display</a></li>
+                {{/if}}
+            </ul>
+        
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="{{_id}}-main">
+                    <label>Name:</label>
+                    <input class="minion-name form-control" type="text" value={{name}}>
+
+                    <label>Stage:</label>
+                    <select class="minion-stage form-control">
+                        <option value="{{stage}}" selected>{{titleOf stage}}</option>
+                        {{#each stages}}
+                            <option value="{{_id}}">{{title}}</option>
+                        {{/each}}
+                    </select>
+                    
+                    {{#if typeIs 'media'}}
+                        <div class="well well-sm">
+                            <p><a href={{pathFor 'webminionmedia' _id}}>Launch Web Minion</a></p>
+                            <p>Direct link: <pre>{{urlFor 'webminionmedia' _id}}</pre></p>
+                        </div>
+                    {{/if}}
+                </div>
+                
+                {{#if typeIs 'media'}}
+                    <div role="tabpanel" class="tab-pane" id="{{_id}}-display">{{> minionsettingsdisplay}}</div>
+                {{/if}}
+            </div>
+        
+            <button class="minion-settings-delete btn btn-danger">Delete</button>
+            <button class="minion-settings-save btn btn-primary pull-right">Save</button>
+            <button class="minion-settings-cancel btn pull-right">Cancel</button>                       
+        </div>
+    </div>
+
+    <div class="delete-modal modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Confirm Delete</h4>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="alert alert-danger"><p>The minion <b>"{{name}}"</b> will be permanently deleted.</p></div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="minion-delete-cancel btn">Cancel</button>
+                    <button class="minion-delete-confirm btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>                    
+</template>

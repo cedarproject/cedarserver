@@ -54,8 +54,8 @@ var create_blocks = function (play) {
                 
         var mesh = new THREE.Mesh(plane, play.material);
         
-        mesh.position.x = block.transx;
-        mesh.position.y = block.transy;
+        mesh.position.x = this.media_width * block.transx;
+        mesh.position.y = this.media_height * block.transy;
         mesh.position.z = block.transz;
 
         mesh.rotation.x = block.rotx;
