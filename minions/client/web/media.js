@@ -22,7 +22,7 @@ var render = function () {
             fade.callback(fade.curr);
             if (fade.curr == fade.end) this.fades.pop(i);
         }
-        
+                
         this.renderer.render(this.scene, this.camera);
     }
 }
@@ -32,8 +32,15 @@ var create_blocks = function (play) {
     for (var i = 0; i < this.blocks.length; i++) {
         var block = this.blocks[i];
         
-        var plane = new THREE.PlaneGeometry(this.media_width * block.width * block.scalex,
-                                            this.media_height * block.height * block.scaley);
+        var plane = new THREE.PlaneGeometry(this.media_width * block.width,
+                                            this.media_height * block.height);
+
+        if (block['points']) {
+            for (var n in plane.vertices) {
+                plane.vertices[n].set(block.points[n][0], block.points[n][1], 0);
+            }
+            plane.verticesNeedUpdate = true;
+        }
                 
         var coords = [
             new THREE.Vector2(block.x, block.y + block.height),
@@ -44,25 +51,8 @@ var create_blocks = function (play) {
         
         plane.faceVertexUvs[0][0] = [coords[0], coords[1], coords[3]];
         plane.faceVertexUvs[0][1] = [coords[1], coords[2], coords[3]];
-
-        plane.applyMatrix(new THREE.Matrix4().set(
-            1, block.skewx, 0, 0,
-            block.skewy, 1, 0, 0,
-            0, 0, 1, 0,
-            0, 0, 0, 1
-        ));
-                
-        var mesh = new THREE.Mesh(plane, play.material);
         
-        mesh.position.x = this.media_width * block.transx;
-        mesh.position.y = this.media_height * block.transy;
-        mesh.position.z = block.transz;
-
-        mesh.rotation.x = block.rotx;
-        mesh.rotation.y = block.roty;
-        mesh.rotation.z = block.rotz;
-                
-        mesh.updateMatrix();
+        var mesh = new THREE.Mesh(plane, play.material);
         
         meshes.push(mesh);
         this.scene.add(mesh);
@@ -114,7 +104,7 @@ var changed = function (id, fields) {
                 play.texture.minFilter = THREE.LinearFilter;
                 play.texture.magFilter = THREE.LinearFilter;
 
-                play.material = new THREE.MeshLambertMaterial({map: play.texture, transparent: true, opacity: 0});
+                play.material = new THREE.MeshLambertMaterial({map: play.texture, transparent: true, opacity: 0, color: 0xFFFFFF});
                 
                 play.meshes = this.create_blocks(play);
                                                 
@@ -225,15 +215,43 @@ var resize = function () {
     }
 }
 
+var click = function (event) {
+    if (this.gettingPoints > -1) {
+        this.points.push([
+            (1 / (window.innerWidth / event.clientX) - 0.5) * this.media_width,
+            (1 / (window.innerHeight / (window.innerHeight - event.clientY)) - 0.5) * this.media_height,
+        ]);
+
+        if (this.points.length == 4) {
+            var newblocks = this.blocks;
+            newblocks[this.gettingPoints].points = this.points;
+            Meteor.call('minionSetting', this.data, 'blocks', newblocks);
+            this.gettingPoints = -1;
+        }
+    }
+}
+    
+var keypress = function (event) {
+    console.log(event.keyCode, event.code);
+    var key = parseInt(String.fromCharCode(event.which));
+    console.log(key);
+    if (key > 0 && key <= this.blocks.length) {
+        this.gettingPoints = key - 1;
+        this.points = [];
+    }
+}
+
 Template.webminionmedia.onRendered(function () {
     $('body').addClass('no-scrollbars');
     this.render = render;
     this.create_blocks = create_blocks;
-    
+        
     this.playing = [];
     this.playing_ids = [];
     this.fades = [];
     this.blocks = [];
+    
+    this.gettingPoints = -1;
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -242,7 +260,9 @@ Template.webminionmedia.onRendered(function () {
     this.media_height = 2 * Math.tan((this.camera.fov * Math.PI / 180) / 2);
     this.media_width = this.media_height * this.camera.aspect;
     
-    window.addEventListener('resize', resize.bind(this))
+    window.addEventListener('resize', resize.bind(this));
+    window.addEventListener('click', click.bind(this));
+    window.addEventListener('keypress', keypress.bind(this));
 
     this.light = new THREE.AmbientLight(0xFFFFFF);
     this.scene.add(this.light);
@@ -251,7 +271,7 @@ Template.webminionmedia.onRendered(function () {
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     $('.media-container').append(this.renderer.domElement);
-    
+        
     this.continue = true;    
     this.render();
     
