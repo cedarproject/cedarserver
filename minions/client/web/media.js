@@ -134,8 +134,8 @@ var changed = function (id, fields) {
                 play.texture.magFilter = THREE.LinearFilter;
 
                 play.material = new THREE.MeshLambertMaterial({map: play.texture, transparent: true, opacity: 0});
-                play.plane = new THREE.PlaneGeometry(this.media_width, this.media_height);
-                play.mesh = new THREE.Mesh(play.plane, play.material);
+
+                play.meshes = this.create_blocks(play);
 
                 this.scene.add(play.mesh);
                 this.fades.push({
@@ -170,7 +170,7 @@ var changed = function (id, fields) {
         var play = this.playing[i];
 
         if (activeactions.indexOf(play._id) == -1) {
-            if (play.type == 'video') {
+            if (play.type == 'video' || play.type == 'image') {
                 this.fades.push({
                     start: 1, end: 0,
                     length: play.options['fade'] || 1,
@@ -178,22 +178,10 @@ var changed = function (id, fields) {
                     callback: function (play,v) {
                         play.material.opacity = v;
                         if (v == 0) {
-                            this.scene.remove(play.mesh);
-                            play.video.pause();
-                        }
-                    }.bind(this, play)
-                });
-            }
-            
-            else if (play.type == 'image') {
-                this.fades.push({
-                    start: 1, end: 0,
-                    length: play.options['fade'] || 1,
-                    time: window.performance.now(),
-                    callback: function (play,v) {
-                        play.material.opacity = v;
-                        if (v == 0) {
-                            this.scene.remove(play.mesh);
+                            for (var i in play.meshes) {
+                                this.scene.remove(play.meshes[i]);
+                            }
+                            if (play.type == 'video') play.video.pause();
                         }
                     }.bind(this, play)
                 });
@@ -256,8 +244,7 @@ Template.webminionmedia.onRendered(function () {
     
     window.addEventListener('resize', resize.bind(this))
 
-    this.light = new THREE.DirectionalLight(0xFFFFFF);
-    this.light.position.set( 0.5, 1, 1 ).normalize();
+    this.light = new THREE.AmbientLight(0xFFFFFF);
     this.scene.add(this.light);
     
     this.renderer = new THREE.WebGLRenderer();
