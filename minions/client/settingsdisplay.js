@@ -6,13 +6,13 @@ var block_props = [
     {prop: 'transx', def: 0, title: 'X', min: -1, max: 1, step: 0.01},
     {prop: 'transy', def: 0, title: 'Y', min: -1, max: 1, step: 0.01},
     {prop: 'transz', def: 0, title: 'Z', min: -1, max: 1, step: 0.01},
-    {prop: 'rotx', def: 0, title: 'X', min: -180, max: 180, step: 0.1},
-    {prop: 'roty', def: 0, title: 'Y', min: -180, max: 180, step: 0.1},
-    {prop: 'rotz', def: 0, title: 'Z', min: -180, max: 180, step: 0.1},
+    {prop: 'rotx', def: 0, title: 'X', min: -10, max: 10, step: 0.01},
+    {prop: 'roty', def: 0, title: 'Y', min: -10, max: 10, step: 0.01},
+    {prop: 'rotz', def: 0, title: 'Z', min: -10, max: 10, step: 0.01},
     {prop: 'scalex', def: 1, title: 'X', min: 0, max: 10, step: 0.01},
     {prop: 'scaley', def: 1, title: 'Y', min: 0, max: 10, step: 0.01},
-    {prop: 'skewx', def: 0, title: 'X', min: -180, max: 180, step: 1},
-    {prop: 'skewy', def: 0, title: 'Y', min: -180, max: 180, step: 1}
+    {prop: 'skewx', def: 0, title: 'X', min: -10, max: 10, step: 0.01},
+    {prop: 'skewy', def: 0, title: 'Y', min: -10, max: 10, step: 0.01}
 ];
 
 var block_groups = [
@@ -43,7 +43,7 @@ Template.minionsettingsdisplay.helpers({
 
 Template.minionsettingsdisplay.events({
     'click .add-block': function (event) {
-        var blocks = this.settings.blocks;
+        var blocks = this.settings['blocks'] || [];
         
         var block = {};
         for (var i = 0; i < block_props.length; i++) {
