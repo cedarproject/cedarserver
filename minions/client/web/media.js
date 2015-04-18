@@ -1,3 +1,8 @@
+// Shaders stolen from http://stackoverflow.com/questions/20661941/how-to-map-texture-on-a-custom-non-square-quad-in-three-js
+var vertexShader = 'varying vec4 textureCoord; void main() {textureCoord = vec4(uv,0.0, 1.0); if(uv.y != 0.0) {textureCoord.w *= (uv.y);} gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );}';
+
+var fragmentShader = 'uniform sampler2D uSampler; uniform float opacity; varying vec4 textureCoord; void main() {gl_FragColor  = texture2D(uSampler, vec2(textureCoord.x/textureCoord.w, textureCoord.y/textureCoord.w)); gl_FragColor.a = opacity;}';
+
 var render = function () {
     if (this.continue) {
         requestAnimationFrame(this.render.bind(this));
@@ -32,26 +37,36 @@ var create_blocks = function (play) {
     for (var i = 0; i < this.blocks.length; i++) {
         var block = this.blocks[i];
         
-        var plane = new THREE.PlaneGeometry(this.media_width * block.width,
-                                            this.media_height * block.height);
+        var plane = new THREE.Geometry();
 
         if (block['points']) {
-            for (var n in plane.vertices) {
-                plane.vertices[n].set(block.points[n][0], block.points[n][1], 0);
-            }
-            plane.verticesNeedUpdate = true;
+            plane.vertices.push(new THREE.Vector3(block.points[0][0] * this.media_width, block.points[0][1] * this.media_height, 0));
+            plane.vertices.push(new THREE.Vector3(block.points[1][0] * this.media_width, block.points[1][1] * this.media_height, 0));
+            plane.vertices.push(new THREE.Vector3(block.points[2][0] * this.media_width, block.points[2][1] * this.media_height, 0));
+            plane.vertices.push(new THREE.Vector3(block.points[3][0] * this.media_width, block.points[3][1] * this.media_height, 0));
+
+            plane.faces.push(new THREE.Face3(0, 2, 3));
+            plane.faces.push(new THREE.Face3(0, 3, 1));
         }
-                
-        var coords = [
+            
+        var vratio = Math.abs(plane.vertices[1].x - plane.vertices[0].x) /
+                    Math.abs(plane.vertices[3].x - plane.vertices[2].x);
+
+        var hratio = Math.abs(plane.vertices[0].y - plane.vertices[1].y) /
+                    Math.abs(plane.vertices[2].y - plane.vertices[3].y);
+        
+        var uvs = [
             new THREE.Vector2(block.x, block.y + block.height),
-            new THREE.Vector2(block.x, block.y),
+            new THREE.Vector2((block.x + block.width) * vratio, (block.y + block.height) * vratio),
+            new THREE.Vector2(block.x, block.y * vratio),
             new THREE.Vector2(block.x + block.width, block.y),
-            new THREE.Vector2(block.x + block.width, block.y + block.height)
         ];
         
-        plane.faceVertexUvs[0][0] = [coords[0], coords[1], coords[3]];
-        plane.faceVertexUvs[0][1] = [coords[1], coords[2], coords[3]];
-        
+        plane.faceVertexUvs[0][0] = [uvs[0], uvs[2], uvs[3]];
+        plane.faceVertexUvs[0][1] = [uvs[0], uvs[3], uvs[1]];
+//        plane.faceVertexUvs[0][0] = [uvs[0], uvs[1], uvs[2]];
+//        plane.faceVertexUvs[0][1] = [uvs[0], uvs[2], uvs[3]];
+                
         var mesh = new THREE.Mesh(plane, play.material);
         
         meshes.push(mesh);
@@ -92,19 +107,39 @@ var changed = function (id, fields) {
         if (action.type == 'media') {
             var m = media.findOne(action.media);
             
-            if (m.type == 'video') {
-                play.type = 'video';
-                play.video = document.createElement('video');
-                play.video.src = settings.findOne({key: 'mediaurl'}).value + m.location;
-                play.video.loop = true;
-                play.video.controls = false;
-                play.video.autoplay = true;
+            if (m.type == 'video' || m.type == 'image') {
+                if (m.type == 'video') {
+                    play.type = 'video';
+                    play.video = document.createElement('video');
+                    play.video.src = settings.findOne({key: 'mediaurl'}).value + m.location;
+                    play.video.loop = true;
+                    play.video.controls = false;
+                    play.video.autoplay = true;
+                    
+                    play.texture = new THREE.VideoTexture(play.video);
+                    play.texture.minFilter = THREE.LinearFilter;
+                    play.texture.magFilter = THREE.LinearFilter;
+                }
                 
-                play.texture = new THREE.VideoTexture(play.video);
-                play.texture.minFilter = THREE.LinearFilter;
-                play.texture.magFilter = THREE.LinearFilter;
+                else if (m.type == 'image') {
+                    play.type = 'image';
+                    play.texture = THREE.ImageUtils.loadTexture(settings.findOne({key: 'mediaurl'}).value + m.location);
+                    play.texture.minFilter = THREE.LinearFilter;
+                    play.texture.magFilter = THREE.LinearFilter;
+                }
 
-                play.material = new THREE.MeshLambertMaterial({map: play.texture, transparent: true, opacity: 0, color: 0xFFFFFF});
+                var customUniforms = {
+                    uSampler: {type: 't', value: play.texture},
+                    opacity: {type: 'f', value: 0},
+                };
+            
+                play.material = new THREE.ShaderMaterial({
+                    uniforms: customUniforms,
+                    vertexShader: vertexShader,
+                    fragmentShader: fragmentShader,
+                    side: THREE.DoubleSide,
+                    transparent: true
+                });
                 
                 play.meshes = this.create_blocks(play);
                                                 
@@ -112,28 +147,9 @@ var changed = function (id, fields) {
                     start: 0, end: 1,
                     length: play.options['fade'] || 1,
                     time: window.performance.now(),
-                    callback: function (m,v) {m.opacity = v}.bind(this, play.material)
+                    callback: function (m,v) {m.uniforms.opacity.value = v}.bind(this, play.material)
                 });
 
-            }
-            
-            else if (m.type == 'image') {
-                play.type = 'image';
-                play.texture = THREE.ImageUtils.loadTexture(settings.findOne({key: 'mediaurl'}).value + m.location);
-                play.texture.minFilter = THREE.LinearFilter;
-                play.texture.magFilter = THREE.LinearFilter;
-
-                play.material = new THREE.MeshLambertMaterial({map: play.texture, transparent: true, opacity: 0});
-
-                play.meshes = this.create_blocks(play);
-
-                this.scene.add(play.mesh);
-                this.fades.push({
-                    start: 0, end: 1,
-                    length: play.options['fade'] || 1,
-                    time: window.performance.now(),
-                    callback: function (m, v) {m.opacity = v}.bind(this, play.material)
-                });
             }
             
             else if (m.type == 'audio') {
@@ -218,8 +234,8 @@ var resize = function () {
 var click = function (event) {
     if (this.gettingPoints > -1) {
         this.points.push([
-            (1 / (window.innerWidth / event.clientX) - 0.5) * this.media_width,
-            (1 / (window.innerHeight / (window.innerHeight - event.clientY)) - 0.5) * this.media_height,
+            1 / (window.innerWidth / event.clientX) - 0.5,
+            1 / (window.innerHeight / (window.innerHeight - event.clientY)) - 0.5,
         ]);
 
         if (this.points.length == 4) {
