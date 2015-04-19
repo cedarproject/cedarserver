@@ -52,8 +52,10 @@ var create_blocks = function (play) {
         var vratio = Math.abs(plane.vertices[1].x - plane.vertices[0].x) /
                     Math.abs(plane.vertices[3].x - plane.vertices[2].x);
 
-        var hratio = Math.abs(plane.vertices[0].y - plane.vertices[1].y) /
-                    Math.abs(plane.vertices[2].y - plane.vertices[3].y);
+        var hratio = Math.abs(plane.vertices[1].y - plane.vertices[0].y) /
+                    Math.abs(plane.vertices[3].y - plane.vertices[2].y);
+                    
+        console.log(vratio, hratio);
         
         var uvs = [
             new THREE.Vector2(block.x, block.y + block.height),
@@ -64,8 +66,6 @@ var create_blocks = function (play) {
         
         plane.faceVertexUvs[0][0] = [uvs[0], uvs[2], uvs[3]];
         plane.faceVertexUvs[0][1] = [uvs[0], uvs[3], uvs[1]];
-//        plane.faceVertexUvs[0][0] = [uvs[0], uvs[1], uvs[2]];
-//        plane.faceVertexUvs[0][1] = [uvs[0], uvs[2], uvs[3]];
                 
         var mesh = new THREE.Mesh(plane, play.material);
         
@@ -182,7 +182,7 @@ var changed = function (id, fields) {
                     length: play.options['fade'] || 1,
                     time: window.performance.now(),
                     callback: function (play,v) {
-                        play.material.opacity = v;
+                        play.material.uniforms.opacity.value = v;
                         if (v == 0) {
                             for (var i in play.meshes) {
                                 this.scene.remove(play.meshes[i]);
