@@ -1,26 +1,27 @@
+// All hope abandon, ye who enter here...
+// Yeah, I'm not particularly proud of this code. It started as a nice idea to avoid having to edit the code for a dozen HTML inputs whenever I made a change, but then I found I needed to edit values from an array...
+
 var block_props = [
     {prop: 'x', def: 0, title: 'X', min: 0, max: 1, step: 0.01},
     {prop: 'y', def: 0, title: 'Y', min: 0, max: 1, step: 0.01},
     {prop: 'width', def: 1, title: 'Width', min: 0, max: 1, step: 0.01},
     {prop: 'height', def: 1, title: 'Height', min: 0, max: 1, step: 0.01},
-    {prop: 'transx', def: 0, title: 'X', min: -1, max: 1, step: 0.01},
-    {prop: 'transy', def: 0, title: 'Y', min: -1, max: 1, step: 0.01},
-    {prop: 'transz', def: 0, title: 'Z', min: -1, max: 1, step: 0.01},
-    {prop: 'rotx', def: 0, title: 'X', min: -10, max: 10, step: 0.01},
-    {prop: 'roty', def: 0, title: 'Y', min: -10, max: 10, step: 0.01},
-    {prop: 'rotz', def: 0, title: 'Z', min: -10, max: 10, step: 0.01},
-    {prop: 'scalex', def: 1, title: 'X', min: 0, max: 10, step: 0.01},
-    {prop: 'scaley', def: 1, title: 'Y', min: 0, max: 10, step: 0.01},
-    {prop: 'skewx', def: 0, title: 'X', min: -10, max: 10, step: 0.01},
-    {prop: 'skewy', def: 0, title: 'Y', min: -10, max: 10, step: 0.01}
+    {prop: 'block-0-0', def: -1, title: 'X', min: -1, max: 1, step: 0.001},
+    {prop: 'block-0-1', def: 1, title: 'Y', min: -1, max: 1, step: 0.001},
+    {prop: 'block-1-0', def: 1, title: 'X', min: -1, max: 1, step: 0.001},
+    {prop: 'block-1-1', def: 1, title: 'Y', min: -1, max: 1, step: 0.001},
+    {prop: 'block-2-0', def: -1, title: 'X', min: -1, max: 1, step: 0.001},
+    {prop: 'block-2-1', def: -1, title: 'Y', min: -1, max: 1, step: 0.001},
+    {prop: 'block-3-0', def: 1, title: 'X', min: -1, max: 1, step: 0.001},
+    {prop: 'block-3-1', def: -1, title: 'Y', min: -1, max: 1, step: 0.001},
 ];
 
 var block_groups = [
     {heading: 'Source', props: block_props.slice(0, 4)},
-    {heading: 'Translate', props: block_props.slice(4, 7)},
-    {heading: 'Rotate', props: block_props.slice(7, 10)},
-    {heading: 'Scale', props: block_props.slice(10, 12)},
-    {heading: 'Skew', props: block_props.slice(12, 14)}
+    {heading: 'Top-Left', props: block_props.slice(4, 6)},
+    {heading: 'Top-Right', props: block_props.slice(6, 8)},
+    {heading: 'Bottom-Left', props: block_props.slice(8, 10)},
+    {heading: 'Bottom-Right', props: block_props.slice(10, 12)}
 ];
 
 Template.minionsettingsdisplay.helpers({
@@ -36,8 +37,13 @@ Template.minionsettingsdisplay.helpers({
     blockGroups: function () {
         return block_groups;
     },
-    get: function (attr) {
-        return Template.parentData(2)[attr];
+    get: function (prop) {
+        if (prop.split('-')[0] == 'block') {
+            // Also an ugly hack, TODO find a better way to do this...
+            var c = prop.split('-');
+            return Template.parentData(2).points[parseInt(c[1])][parseInt(c[2])];
+        }
+        else return Template.parentData(2)[prop];
     }
 });
 
@@ -69,6 +75,13 @@ Template.minionsettingsdisplay.events({
         for (var i = 0; i < block_props.length; i++) {
             var prop = block_props[i].prop;
             var def = block_props[i].def;
+            
+            if (prop.split('-')[0] == 'block') {
+                // Also an ugly hack, TODO find a better way to do this...
+                var c = prop.split('-');
+                blocks[row.data('blocknum')].points[parseInt(c[1])][parseInt(c[2])] = parseFloat(row.find('.disp-' + prop).val()) || def;
+            }
+            
             blocks[row.data('blocknum')][prop] = parseFloat(row.find('.disp-' + prop).val()) || def;
         }
 
