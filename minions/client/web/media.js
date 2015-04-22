@@ -1,8 +1,23 @@
-// Shaders stolen from http://stackoverflow.com/questions/20661941/how-to-map-texture-on-a-custom-non-square-quad-in-three-js
-var vertexShader = 'varying vec4 textureCoord; void main() {textureCoord = vec4(uv,0.0, 1.0); if(uv.y != 0.0) {textureCoord.w *= (uv.y);} gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );}';
+var vertShaderSource = [
+    'uniform mat4 uTransformMatrix;',
+    'varying vec2 vUv;',
+    'void main(void) {',
+    '    vUv = uv;',
+    '    gl_Position = uTransformMatrix * vec4( position, 1.0 );',
+    '}'
+].join('\n');
 
-var fragmentShader = 'uniform sampler2D uSampler; uniform float opacity; varying vec4 textureCoord; void main() {gl_FragColor  = texture2D(uSampler, vec2(textureCoord.x/textureCoord.w, textureCoord.y/textureCoord.w)); gl_FragColor.a = opacity;}';
+var fragShaderSource = [
+    'varying vec2 vUv;',
+    'uniform sampler2D uSampler;',
+    'uniform float opacity;',
+    'void main(void)  {',
+    '    gl_FragColor = texture2D(uSampler, vUv);',
+    '    gl_FragColor.a = opacity;',
+    '}'
+].join('\n');
 
+    
 var render = function () {
     if (this.continue) {
         requestAnimationFrame(this.render.bind(this));
@@ -33,46 +48,69 @@ var render = function () {
 }
 
 var create_blocks = function (play) {
-    var meshes = [];
     for (var i = 0; i < this.blocks.length; i++) {
         var block = this.blocks[i];
         
-        var plane = new THREE.Geometry();
-
-        if (block['points']) {
-            plane.vertices.push(new THREE.Vector3(block.points[0][0] * this.media_width, block.points[0][1] * this.media_height, 0));
-            plane.vertices.push(new THREE.Vector3(block.points[1][0] * this.media_width, block.points[1][1] * this.media_height, 0));
-            plane.vertices.push(new THREE.Vector3(block.points[2][0] * this.media_width, block.points[2][1] * this.media_height, 0));
-            plane.vertices.push(new THREE.Vector3(block.points[3][0] * this.media_width, block.points[3][1] * this.media_height, 0));
-
-            plane.faces.push(new THREE.Face3(0, 2, 3));
-            plane.faces.push(new THREE.Face3(0, 3, 1));
-        }
-            
-        var vratio = Math.abs(plane.vertices[1].x - plane.vertices[0].x) /
-                    Math.abs(plane.vertices[3].x - plane.vertices[2].x);
-
-        var hratio = Math.abs(plane.vertices[1].y - plane.vertices[0].y) /
-                    Math.abs(plane.vertices[3].y - plane.vertices[2].y);
-                    
-        console.log(vratio, hratio);
+        var plane = new THREE.PlaneGeometry(block.width * this.media_width, block.height * this.media_height);
         
+        var before = plane.vertices;
+        
+        var after = [];
+        for (var n in block.points) {
+            after.push(new THREE.Vector2(block.points[n][0], block.points[n][1]));
+        }
+        
+        var b = numeric.transpose([[
+            after[0].x, after[0].y,
+            after[1].x, after[1].y,
+            after[2].x, after[2].y,
+            after[3].x, after[3].y ]]);
+        
+        var A = [];
+        for(var n=0; n<before.length; n++) {
+            A.push([
+                before[n].x, 0, -after[n].x*before[n].x,
+                before[n].y, 0, -after[n].x*before[n].y, 1, 0]);
+            A.push([
+                0, before[n].x, -after[n].y*before[n].x,
+                0, before[n].y, -after[n].y*before[n].y, 0, 1]);
+        }
+        
+        var m = numeric.transpose(numeric.dot(numeric.inv(A), b))[0];
+        var matrix = new THREE.Matrix4().set(
+            m[0], m[3],   0, m[6],
+            m[1], m[4],   0, m[7],
+               0,    0,   1,    0,
+            m[2], m[5],   0,    1
+        );
+
+        var material = new THREE.ShaderMaterial({
+            vertexShader: vertShaderSource,
+            fragmentShader: fragShaderSource,
+            transparent: true,  
+            uniforms: {
+                opacity: {type: 'f', value: play.opacity},
+                uTransformMatrix: {type: 'm4', value: matrix},
+                uSampler: {type: 't', value: play.texture}
+            }
+        });
+
         var uvs = [
             new THREE.Vector2(block.x, block.y + block.height),
-            new THREE.Vector2((block.x + block.width) * vratio, (block.y + block.height) * vratio),
-            new THREE.Vector2(block.x, block.y * vratio),
+            new THREE.Vector2(block.x + block.width, block.y + block.height),
+            new THREE.Vector2(block.x, block.y),
             new THREE.Vector2(block.x + block.width, block.y),
         ];
         
-        plane.faceVertexUvs[0][0] = [uvs[0], uvs[2], uvs[3]];
-        plane.faceVertexUvs[0][1] = [uvs[0], uvs[3], uvs[1]];
+        plane.faceVertexUvs[0][0] = [uvs[0], uvs[2], uvs[1]];
+        plane.faceVertexUvs[0][1] = [uvs[2], uvs[3], uvs[1]];
                 
-        var mesh = new THREE.Mesh(plane, play.material);
+        var mesh = new THREE.Mesh(plane, material);
         
-        meshes.push(mesh);
+        play.materials.push(material);
+        play.meshes.push(mesh);
         this.scene.add(mesh);
     }
-    return meshes;
 }
 
 var changed = function (id, fields) {
@@ -88,7 +126,7 @@ var changed = function (id, fields) {
                     for (var i = 0; i < play.meshes.length; i++) {
                         this.scene.remove(play.meshes[i]);
                     }
-                    play.meshes = this.create_blocks(play);
+                    this.create_blocks(play);
                 }
             }
         }
@@ -112,9 +150,12 @@ var changed = function (id, fields) {
                     play.type = 'video';
                     play.video = document.createElement('video');
                     play.video.src = settings.findOne({key: 'mediaurl'}).value + m.location;
-                    play.video.loop = true;
                     play.video.controls = false;
                     play.video.autoplay = true;
+                    
+                    play.video.addEventListener('ended', function (video) {
+                        video.play();
+                    }.bind(this, play.video));
                     
                     play.texture = new THREE.VideoTexture(play.video);
                     play.texture.minFilter = THREE.LinearFilter;
@@ -127,39 +168,38 @@ var changed = function (id, fields) {
                     play.texture.minFilter = THREE.LinearFilter;
                     play.texture.magFilter = THREE.LinearFilter;
                 }
-
-                var customUniforms = {
-                    uSampler: {type: 't', value: play.texture},
-                    opacity: {type: 'f', value: 0},
-                };
-            
-                play.material = new THREE.ShaderMaterial({
-                    uniforms: customUniforms,
-                    vertexShader: vertexShader,
-                    fragmentShader: fragmentShader,
-                    side: THREE.DoubleSide,
-                    transparent: true
-                });
                 
-                play.meshes = this.create_blocks(play);
+                play.materials = [];
+                play.meshes = [];
+                play.opacity = 0; //TODO this whole mess is ugly, fix it! 
+
+                this.create_blocks(play);
                                                 
                 this.fades.push({
                     start: 0, end: 1,
                     length: play.options['fade'] || 1,
                     time: window.performance.now(),
-                    callback: function (m,v) {m.uniforms.opacity.value = v}.bind(this, play.material)
+                    callback: function (m,v) {
+                        for (var n in play.materials) {
+                            play.opacity = v;
+                            play.materials[n].uniforms.opacity.value = v;
+                        }
+                    }.bind(this, play.material)
                 });
-
             }
             
             else if (m.type == 'audio') {
                 play.type = 'audio';
                 play.audio = document.createElement('audio');
                 play.audio.src = settings.findOne({key: 'mediaurl'}).value + m.location;
-                play.audio.loop = true;
                 play.audio.controls = false;
                 play.audio.autoplay = true;
                 play.audio.volume = 0;
+
+                play.audio.addEventListener('ended', function (audio) {
+                    audio.play();
+                }.bind(this, play.audio));
+
                 this.fades.push({
                     start: 0, end: 1,
                     length: play.options['fade'] || 1,
@@ -182,7 +222,10 @@ var changed = function (id, fields) {
                     length: play.options['fade'] || 1,
                     time: window.performance.now(),
                     callback: function (play,v) {
-                        play.material.uniforms.opacity.value = v;
+                        for (var n in play.materials) {
+                            play.opacity = v;
+                            play.materials[n].uniforms.opacity.value = v;
+                        }
                         if (v == 0) {
                             for (var i in play.meshes) {
                                 this.scene.remove(play.meshes[i]);
@@ -234,8 +277,8 @@ var resize = function () {
 var click = function (event) {
     if (this.gettingPoints > -1) {
         this.points.push([
-            1 / (window.innerWidth / event.clientX) - 0.5,
-            1 / (window.innerHeight / (window.innerHeight - event.clientY)) - 0.5,
+            (1 / (window.innerWidth / event.clientX) - 0.5) * 2,
+            (1 / (window.innerHeight / (window.innerHeight - event.clientY)) - 0.5) * 2,
         ]);
 
         if (this.points.length == 4) {
@@ -275,7 +318,7 @@ Template.webminionmedia.onRendered(function () {
 
     this.media_height = 2 * Math.tan((this.camera.fov * Math.PI / 180) / 2);
     this.media_width = this.media_height * this.camera.aspect;
-    
+        
     window.addEventListener('resize', resize.bind(this));
     window.addEventListener('click', click.bind(this));
     window.addEventListener('keypress', keypress.bind(this));
@@ -290,6 +333,8 @@ Template.webminionmedia.onRendered(function () {
         
     this.continue = true;    
     this.render();
+    
+    thing = this;
     
     minions.find(this.data).observeChanges({
         added: changed.bind(this),

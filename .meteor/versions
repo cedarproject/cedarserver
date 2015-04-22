@@ -12,6 +12,7 @@ deps@1.0.7
 ejson@1.0.6
 fastclick@1.0.3
 fish:ffmpeg@1.0.0
+flowkey:numeric@1.0.3
 geojson-utils@1.0.3
 html-tools@1.0.4
 htmljs@1.0.4
