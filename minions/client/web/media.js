@@ -16,7 +16,6 @@ var fragShaderSource = [
     '    gl_FragColor.a = opacity;',
     '}'
 ].join('\n');
-
     
 var render = function () {
     if (this.continue) {
@@ -40,7 +39,9 @@ var render = function () {
             }
             
             fade.callback(fade.curr);
-            if (fade.curr == fade.end) this.fades.pop(i);
+            if (fade.curr == fade.end) {
+                this.fades.splice(i, 1);
+            }
         }
                 
         this.renderer.render(this.scene, this.camera);
@@ -175,7 +176,7 @@ var changed = function (id, fields) {
                 play.opacity = 0; //TODO this whole mess is ugly, fix it! 
 
                 this.create_blocks(play);
-                                                
+
                 this.fades.push({
                     start: 0, end: 1,
                     length: play.options['fade'] || 1,
@@ -232,7 +233,10 @@ var changed = function (id, fields) {
                             for (var i in play.meshes) {
                                 this.scene.remove(play.meshes[i]);
                             }
-                            if (play.type == 'video') play.video.pause();
+                            if (play.type == 'video') {
+                                play.video.pause();
+                                delete(play.video);
+                            }
                         }
                     }.bind(this, play)
                 });
@@ -293,9 +297,7 @@ var click = function (event) {
 }
     
 var keypress = function (event) {
-    console.log(event.keyCode, event.code);
     var key = parseInt(String.fromCharCode(event.which));
-    console.log(key);
     if (key > 0 && key <= this.blocks.length) {
         this.gettingPoints = key - 1;
         this.points = [];
