@@ -2,7 +2,6 @@ Router.route('/media', {name: 'mediaMenu'});
 
 Router.route('/media/static/:filepath*', function () {
     if (settings.findOne({key: 'mediainternalserver'}).value) {
-    //        var mime = Npm.require('mime');
         var fs = Npm.require('fs');
 
         var filepath = settings.findOne({key: 'mediadir'}).value + '/' + this.params.filepath;
@@ -20,7 +19,8 @@ Router.route('/media/static/:filepath*', function () {
         }
 
         var headers = {
-            'Cache-Control': 'max-age=2592000' // Cache for 30 days.
+            'Cache-Control': 'max-age=2592000', // Cache for 30 days.
+            'Content-Length': stats.size
         };
         
         this.response.writeHead(200, headers);
