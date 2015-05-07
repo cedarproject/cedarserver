@@ -1,0 +1,70 @@
+<template name="lightSettings">
+    <div class="container">
+        <h4>Light Settings</h4>
+        
+        <label>Title:</label>
+        <input type="text" class="light-title form-control" value={{title}}>
+
+        <br>
+        
+        <label>Minion:</label>
+        <select class="light-minion form-control">
+            <option value="{{minion}}" selected>{{nameOf minion}}</option>
+            {{#each minions}}
+                <option value="{{_id}}">{{name}}</option>
+            {{/each}}
+        </select>
+        
+        <br>
+        
+        <div class="light-enabled btn-group" data-toggle="buttons">
+            <label class="btn btn-default {{isState true 'active'}}">
+                <input type="radio" id="enabled-true" {{isState true 'checked'}}>Enabled
+            </label>
+            <label class="btn btn-default {{isState false 'active'}}">
+                <input type="radio" id="enabled-false" {{isState false 'checked'}}>Disabled
+            </label>
+        </div>
+        
+        <br>
+        
+        <button class="channel-add btn btn-default pull-right">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+
+        <h4>Channels</h4>
+        <div class="light-channels list-group">
+            {{#each channels}}
+                <li class="list-group-item">
+                    <button class="channel-del btn btn-default pull-right">
+                        <span class="glyphicon glyphicon-minus"></span>
+                    </button>
+                    {{> lightChannel}}
+                </li>
+            {{/each}}
+        </div>
+        
+        <button class="light-delete btn btn-danger pull-left">Delete</button>
+        <button class="light-save btn btn-primary pull-right">Save</button>
+        <button class="light-cancel btn btn-default pull-right">Cancel</button>
+    </div>
+
+    <div class="delete-modal modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Confirm Delete</h4>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="alert alert-danger"><p>The light <b>"{{title}}"</b> will be permanently deleted.</p></div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="light-delete-cancel btn">Cancel</button>
+                    <button class="light-delete-confirm btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

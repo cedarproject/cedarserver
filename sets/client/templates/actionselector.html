@@ -12,32 +12,27 @@
                             <li role="presentation" class="active">
                                 <a href="#media" role="tab" data-toggle="tab">Media</a>
                             </li>
+                            
                             <li role="presentation">
                                 <a href="#lights" role="tab" data-toggle="tab">Lights</a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#lightgroups" role="tab" data-toggle="tab">Light Groups</a>
                             </li>
                         </ul>
                     
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade in active" id="media">
-                                <input type="text" class="action-selector-media-title form-control" placeholder="Title">
-                                <input type="text" class="action-selector-media-tag form-control" placeholder="Tag">
-                                
-                                <ul class="list-group">
-                                    {{#each filteredMedia}}
-                                        <li class="list-group-item">
-                                            <div class="media">
-                                                <button type="button" class="media-item-add btn btn-primary" style="float: right" data-mediaid={{_id}}>
-                                                    <span class="glyphicon glyphicon-plus"></span>
-                                                </button>
-                                                {{> mediaItem}}
-                                            </div>
-                                        </li>
-                                    {{/each}}
-                                </ul>
+                                {{> collectionSelector mediaSelector}}
                             </div>
                             
                             <div role="tabpanel" class="tab-pane fade" id="lights">
-                                <p>Lights!</p>
+                                {{> collectionSelector lightSelector}}
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane fade" id="lightgroups">
+                                {{> collectionSelector lightGroupSelector}}
                             </div>
                         </div>
                     </div>

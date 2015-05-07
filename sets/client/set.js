@@ -81,27 +81,29 @@ Template.set.events({
         $(event.target).siblings('.action-selector-modal').modal('show');
     },
 
-    'click .media-item-add': function (event) {
-        var mediaid = $(event.target).data('mediaid');
-        var mediatype = media.findOne(mediaid).type;
-        var setid = Template.parentData()._id;
+    'click .collection-add': function (event) {
+        if ($(event.target).data('collection') == 'media') {
+            var mediaid = $(event.target).data('id');
+            var mediatype = media.findOne(mediaid).type;
+            var setid = Template.parentData()._id;
 
-        var a = actions.findOne({set: setid}, {sort: {order: -1}, fields: {order: 1}});
-        if (a) var order = a.order + 1;
-        else var order = 0;
+            var a = actions.findOne({set: setid}, {sort: {order: -1}, fields: {order: 1}});
+            if (a) var order = a.order + 1;
+            else var order = 0;
 
-        Meteor.call('actionAdd', {
-            set: setid,
-            order: order,
-            type: 'media',
-            media: mediaid,
-            mediatype: mediatype,
-            role: 'background',
-            minions: [],
-            triggers: [],
-            options: {}
-        });
-        
+            Meteor.call('actionAdd', {
+                set: setid,
+                order: order,
+                type: 'media',
+                media: mediaid,
+                mediatype: mediatype,
+                role: 'background',
+                minions: [],
+                triggers: [],
+                options: {}
+            });
+        }
+            
         $(event.target).parents('.modal').modal('hide');
         return false;
     },

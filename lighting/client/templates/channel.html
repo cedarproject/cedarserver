@@ -1,0 +1,15 @@
+<template name="lightChannel">
+    <form class="form-inline">
+        <select class="channel-type form-control">
+            {{#each types}}
+                <option value={{type}} selected={{selected}}>{{type}}</option>
+            {{/each}}
+        </select>
+        
+        <label>Universe:</label>
+        <input type="number" class="channel-universe form-control" value={{universe}}>
+        
+        <label>Address:</label>
+        <input type="number" class="channel-address form-control" value={{address}}>
+    </form>
+</template>

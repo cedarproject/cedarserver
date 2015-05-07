@@ -1,0 +1,84 @@
+<template name="lightGroupSettings">
+    <div class="container">
+        <h3>
+            {{title}}
+            <button type="button" class="group-settings btn btn-default pull-right">
+                <span class="glyphicon glyphicon-cog"></span>
+            </button>
+        </h3>
+        
+        <ul class="list-group">
+            {{#each members}}
+                <li class="list-group-item">
+                    <button class="group-remove btn btn-default pull-right">
+                        <span class="glyphicon glyphicon-minus"></span>
+                    </button>
+                    {{> light}}
+                </li>
+            {{/each}}
+        </ul>
+
+        <button type="button" class="group-add btn btn-default pull-right">
+            <span class="glyphicon glyphicon-plus"></span>
+            Add Lights
+        </button>
+    </div>
+    
+    <div class="group-add-modal modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Add Lights</h4>
+                </div>
+                
+                <div class="modal-body">
+                    {{> collectionSelector lightSelector}}
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="group-add-close btn btn-default">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="group-settings-modal modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Group Settings</h4>
+                </div>
+                
+                <div class="modal-body">
+                    <label>Title:</label>
+                    <input class="group-title form-control" type="text" value={{title}}>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="group-settings-delete btn btn-danger pull-left">Delete</button>
+                    <button class="group-settings-cancel btn">Cancel</button>
+                    <button class="group-settings-save btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="delete-confirm-modal modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Confirm Delete</h4>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="alert alert-danger"><p>The light group <b>"{{title}}"</b> will be permanently deleted.</p></div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="delete-cancel btn">Cancel</button>
+                    <button class="delete-confirm btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
