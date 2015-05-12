@@ -1,12 +1,13 @@
 <template name="setAction">
     <div class="btn-group-vertical btn-group-sm pull-right" role="group">
-        <button type="button" class="set-action-settings btn btn-default">
+        <a class="settings-button btn btn-default" href={{pathFor 'actionSettings' _id}}>
             <span class="glyphicon glyphicon-cog"></span>
-        </button>
+        </a>
         <button type="button" class="action-move btn btn-default">
             <span class="glyphicon glyphicon-sort"></span>
         </button>
     </div>
+
     {{#if actionType 'media'}}
         {{#with getMedia}}            
             <div class="media {{isActive}}">
@@ -15,23 +16,15 @@
         {{/with}}
     {{/if}}
     
-    <div class="set-action-modal modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4>Action Options</h4>
-                </div>
-                
-                <div class="modal-body">
-                    <p>Nothing here yet... Delete button works!</p>
-                </div>
-                
-                <div class="modal-footer">
-                    <button class="set-action-delete btn btn-danger pull-left">Delete</button>
-                    <button class="set-action-cancel btn">Cancel</button>                       
-                    <button class="set-action-save btn btn-primary">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    {{#if actionType 'light'}}
+        {{#with getLight}}
+            {{> light}}
+        {{/with}}
+    {{/if}}
+    
+    {{#if actionType 'lightgroup'}}
+        {{#with getLightGroup}}
+            {{> lightGroup}}
+        {{/with}}
+    {{/if}}
 </template>

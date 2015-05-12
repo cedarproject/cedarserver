@@ -70,6 +70,7 @@ Template.set.events({
     },
     
     'click .set-action': function (event) {
+        console.log('blah');
         var set = Template.parentData();
         if (this._id != set.active) {
             Meteor.call('setActivate', set._id, this._id);
