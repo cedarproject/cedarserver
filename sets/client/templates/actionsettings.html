@@ -1,5 +1,30 @@
 <template name="actionSettings">
     <div class="container">
         <h4>Action Settings</h4>
+        
+        {{> setAction}}
+        
+        <br>
+        
+        <h4>Triggers</h4>
+        
+        <ul class="list-group">
+            {{#each triggers}}
+                <li class="list-group-item">
+                    <button class="trigger-del btn btn-default pull-right">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    
+                    {{> setAction}}
+                </li>
+            {{/each}}
+        </ul>
+        
+        <button class="trigger-add btn btn-primary">
+            <span class="glyphicon glyphicon-plus"></span>
+            Add Trigger
+        </button>        
     </div>
+
+    {{> actionSelector}}
 </template>

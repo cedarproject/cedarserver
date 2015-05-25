@@ -1,0 +1,81 @@
+<template name="lightSceneSettings">
+    <div class="container">
+        <h4>Scene Settings</h4>
+        
+        <label>Title:</label>
+        <input id="scene-title" class="form-control" value={{title}}>
+        
+        <br>
+        
+        <ul class="list-group">
+            {{#each lights}}
+                <li class="list-group-item">
+                    <button class="light-del btn btn-default pull-right">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                
+                    {{> valueSelector}}
+
+                    {{#if light}}
+                        {{#with getLight}}
+                            {{> light}}
+                        {{/with}}
+                    {{/if}}
+                    {{#if group}}
+                        {{#with getGroup}}
+                            {{> lightGroup}}
+                        {{/with}}
+                    {{/if}}
+                </li>
+            {{/each}}
+        </ul>
+
+        <div class="btn-group" role="group">
+            <button type="button" id="add-light" class="btn btn-primary">
+                <span class="glyphicon glyphicon-plus"></span>
+                Add Light
+            </button>
+            <button type="button" id="add-group" class="btn btn-primary">
+                <span class="glyphicon glyphicon-plus"></span>
+                Add Group
+            </button>
+        </div>
+    </div>
+    
+    <div id="add-light-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Add Lights</h4>
+                </div>
+                
+                <div class="modal-body">
+                    {{> collectionSelector lightSelector}}
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="modal-close btn btn-default">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="add-group-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Add Groups</h4>
+                </div>
+                
+                <div class="modal-body">
+                    {{> collectionSelector groupSelector}}
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="modal-close btn btn-default">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</template>

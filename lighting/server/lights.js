@@ -54,6 +54,6 @@ Meteor.methods({
     
     lightValues: function (lightid, values) {
         var light = checkLight(lightid);
-        lights.update(light, {$set: {values: values}});
+        if (!light.disabled) lights.update(light, {$set: {values: values}});
     }
 });

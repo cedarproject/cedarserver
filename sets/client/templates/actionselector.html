@@ -14,11 +14,7 @@
                             </li>
                             
                             <li role="presentation">
-                                <a href="#lights" role="tab" data-toggle="tab">Lights</a>
-                            </li>
-                            
-                            <li role="presentation">
-                                <a href="#lightgroups" role="tab" data-toggle="tab">Light Groups</a>
+                                <a href="#scenes" role="tab" data-toggle="tab">Scenes</a>
                             </li>
                         </ul>
                     
@@ -27,12 +23,8 @@
                                 {{> collectionSelector mediaSelector}}
                             </div>
                             
-                            <div role="tabpanel" class="tab-pane fade" id="lights">
-                                {{> collectionSelector lightSelector}}
-                            </div>
-
-                            <div role="tabpanel" class="tab-pane fade" id="lightgroups">
-                                {{> collectionSelector lightGroupSelector}}
+                            <div role="tabpanel" class="tab-pane fade" id="scenes">
+                                {{> collectionSelector sceneSelector}}
                             </div>
                         </div>
                     </div>

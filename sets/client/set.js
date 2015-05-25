@@ -16,6 +16,10 @@ Template.set.helpers({
     plusOne: function (n) {
         return n + 1;
     },
+    
+    isActive: function (n) {
+        if (Template.parentData()['active'] == this._id) return 'active';
+    }
 });
 
 // TODO fix -- this is complicated
@@ -54,7 +58,7 @@ Template.set.events({
         
         Meteor.call('actionMove', movingid, this.order);
         
-        $('.set-action').removeClass('moving').removeClass('movetarget');
+        $('.set-action').removeClass('moving').removeClass('movetarget').removeClass('disabled');
         event.stopImmediatePropagation();
         return false;
     },
@@ -69,8 +73,12 @@ Template.set.events({
         return false;
     },
     
+    'click .settings-button': function (event) {
+        event.stopImmediatePropagation();
+        return true;
+    },
+    
     'click .set-action': function (event) {
-        console.log('blah');
         var set = Template.parentData();
         if (this._id != set.active) {
             Meteor.call('setActivate', set._id, this._id);
@@ -100,7 +108,6 @@ Template.set.events({
                 mediatype: mediatype,
                 role: 'background',
                 minions: [],
-                triggers: [],
                 options: {}
             });
         }

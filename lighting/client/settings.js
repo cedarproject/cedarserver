@@ -69,7 +69,7 @@ Template.lightSettings.events({
         }
         
         var nc = this.channels;
-        $(event.target).siblings('.light-channels').each(function (i, e) {
+        $(event.target).siblings('.light-channels').children().each(function (i, e) {
             nc[i].type = $(this).find('.channel-type').val();
 
             var universe = parseInt($(this).find('.channel-universe').val());

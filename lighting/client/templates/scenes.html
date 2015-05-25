@@ -1,0 +1,18 @@
+<template name="lightScenes">
+    <div class="container">
+        <h1>Scenes</h1>
+        
+        <ul class="list-group">
+            {{#each scenes}}
+                <li class="list-group-item">
+                    <h4><a href={{pathFor 'lightSceneSettings' _id}}>{{title}}</a></h4>
+                </li>
+            {{/each}}
+        </ul>
+        
+        <button class="scene-add btn btn-primary">
+            <span class="glyphicon glyphicon-plus"></span>
+            New Scene
+        </button>
+    </div>
+</template>

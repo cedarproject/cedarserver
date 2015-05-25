@@ -13,9 +13,22 @@
         <p><small>Stage: {{stageTitle stage}}</small></p>
 
 
-        {{#each actions}}
-            <div class="set-action" data-actionid={{_id}}>{{> setAction}}</div>
-        {{/each}}
+        <ul class="list-group">
+            {{#each actions}}
+                <li class="set-action list-group-item {{isActive}}" data-actionid={{_id}}>
+                    <div class="btn-group-vertical btn-group-sm pull-right" role="group">
+                        <a class="settings-button btn btn-default" href={{pathFor 'actionSettings' _id}}>
+                            <span class="glyphicon glyphicon-cog"></span>
+                        </a>
+                        <button type="button" class="action-move btn btn-default">
+                            <span class="glyphicon glyphicon-sort"></span>
+                        </button>
+                    </div>
+
+                    {{> setAction}}
+                </li>
+            {{/each}}
+        </ul>
         
         <button type="button" class="set-add-item btn btn-primary">
             <span class="glyphicon glyphicon-plus"></span> Add Item

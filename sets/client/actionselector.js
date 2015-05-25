@@ -4,16 +4,11 @@ Template.actionSelector.helpers({
         displayTemplate: 'mediaItem',
         fields: ['title']
     },
-    lightSelector: {
-        collection: lights,
-        displayTemplate: 'light',
+    sceneSelector: {
+        collection: lightscenes,
+        displayTemplate: 'lightScene',
         fields: ['title']
     },
-    lightGroupSelector: {
-        collection: lightgroups,
-        displayTemplate: 'lightGroup',
-        fields: ['title']
-    }
 });
 
 Template.actionSelector.events({    

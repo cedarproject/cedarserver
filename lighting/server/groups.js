@@ -35,5 +35,13 @@ Meteor.methods({
     lightGroupRemoveLight: function (groupid, lightid) {
         var group = checkGroup(groupid);
         lightgroups.update(group, {$pull: {members: lightid}});
+    },
+    
+    lightGroupValues: function (groupid, values) {
+        var group = checkGroup(groupid);
+        
+        for (var i in group.lights) {
+            Meteor.call('lightSetValues', group.lights[i], values);
+        }
     }
 });

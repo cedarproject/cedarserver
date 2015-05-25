@@ -42,8 +42,11 @@ Meteor.methods({
         actions.update({order: {$gte: index}}, {$inc: {order: -1}}, {multi: true});
     },
     
+    actionTitle: function (actionid, title) {
+        actions.update(actionid, {$set: {title: title}});
+    },        
+    
     actionMove: function (actionid, index) {
-        // This took way too long for me to figure out... - isaac
         var action = actions.findOne(actionid);
         var setid = action.set;
 
@@ -57,40 +60,23 @@ Meteor.methods({
     },
     
     setActivate: function (setid, actionid) {
-        // TODO: Redo all this code, put most of it in the Stage or Minion functions instead, make utility functions to reduce repeated code
         var set = checkSet(setid);
         var action = actions.findOne(actionid);
+        var triggers = actions.find({actionid: action._id}).fetch();
+
+        var set_actions = [action].concat(triggers);
         
         sets.update(set, {$set: {active: actionid}});
-        
-        if (action.type == 'media') {
-            if (action.minions.length > 0) {
-                var targets = action.minions;
-            } else {
-                var targets = minions.find({stage: set.stage, roles: {$all: [action.role]}}).fetch();
-                targets.forEach(function (target, index, targets) {
-                    targets[index] = target._id;
-                });
-            } 
-                       
-            var actMedia = media.findOne(action.media);
-            
-            if (actMedia.type == 'video' || actMedia.type == 'image') {
-                // If media is a video or an image, stop any other playing videos/images
-                targets.forEach(function (minionid) {
-                    minions.update(minionid, {$pull: {actions: {mediatype: {$in: ['video', 'image']}}}});
-                });
-            }
-            else if (actMedia.type == 'audio') {
-                // If media is audio, stop any other playing audio
-                targets.forEach(function (minionid) {
-                    minions.update(minionid, {$pull: {actions: {mediatype: 'audio'}}});
-                });
-            }
 
-            targets.forEach(function (minionid) {
-                Meteor.call('minionAddAction', minionid, action);
-            });
+        for (var i in set_actions) {
+            var action = set_actions[i];
+            if (action.type == 'media') {
+                Meteor.call('mediaActionActivate', action);
+            }
+            
+            else if (action.type == 'lightscene') {
+                Meteor.call('sceneActionActivate', action);
+            }
         }
     },
     
