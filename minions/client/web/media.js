@@ -25,9 +25,11 @@ var render = function () {
             var fade = this.fades[i];
             if (!fade['curr']) fade.curr = fade.start;
             
-            var currtime = window.performance.now();
-            var elapsed = (currtime - fade.time) * 0.001;
+            var currtime = Date.now() * 0.001;
+            if (currtime < fade.time) continue;
             
+            var elapsed = currtime - fade.time;
+                        
             if (fade.curr < fade.end) {
                 fade.curr = fade.end / (fade.length / elapsed);
                 if (fade.curr > fade.end || isNaN(fade.curr)) fade.curr = fade.end;
@@ -37,7 +39,7 @@ var render = function () {
                 fade.curr = 1.0 / (fade.length / (fade.length - elapsed));
                 if (fade.curr < fade.end || isNaN(fade.curr)) fade.curr = fade.end;
             }
-            
+
             fade.callback(fade.curr);
             if (fade.curr == fade.end) {
                 this.fades.splice(i, 1);
@@ -180,7 +182,7 @@ var changed = function (id, fields) {
                 this.fades.push({
                     start: 0, end: 1,
                     length: play.options['fade'] || 1,
-                    time: window.performance.now(),
+                    time: action.time,
                     callback: function (m,v) {
                         for (var n in play.materials) {
                             play.opacity = v;
@@ -206,7 +208,7 @@ var changed = function (id, fields) {
                 this.fades.push({
                     start: 0, end: 1,
                     length: play.options['fade'] || 1,
-                    time: window.performance.now(),
+                    time: action.time,
                     callback: function (m, v) {m.volume = v}.bind(this, play.audio)
                 });
             }                

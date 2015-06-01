@@ -25,6 +25,8 @@ Meteor.methods({
                 minions.update(minionid, {$pull: {actions: {mediatype: 'audio'}}});
             });
         }
+        
+        action.time = (Date.now() * 0.001) + 0.1; // Get current time as float, add 100ms
 
         targets.forEach(function (minionid) {
             Meteor.call('minionAddAction', minionid, action);

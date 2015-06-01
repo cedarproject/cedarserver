@@ -40,8 +40,8 @@ Meteor.methods({
     lightGroupValues: function (groupid, values) {
         var group = checkGroup(groupid);
         
-        for (var i in group.lights) {
-            Meteor.call('lightSetValues', group.lights[i], values);
+        for (var i in group.members) {
+            Meteor.call('lightValues', group.members[i], values);
         }
     }
 });

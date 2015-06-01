@@ -90,28 +90,31 @@ Template.set.events({
         $(event.target).siblings('.action-selector-modal').modal('show');
     },
 
-    'click .collection-add': function (event) {
-        if ($(event.target).data('collection') == 'media') {
-            var mediaid = $(event.target).data('id');
-            var mediatype = media.findOne(mediaid).type;
-            var setid = Template.parentData()._id;
-
-            var a = actions.findOne({set: setid}, {sort: {order: -1}, fields: {order: 1}});
-            if (a) var order = a.order + 1;
-            else var order = 0;
-
-            Meteor.call('actionAdd', {
-                set: setid,
-                order: order,
-                type: 'media',
-                media: mediaid,
-                mediatype: mediatype,
-                role: 'background',
-                minions: [],
-                options: {}
-            });
+    'click .collection-add': function (event, template) {    
+        var action = {
+            set: template.data._id,
+            settings: {}
+        };
+        
+        var a = actions.findOne({set: action.set}, {sort: {order: -1}, fields: {order: 1}});
+        if (a) action.order = a.order + 1;
+        else action.order = 0;
+        
+        var col = $(event.target).data('collection')
+        if (col == 'media') {
+            action.type = 'media';
+            action.media = $(event.target).data('id');
+            action.mediatype = media.findOne(action.mediamedia).type;
+            action.role = 'background';
         }
-            
+        
+        else if (col == 'lightscenes') {
+            action.type = 'lightscene';
+            action.lightscene = $(event.target).data('id');
+        }
+        
+        Meteor.call('actionAdd', action);
+                    
         $(event.target).parents('.modal').modal('hide');
         return false;
     },

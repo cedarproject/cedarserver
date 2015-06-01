@@ -60,6 +60,8 @@ Template.lightSceneSettings.events({
             green: (parseInt(color.slice(3,5), 16) / 255.0) || 0,
             blue: (parseInt(color.slice(5,7), 16) / 255.0) || 0
         };
+        
+        value.intensity = (value.red + value.green + value.blue) / 3;
                 
         var index = template.data.lights.indexOf(this);
         
