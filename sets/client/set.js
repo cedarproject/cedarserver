@@ -104,7 +104,7 @@ Template.set.events({
         if (col == 'media') {
             action.type = 'media';
             action.media = $(event.target).data('id');
-            action.mediatype = media.findOne(action.mediamedia).type;
+            action.mediatype = media.findOne(action.media).type;
             action.role = 'background';
         }
         
