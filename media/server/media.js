@@ -2,7 +2,7 @@ Meteor.methods({
     mediaActionActivate: function (action) {
         var set = sets.findOne(action.set);
         
-        if (action.minions.length > 0) {
+        if (action['minions'] && action.minions.length > 0) {
             var targets = action.minions;
         } else {
             var targets = minions.find({stage: set.stage, roles: {$all: [action.role]}}).fetch();

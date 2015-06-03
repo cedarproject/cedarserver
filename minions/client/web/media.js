@@ -143,7 +143,7 @@ var changed = function (id, fields) {
         if (this.playing_ids.indexOf(action._id) > -1) continue;
         this.playing_ids.push(action._id);
 
-        var play = {_id: action._id, options: action.options};
+        var play = {_id: action._id, settings: action.settings};
 
         if (action.type == 'media') {
             var m = media.findOne(action.media);
@@ -181,7 +181,7 @@ var changed = function (id, fields) {
 
                 this.fades.push({
                     start: 0, end: 1,
-                    length: play.options['fade'] || 1,
+                    length: play.settings['fade'] || 1,
                     time: action.time,
                     callback: function (m,v) {
                         for (var n in play.materials) {
@@ -207,7 +207,7 @@ var changed = function (id, fields) {
 
                 this.fades.push({
                     start: 0, end: 1,
-                    length: play.options['fade'] || 1,
+                    length: play.settings['fade'] || 1,
                     time: action.time,
                     callback: function (m, v) {m.volume = v}.bind(this, play.audio)
                 });
@@ -224,7 +224,7 @@ var changed = function (id, fields) {
             if (play.type == 'video' || play.type == 'image') {
                 this.fades.push({
                     start: 1, end: 0,
-                    length: play.options['fade'] || 1,
+                    length: play.settings['fade'] || 1,
                     time: window.performance.now(),
                     callback: function (play,v) {
                         for (var n in play.materials) {
@@ -247,7 +247,7 @@ var changed = function (id, fields) {
             else if (play.type == 'audio') {
                 this.fades.push({
                     start: 1, end: 0,
-                    length: play.options['fade'] || 1,
+                    length: play.settings['fade'] || 1,
                     time: window.performance.now(),
                     callback: function (play,v) {
                         play.audio.volume = v;
