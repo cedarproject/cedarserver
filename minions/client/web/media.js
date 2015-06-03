@@ -225,7 +225,7 @@ var changed = function (id, fields) {
                 this.fades.push({
                     start: 1, end: 0,
                     length: play.settings['fade'] || 1,
-                    time: window.performance.now(),
+                    time: Date.now() * 0.001,
                     callback: function (play,v) {
                         for (var n in play.materials) {
                             play.opacity = v;
@@ -248,7 +248,7 @@ var changed = function (id, fields) {
                 this.fades.push({
                     start: 1, end: 0,
                     length: play.settings['fade'] || 1,
-                    time: window.performance.now(),
+                    time: Date.now() * 0.001,
                     callback: function (play,v) {
                         play.audio.volume = v;
                         if (v == 0) {

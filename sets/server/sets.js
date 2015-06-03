@@ -88,7 +88,7 @@ Meteor.methods({
             sets.update(set, {$set: {active: null}});
 
             if (action.type == 'media') {
-                if (action.minions.length > 0) {
+                if (action['minions'] && action.minions.length > 0) {
                     var targets = action.minions;
                 } else {
                     var targets = minions.find({stage: set.stage, roles: {$all: [action.role]}}).fetch();
