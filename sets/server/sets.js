@@ -18,8 +18,13 @@ Meteor.methods({
     
     setDelete: function (setid) {
         var set = checkSet(setid);
-        sets.remove(set);
+        
+        var actionids = actions.find({set: setid}, {_id: 1});
+        for (var i in actionids) actionids[i] = actionids[i]._id;
+        actions.remove({action: {$in: actionids}});
+        
         actions.remove({set: setid});
+        sets.remove(set);
     },
     
     setTitle: function (setid, newtitle) {
