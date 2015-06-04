@@ -1,12 +1,9 @@
 <template name="set">
-    <div class="container">
+    <div class="container">        
         <h3>
             {{title}}
             <button type="button" class="set-settings btn btn-default pull-right">
                 <span class="glyphicon glyphicon-cog"></span>
-            </button>
-            <button type="button" class="set-clear btn btn-default pull-right">
-                <span class="glyphicon glyphicon-remove"></span>
             </button>
         </h3>
 
@@ -33,6 +30,13 @@
         <button type="button" class="set-add-item btn btn-primary">
             <span class="glyphicon glyphicon-plus"></span> Add Item
         </button>
+
+        <div id="control-fixed">
+            <button type="button" class="set-clear btn btn-default pull-right">
+                <span class="glyphicon glyphicon-remove"></span>
+                Clear
+            </button>
+        </div>
         
         {{> actionSelector}}
         

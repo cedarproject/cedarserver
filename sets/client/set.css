@@ -33,3 +33,14 @@
 .dragmarker.over {
     background-color: blue;
 }
+
+#control-fixed {
+    position: fixed;
+    z-index: 100;
+    bottom: 0;
+    right: 0;
+    padding: 5px;
+    font-size: 2.5em;
+    border: 1px dashed gray;
+    border-radius: 5px;
+}
