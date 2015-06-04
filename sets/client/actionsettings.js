@@ -32,4 +32,9 @@ Template.actionSettings.events({
 
         Meteor.call('actionAdd', action);
     },
+    
+    'click .action-del': function (event, template) {
+        Router.go('/set/' + this.set);
+        Meteor.call('actionRemove', this._id);
+    }
 });

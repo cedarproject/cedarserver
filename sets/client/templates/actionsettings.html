@@ -23,7 +23,16 @@
         <button class="trigger-add btn btn-primary">
             <span class="glyphicon glyphicon-plus"></span>
             Add Trigger
-        </button>        
+        </button>
+
+        <hr>
+        
+        <button class="action-del btn btn-danger">
+            Delete
+        </button>
+        <a href={{pathFor 'set' _id=set}} class="btn btn-default pull-right">
+            Close
+        </a>
     </div>
 
     {{> actionSelector}}
