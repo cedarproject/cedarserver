@@ -75,7 +75,6 @@ Meteor.methods({
 
         for (var i in set_actions) {
             var action = set_actions[i];
-            console.log(action);
             if (action.type == 'media') {
                 Meteor.call('mediaActionActivate', action);
             }

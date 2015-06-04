@@ -23,7 +23,6 @@ Meteor.methods({
             connected: false
         });
         
-        console.log(minionid);
         return minionid;
     },
 
