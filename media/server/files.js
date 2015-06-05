@@ -1,5 +1,5 @@
 function process_media(fileInfo, formFields) {
-    media.insert({
+    var mediaid = media.insert({
         title: fileInfo.name,
         location: fileInfo.name,
         type: null,
@@ -8,57 +8,67 @@ function process_media(fileInfo, formFields) {
         tags: [],
         new: true
     });
-        
-    ffmpeg.ffprobe(settings.findOne({key: 'mediadir'}).value + '/' + 
-                   fileInfo.name, Meteor.bindEnvironment(function (err, metadata) {
-        if (err) {
-            console.log(err);
-            return;
-        }
     
-        var filename = metadata.format.filename.split('/').pop()
-        
-        var m = media.findOne({location: filename});
-        if (metadata.format['tags'] !== undefined) {
-            if (metadata.format.tags['title'] !== undefined) {
-                media.update(m, {$set: {title: metadata.format.tags.title}});
-            }
-        }
+    var m = media.findOne(mediaid);
+    var prefix = settings.findOne({key: 'mediadir'}).value;
 
-        var t = null;
-        metadata.streams.forEach(function (stream, index, array) {
-            if (stream.codec_type == 'video') {
-                if (stream.duration_ts == 1) {
-                    t = 'image';
-                }
-                else {
-                    t = 'video';
-                }
-            }
-            else if (stream.codec_type == 'audio' && !t) {
-                t = 'audio';
-            }
-        });
+    var type = MIME.lookup(m.location).split('/')[0];
+    
+    if (type == 'image') {
+        gm(prefix + '/' + m.location)
+            .resize(64, 64)
+            .write(prefix + '/thumbs/' + m.location, Meteor.bindEnvironment(function (err) {
+                if (err) console.log(err);
+                media.update(m, {$set: {type: 'image', thumbnail: 'thumbs/' + m.location}});
+        }.bind(this)));
+    }
+    
+    else if (type == 'audio') {        
+        ffmpeg.ffprobe(prefix + m.location, Meteor.bindEnvironment(function (err, metadata) {
+            if (err) {console.log(err); return;}
         
-        if (t) {
-            media.update(m._id, {$set: {type: t, duration: metadata.format.duration}});
-            if (t == 'image') {
-                media.update(m._id, {$set: {blah: 'blah!', thumbnail: filename}});
+            if (metadata.format['tags'] !== undefined) {
+                if (metadata.format.tags['title'] !== undefined) {
+                    media.update(m, {$set: {title: metadata.format.tags.title}});
+                }
             }
-            else if (t == 'video') {
-                ffmpeg(metadata.format.filename).on('end', Meteor.bindEnvironment(function () {
-                    var m = media.findOne({location: filename});
-                    media.update(m, {$set: {thumbnail: 'thumbs/' + filename + '.png'}});                    
-                })).screenshots({
-                    count: 1,
-                    timestamps: [1],
-                    folder: settings.findOne({key: 'mediadir'}).value + '/thumbs/',
-                    filename: filename + '.png',
-                    size: '64x64'
-                });
+            
+            media.update(m._id, {$set: {type: 'audio', duration: metadata.format.duration}});
+            
+            ffmpeg(metadata.format.filename).noAudio().videoCodec('png').size('64x64')
+            .on('end', Meteor.bindEnvironment(function () {
+                media.update(m._id, {$set: {thumbnail: '/thumbs/' + m.location + '.png'}});
+            }).bind(this)).on('error', function (err) {
+                console.log(err);
+            }).save(prefix + '/thumbs/' + m.location + '.png');
+        }.bind(this)));
+    }
+    
+    else if (type == 'video') {
+        ffmpeg.ffprobe(prefix + m.location, Meteor.bindEnvironment(function (err, metadata) {
+            if (err) {console.log(err); return;}
+        
+            if (metadata.format['tags'] !== undefined) {
+                if (metadata.format.tags['title'] !== undefined) {
+                    media.update(m, {$set: {title: metadata.format.tags.title}});
+                }
             }
-        }
-    }));
+            
+            media.update(m._id, {$set: {type: 'video', duration: metadata.format.duration}});
+            
+            ffmpeg(metadata.format.filename).on('end', Meteor.bindEnvironment(function () {
+                media.update(m._id, {$set: {thumbnail: 'thumbs/' + m.location + '.png'}});
+            }.bind(this))).on('error', function (err) {
+                console.log(err);
+            }).screenshots({
+                count: 1,
+                timestamps: [1],
+                folder: prefix + '/thumbs/',
+                filename: m.location + '.png',
+                size: '64x64'
+            });
+        }.bind(this)));
+    }
 }
 
 Meteor.startup(function () {

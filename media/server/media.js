@@ -29,7 +29,10 @@ Meteor.methods({
         var m = checkMedia(mediaid);
         var fs = Npm.require('fs')
         
-        fs.unlink(settings.findOne({key: 'mediadir'}).value + '/' + m.location);
+        var prefix = settings.findOne({key: 'mediadir'}).value + '/';
+        
+        fs.unlink(prefix + m.location);
+        if (m['thumbnail']) fs.unlink(prefix + m.thumbnail);
 
         media.remove(m);
     },

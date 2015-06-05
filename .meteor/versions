@@ -5,6 +5,7 @@ blaze@2.1.2
 blaze-tools@1.0.3
 boilerplate-generator@1.0.3
 callback-hook@1.0.3
+cfs:graphicsmagick@0.0.18
 check@1.0.5
 davidcittadini:three@0.71.12
 ddp@1.1.0
