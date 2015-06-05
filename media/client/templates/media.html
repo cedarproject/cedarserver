@@ -3,9 +3,9 @@
         {{#each media}}
             <li class="list-group-item">
                 <div class="media">
-                    <button type="button" class="media-item-settings btn btn-default" style="float: right">
+                    <a class="btn btn-default pull-right" href={{pathFor 'mediaSettings' _id}}>
                         <span class="glyphicon glyphicon-cog"></span>
-                    </button>        
+                    </a>        
                     {{> mediaItem}}
                 </div>
             </li>

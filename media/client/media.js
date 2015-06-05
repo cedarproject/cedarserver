@@ -1,5 +1,5 @@
 Template.media.helpers({
     media: function () {
-        return media.find();
+        return media.find({}, {sort: [['new', 'desc'], ['title', 'asc']]});
     }
 });

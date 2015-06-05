@@ -5,7 +5,8 @@ function process_media(fileInfo, formFields) {
         type: null,
         duration: null,
         thumbnail: null,
-        tags: []
+        tags: [],
+        new: true
     });
         
     ffmpeg.ffprobe(settings.findOne({key: 'mediadir'}).value + '/' + 

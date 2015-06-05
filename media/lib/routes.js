@@ -1,5 +1,10 @@
 Router.route('/media', {name: 'mediaMenu'});
 
+Router.route('/media/:_id', {
+    name: 'mediaSettings',
+    data: function () {return media.findOne(this.params._id);}
+});
+
 Router.route('/media/static/:filepath*', function () {
     if (settings.findOne({key: 'mediainternalserver'}).value) {
         var fs = Npm.require('fs');

@@ -5,7 +5,20 @@
         {{/if}}
     </div>
     <div class="media-body">
-        <h4 class="media-heading">{{title}}</h4>
-        <p><small>{{type}}</small></p>
+        <h4 class="media-heading">
+            {{title}}
+            {{#if new}}
+                <span class="label label-info">New</span>
+            {{/if}}
+        </h4>
+
+        <p><small>
+            {{type}}
+            {{#each tags}}
+                <span class="media-tag label label-default">
+                    {{this}}
+                </span>
+            {{/each}}
+        </small></p>
     </div>
 </template>
