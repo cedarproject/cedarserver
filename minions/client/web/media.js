@@ -155,7 +155,7 @@ var changed = function (id, fields) {
                     play.video.src = settings.findOne({key: 'mediaurl'}).value + m.location;
                     play.video.controls = false;
                     play.video.autoplay = true;
-                    play.video.loop = true;
+//                    play.video.loop = true; // TODO make this a setting!
                     
                     play.video.addEventListener('ended', function (video) {
                         video.play();
@@ -198,7 +198,7 @@ var changed = function (id, fields) {
                 play.audio.src = settings.findOne({key: 'mediaurl'}).value + m.location;
                 play.audio.controls = false;
                 play.audio.autoplay = true;
-                play.audio.loop = true;
+//                play.audio.loop = true;
                 play.audio.volume = 0;
 
                 play.audio.addEventListener('ended', function (audio) {

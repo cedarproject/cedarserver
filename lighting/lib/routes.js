@@ -17,3 +17,9 @@ Router.route('/lighting/scene/:_id', {
     name: 'lightSceneSettings',
     data: function () {return lightscenes.findOne({_id: this.params._id});}
 });
+
+Router.route('/lighting/consoles', {name: 'lightConsoles'});
+Router.route('/lighting/console/:_id', {
+    name: 'lightConsole',
+    data: function () {return lightconsoles.findOne({_id: this.params._id});}
+});

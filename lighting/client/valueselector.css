@@ -1,5 +1,41 @@
-.colorselector {
-    background: #EEEEEE;
+#red-slider .slider-selection {
+    background: rgb(200,0,0);
+}
+
+#red-slider .slider-handle {
+    background: rgb(255,0,0);
+}
+
+#green-slider .slider-selection {
+    background: rgb(0,200,0);
+}
+
+#green-slider .slider-handle {
+    background: rgb(0,255,0);
+}
+
+#blue-slider .slider-selection {
+    background: rgb(0,0,200);
+}
+
+#blue-slider .slider-handle {
+    background: rgb(0,0,255);
+}
+
+#intensity-slider .slider-selection {
+    background: rgb(225, 225, 225);
+}
+
+#intensity-slider .slider-handle {
+    background: rgb(175, 175, 175);
+}
+
+#colordisplay {
+    background: rgb(0,0,0);
+
+    width: 2em;
+    height: 2em;
+
     border: 1px solid gray;
-    border-radius: 5px;
+    border-radius: 10px;
 }

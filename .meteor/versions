@@ -29,6 +29,7 @@ iron:router@1.0.7
 iron:url@1.0.7
 jquery@1.11.3_2
 json@1.0.3
+kidovate:bootstrap-slider@0.0.5
 launch-screen@1.0.2
 livedata@1.0.13
 logging@1.0.7

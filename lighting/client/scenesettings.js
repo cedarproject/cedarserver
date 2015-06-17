@@ -53,18 +53,18 @@ Template.lightSceneSettings.events({
         Meteor.call('sceneDelLight', template.data._id, index);
     },
     
-    'change .colorselector': function (event, template) {
-        var color = $(event.target).val();
-        var value = {
-            red: (parseInt(color.slice(1,3), 16) / 255.0) || 0,
-            green: (parseInt(color.slice(3,5), 16) / 255.0) || 0,
-            blue: (parseInt(color.slice(5,7), 16) / 255.0) || 0
-        };
+    'click #del-scene': function (event, template) {
+        Meteor.call('sceneDel', template.data._id);
+        Router.go('/lighting/scenes');
+    },
+    
+    'slideStop #valueselector': function (event, template) {
+        var channel = $(event.target).data('channel');
         
-        value.intensity = (value.red + value.green + value.blue) / 3;
-                
+        var value = this.value;
+        value[channel] = parseFloat($(event.target).val());
+        
         var index = template.data.lights.indexOf(this);
-        
         Meteor.call('sceneSetValue', template.data._id, index, value);
     }
 });

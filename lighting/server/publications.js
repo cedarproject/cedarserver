@@ -10,3 +10,7 @@ Meteor.publish('lightgroups', function () {
 Meteor.publish('lightscenes', function () {
     return lightscenes.find();
 });
+
+Meteor.publish('lightconsoles', function () {
+    return lightconsoles.find();
+});

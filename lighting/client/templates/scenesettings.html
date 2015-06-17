@@ -9,12 +9,10 @@
         
         <ul class="list-group">
             {{#each lights}}
-                <li class="list-group-item">
+                <li class="list-group-item scene-item">
                     <button class="light-del btn btn-default pull-right">
                         <span class="glyphicon glyphicon-remove"></span>
                     </button>
-                
-                    {{> valueSelector}}
 
                     {{#if light}}
                         {{#with getLight}}
@@ -26,6 +24,10 @@
                             {{> lightGroup}}
                         {{/with}}
                     {{/if}}
+
+                    <div id="valueselector">
+                        {{> valueSelector}}
+                    </div>
                 </li>
             {{/each}}
         </ul>
@@ -40,6 +42,12 @@
                 Add Group
             </button>
         </div>
+        
+        <br>
+        <hr>
+        
+        <button type="button" id="del-scene" class="btn btn-danger">Delete</button>
+        <a href={{pathFor 'lightScenes'}} class="btn btn-default pull-right">Close</a>
     </div>
     
     <div id="add-light-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">

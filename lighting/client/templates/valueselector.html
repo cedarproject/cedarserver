@@ -1,3 +1,11 @@
 <template name="valueSelector">
-    <input type="color" class="colorselector pull-right" value={{getValue}}>
+    {{#each channels}}
+        <div id="{{channel}}-slider">
+            <input type="text" id={{channel}} class="value-slider" data-channel={{channel}} data-slider-value={{value}}>
+        </div>
+    {{/each}}
+    
+    {{#if hasColor}}
+        <div id="colordisplay" style="background: {{getColor}}"></div>
+    {{/if}}
 </template>
