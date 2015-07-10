@@ -10,8 +10,8 @@ Installation
 
 Cedar requires the following software:
 
-*Meteor
-*FFMpeg
-*GraphicsMagick
+* Meteor
+* FFMpeg
+* GraphicsMagick
 
 After installing the above and downloading Cedar, then simply run command `meteor` in Cedar's directory, then open a browser to http://localhost:3000/.
