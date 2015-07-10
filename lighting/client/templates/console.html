@@ -1,0 +1,129 @@
+<template name="lightConsole">
+    <div class="container">
+        <h3 id="title">
+            {{title}}
+            <small><span class="glyphicon glyphicon-pencil"></span></small>
+        </h3>
+        <h3>
+            <input id="titleedit" class="hidden" value={{title}}>
+        </h3>
+        
+        <div class="row">
+            {{#each controls}}
+                <div class="col-xs-12 col-md-3">
+                    <div class="btn-group btn-group-xs pull-right" role="group">
+                        <button class="delete-control btn btn-default">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                    </div>
+                        
+                    {{#if light}}
+                        {{#with getLight light}}
+                            <h4>{{title}}</h4>
+                            <div class="valueselector" data-type="light">
+                                {{> valueSelector}}
+                            </div>
+                        {{/with}}
+                    {{/if}}
+                    
+                    {{#if group}}
+                        {{#with getGroup group}}
+                            <h4>{{title}}</h4>
+                            <div class="valueselector" data-type="group">
+                                {{> valueSelector}}
+                            </div>
+                        {{/with}}
+                    {{/if}}
+                    
+                    {{#if scene}}
+                        {{#with getScene scene}}
+                            <button class="scenebutton btn btn-default btn-lg btn-block">
+                                {{title}}
+                            </button>
+                        {{/with}}
+                    {{/if}}
+                </div>
+            {{/each}}
+        </div>
+    
+        <div class="btn-group">
+            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-plus"></span>
+                Add
+                <span class="caret"></span>
+            </button>
+            
+            <ul class="dropdown-menu">
+                <li><a href="#" id="add-light">Light</a></li>
+                <li><a href="#" id="add-group">Group</a></li>
+                <li><a href="#" id="add-scene">Scene</a></li>
+            </ul>
+        </div>
+
+        <br>
+        <hr>
+        
+        <button class="btn btn-danger" id="delete-console">
+            Delete
+        </button>
+
+        <a href={{pathFor 'lightConsoles'}} class="btn btn-default pull-right">
+            Close
+        </a>
+    </div>
+
+        
+    <div id="add-light-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Add Lights</h4>
+                </div>
+                
+                <div class="modal-body">
+                    {{> collectionSelector lightSelector}}
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="modal-close btn btn-default">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="add-group-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Add Groups</h4>
+                </div>
+                
+                <div class="modal-body">
+                    {{> collectionSelector groupSelector}}
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="modal-close btn btn-default">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="add-scene-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Add Scenes</h4>
+                </div>
+                
+                <div class="modal-body">
+                    {{> collectionSelector sceneSelector}}
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="modal-close btn btn-default">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

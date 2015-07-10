@@ -14,7 +14,7 @@ Meteor.methods({
             minion: null,
             enabled: true,
             channels: [],
-            values: {}
+            values: [],
         });
         
         return lightid;
@@ -49,15 +49,16 @@ Meteor.methods({
     
     lightChannels: function (lightid, channels) {
         var light = checkLight(lightid);
+
         lights.update(light, {$set: {channels: channels}});
     },
     
     lightValues: function (lightid, values) {
         var light = checkLight(lightid);
+        
+        var time = (Date.now() * 0.001) + 0.1; // Get current time as float, add 100ms
+        var fade = 1; //TODO this needs to be set from the Scene!
 
-        values.time = (Date.now() * 0.001) + 0.1; // Get current time as float, add 100ms
-        values.fade = 1; //TODO this needs to be set from the Scene!
-
-        if (!light.disabled) lights.update(light, {$set: {values: values}});
+        if (!light.disabled) lights.update(light, {$set: {values: values, 'settings.time': time, 'settings.fade': fade}});
     }
 });

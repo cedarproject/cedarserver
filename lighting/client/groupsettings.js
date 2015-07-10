@@ -1,6 +1,5 @@
 Template.lightGroupSettings.helpers({
     members: function () {
-        // TODO see if there's a more efficient way to store/retreive mongodb references than this
         var members = [];
         this.members.forEach(function (memberid) {
             members.push(lights.findOne(memberid));

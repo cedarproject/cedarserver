@@ -1,7 +1,7 @@
 <template name="valueSelector">
     {{#each channels}}
-        <div id="{{channel}}-slider">
-            <input type="text" id={{channel}} class="value-slider" data-channel={{channel}} data-slider-value={{value}}>
+        <div id="{{type}}-slider">
+            <input type="text" id={{type}} class="value-slider" data-channel={{getIndex}}>
         </div>
     {{/each}}
     

@@ -18,16 +18,23 @@
                         {{#with getLight}}
                             {{> light}}
                         {{/with}}
+                        <div id="valueselector">
+                            {{#with getLightChannels}}
+                                {{> valueSelector}}
+                            {{/with}}
+                        </div>
                     {{/if}}
+                    
                     {{#if group}}
                         {{#with getGroup}}
                             {{> lightGroup}}
                         {{/with}}
+                        <div id="valueselector">
+                            {{#with getGroupChannels}}
+                                {{> valueSelector}}
+                            {{/with}}
+                        </div>
                     {{/if}}
-
-                    <div id="valueselector">
-                        {{> valueSelector}}
-                    </div>
                 </li>
             {{/each}}
         </ul>
@@ -85,5 +92,4 @@
             </div>
         </div>
     </div>
-
 </template>

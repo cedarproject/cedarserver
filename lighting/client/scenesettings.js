@@ -17,7 +17,17 @@ Template.lightSceneSettings.helpers({
     
     getGroup: function () {
         return lightgroups.findOne(this.group);
-    }
+    },
+    
+    getLightChannels: function () {
+        this.channels = lights.findOne(this.light).channels;
+        return this;
+    },
+    
+    getGroupChannels: function () {
+        this.channels = lightgroups.findOne(this.group).channels;
+        return this;
+    },
 });
 
 Template.lightSceneSettings.events({
@@ -61,10 +71,10 @@ Template.lightSceneSettings.events({
     'slideStop #valueselector': function (event, template) {
         var channel = $(event.target).data('channel');
         
-        var value = this.value;
-        value[channel] = parseFloat($(event.target).val());
+        var values = this.values;
+        values[channel] = parseFloat($(event.target).val());
         
         var index = template.data.lights.indexOf(this);
-        Meteor.call('sceneSetValue', template.data._id, index, value);
+        Meteor.call('sceneSetValue', template.data._id, index, values);
     }
 });
