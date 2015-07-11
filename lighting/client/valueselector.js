@@ -29,11 +29,9 @@ Template.valueSelector.onRendered(function () {
     this.$('.value-slider').slider({max: 1, step: 0.01, tooltip: 'hide'});
     
     this.autorun(function () {
-        var values = Template.currentData().values;
-        for (channel in values) {
-            if (values.hasOwnProperty(channel)) {
-                Template.instance().$('#' + channel).slider('setValue', values[channel]);
-            }
+        var d = Template.currentData()
+        for (var c in d.channels) {
+            Template.instance().$('#' + d.channels[c].type).slider('setValue', d.values[c]);
         }
     });
 });
