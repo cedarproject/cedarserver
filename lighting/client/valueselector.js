@@ -1,4 +1,4 @@
-var toHexColor = function (i) {return ('0' + (i * 255 || 0).toString(16)).slice(-2)};
+ toHexColor = function (i) {return ('0' + Math.round(i * 255 || 0).toString(16)).slice(-2)};
 
 Template.valueSelector.helpers({
     channels: function () {
@@ -16,7 +16,12 @@ Template.valueSelector.helpers({
     // TODO getColor is apparently buggy and causes the colordisplay to come up black sometimes, fix!
     // Also adjust so it still works if not all colors are present, and account for intensity values.
     getColor: function () {
-        var string = '#' + toHexColor(this.values['red']) + toHexColor(this.values['green']) + toHexColor(this.values['blue']);
+        var color = {red: 0, green: 0, blue: 0, intensity: 1};
+        for (var c in this.channels) {
+            color[this.channels[c].type] = this.values[c];
+        }
+
+        var string = '#' + toHexColor(color.red * color.intensity) + toHexColor(color.green * color.intensity) + toHexColor(color.blue * color.intensity);
         return string;
     },
     
