@@ -17,6 +17,13 @@ Meteor.methods({
         return sceneid;
     },
     
+    'sceneClone': function (sceneid) {
+        var scene = checkScene(sceneid);
+        delete scene._id;
+        scene.title = 'Copy of ' + scene.title;
+        lightscenes.insert(scene);
+    },
+    
     'sceneDel': function (sceneid) {
         var scene = checkScene(sceneid);
         lightscenes.remove(scene);

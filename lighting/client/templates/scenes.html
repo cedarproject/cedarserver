@@ -5,6 +5,9 @@
         <ul class="list-group">
             {{#each scenes}}
                 <li class="list-group-item">
+                    <button class="scene-clone btn btn-default pull-right">
+                        <span class="glyphicon glyphicon-duplicate"></span>
+                    </button>
                     <h4><a href={{pathFor 'lightSceneSettings' _id}}>{{title}}</a></h4>
                 </li>
             {{/each}}

@@ -101,7 +101,14 @@ Meteor.methods({
             
             for (var n in light.channels) {
                 var channel = light.channels[n];
-                lightValues[n] = values[n] || light.values[n] || 0;
+                
+                for (var c in group.channels) {
+                    if (channel.type == group.channels[c].type) {
+                        lightValues[n] = values[c];
+                    }
+                }
+                
+                if (typeof lightValues[n] === 'undefined') lightValues[n] = light.values[n];
             }
             
             Meteor.call('lightValues', group.members[i], lightValues);
