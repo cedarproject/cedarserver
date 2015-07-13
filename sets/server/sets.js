@@ -90,18 +90,8 @@ Meteor.methods({
         if (set.active !== null) {
             var action = actions.findOne(set.active);
             sets.update(set, {$set: {active: null}});
-
-            if (action.type == 'media') {
-                if (action['minions'] && action.minions.length > 0) {
-                    var targets = action.minions;
-                } else {
-                    var targets = minions.find({stage: set.stage, roles: {$all: [action.role]}}).fetch();
-                }
-                
-                targets.forEach(function (minion) {
-                    minions.update(minion._id, {$set: {actions: []}});
-                });
-            }
         }
+
+        minions.update({type: 'media', stage: set.stage}, {$set: {actions: []}}, {multi: true});
     }
 });
