@@ -27,7 +27,7 @@ Meteor.methods({
     
     mediaDel: function (mediaid) {
         var m = checkMedia(mediaid);
-        var fs = Npm.require('fs')
+        var fs = Npm.require('fs');
         
         var prefix = settings.findOne({key: 'mediadir'}).value + '/';
         
