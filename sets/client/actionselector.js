@@ -2,12 +2,14 @@ Template.actionSelector.helpers({
     mediaSelector: {
         collection: media,
         displayTemplate: 'mediaItem',
-        fields: ['title']
+        fields: [{field: 'title', type: String}, {field: 'tags', type: Array}],
+        sort: [['title', 1]]
     },
     sceneSelector: {
         collection: lightscenes,
         displayTemplate: 'lightScene',
-        fields: ['title']
+        fields: [{field: 'title', type: String}],
+        sort: [['title', 1]]
     },
 });
 

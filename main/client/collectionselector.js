@@ -14,47 +14,63 @@ Template.collectionSelector.helpers({
     },
     
     filtered: function () {
-        var values = {};
-        for (var k in this.filter) {
-            if (this.filter.hasOwnProperty(k)) values[k] = this.filter[k].get();
-        }
-        
-        return this.collection.find(values, 
-            {skip: (this.page.get() - 1) * items_per_page, limit: items_per_page}
+        return this.collection.find(this.query.get(),
+            {skip: (this.page.get() - 1) * items_per_page, limit: items_per_page, sort: this.sort}
         );
     }
 });
 
 Template.collectionSelector.onCreated(function () {
     var t = Template.currentData();
-    t.filter = {};
+    t.filters = {};
     for (var i in t.fields) {
-        t.filter[t.fields[i]] = new ReactiveVar(new RegExp('', 'i'));
+        t.filters[t.fields[i].field] = {
+            filter: new ReactiveVar(null),
+            type: t.fields[i].type
+        };
     }
-    
+
+    t.query = new ReactiveVar({});    
     t.page = new ReactiveVar(1);
     t.pages = new ReactiveVar([]);
     
     this.autorun(function () {
         var t = Template.currentData();
+
         var values = {};
-        for (var k in t.filter) {
-            if (t.filter.hasOwnProperty(k)) values[k] = t.filter[k].get();
+        for (var k in t.filters) {
+            if (t.filters.hasOwnProperty(k) && t.filters[k].filter.get() != null) {
+                if (t.filters[k].type == String) values[k] = t.filters[k].filter.get();
+                else if (t.filters[k].type == Array) values[k] = {$in: t.filters[k].filter.get()}
+            }
         }
+        
+        console.log(values);
         
         var p = [];
         for (var n = 1; n <= Math.ceil(t.collection.find(values).count() / items_per_page); n++) {
             p.push(n);
         }
         
+        t.query.set(values);
         t.pages.set(p);
     });
 });
 
 Template.collectionSelector.events({
     'keyup .collection-filter': function (event) {
-        var filter = $(event.target).data('filter');
-        Template.currentData().filter[filter].set(new RegExp($(event.target).val(), 'i'));
+        var filter = Template.currentData().filters[$(event.target).data('filter')];
+        var val = $(event.target).val();
+        if (val.length > 0) {
+            if (filter.type == String) filter.filter.set(new RegExp(val, 'i'))
+            else if (filter.type == Array) {
+                var nf = [];
+                val.split(',').forEach(function (t) {nf.push(t.trim());});
+                filter.filter.set(nf);
+            }
+        }
+
+        else filter.filter.set(null);
     },
     
     'click .pagenum': function (event, template) {
