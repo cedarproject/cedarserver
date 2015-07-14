@@ -1,23 +1,22 @@
 <template name="lights">
     <div class="container">
         <h1>Lights</h1>
-        <ul class="list-group">
-            {{#each lights}}
-                <li class="list-group-item">
-                    <a class="btn btn-default pull-right" href="{{pathFor 'lightSettings' _id}}">
-                        <span class="glyphicon glyphicon-cog"></span>
-                    </a>
-                    <button class="light-clone btn btn-default pull-right">
-                        <span class="glyphicon glyphicon-duplicate"></span>
-                    </button>
-                    {{> light}}
-                </li>
-            {{/each}}
-        </ul>
+
+        {{> collectionSelector lightSelector}}
 
         <button class="light-add btn btn-primary">
             <span class="glyphicon glyphicon-plus"></span>
             New Light
         </button>
     </div>
+</template>
+
+<template name="lightsListItem">
+    <a class="btn btn-default pull-right" href="{{pathFor 'lightSettings' _id}}">
+        <span class="glyphicon glyphicon-cog"></span>
+    </a>
+    <button class="light-clone btn btn-default pull-right">
+        <span class="glyphicon glyphicon-duplicate"></span>
+    </button>
+    {{> light}}
 </template>

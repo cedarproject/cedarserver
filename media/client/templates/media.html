@@ -1,14 +1,8 @@
 <template name="media">
-    <ul class="list-group">
-        {{#each media}}
-            <li class="list-group-item">
-                <div class="media">
-                    <a class="btn btn-default pull-right" href={{pathFor 'mediaSettings' _id}}>
-                        <span class="glyphicon glyphicon-cog"></span>
-                    </a>        
-                    {{> mediaItem}}
-                </div>
-            </li>
-        {{/each}}
-    </ul>
+    <div class="media">
+        <a class="btn btn-default pull-right" href={{pathFor 'mediaSettings' _id}}>
+            <span class="glyphicon glyphicon-cog"></span>
+        </a>        
+        {{> mediaItem}}
+    </div>
 </template>

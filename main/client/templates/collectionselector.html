@@ -28,9 +28,12 @@
         <ul class="list-group">
             {{#each filtered}}
                 <li class="list-group-item">
-                    <button type="button" class="collection-add btn btn-primary" style="float: right" data-collection={{collectionName}} data-id={{_id}}>
-                        <span class="glyphicon glyphicon-plus"></span>
-                    </button>
+                    {{#if ../addbutton}}
+                        <button type="button" class="collection-add btn btn-primary" style="float: right" data-collection={{collectionName}} data-id={{_id}}>
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                    {{/if}}
+                    
                     {{> Template.dynamic template=../displayTemplate}}
                 </li>
             {{/each}}

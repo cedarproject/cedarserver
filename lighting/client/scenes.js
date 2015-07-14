@@ -1,7 +1,15 @@
 Template.lightScenes.helpers({
     scenes: function () {
         return lightscenes.find();
-    }
+    },
+    
+    sceneSelector: {
+        collection: lightscenes,
+        displayTemplate: 'lightscenesListItem',
+        fields: [{field: 'title', type: String}],
+        sort: [['title', 1]],
+        addbutton: false
+    },
 });
 
 Template.lightScenes.events({

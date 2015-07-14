@@ -2,17 +2,15 @@
     <div class="container">
         <h1>Light Groups</h1>
         
-        <ul class="list-group">
-            {{#each lightgroups}}
-                <li class="list-group-item">
-                    <h4><a href="{{pathFor 'lightGroupSettings' _id}}">{{title}}</a></h4>
-                </li>
-            {{/each}}
-        </ul>
+        {{> collectionSelector groupSelector}}
 
         <button class="group-add btn btn-primary">
             <span class="glyphicon glyphicon-plus"></span>
             New Group
         </button>
     </div>
+</template>
+
+<template name="lightgroupsListItem">
+    <h4><a href="{{pathFor 'lightGroupSettings' _id}}">{{title}}</a></h4>
 </template>

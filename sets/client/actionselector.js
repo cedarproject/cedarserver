@@ -3,13 +3,15 @@ Template.actionSelector.helpers({
         collection: media,
         displayTemplate: 'mediaItem',
         fields: [{field: 'title', type: String}, {field: 'tags', type: Array}],
-        sort: [['title', 1]]
+        sort: [['title', 1]],
+        addbutton: true
     },
     sceneSelector: {
         collection: lightscenes,
         displayTemplate: 'lightScene',
         fields: [{field: 'title', type: String}],
-        sort: [['title', 1]]
+        sort: [['title', 1]],
+        addbutton: true
     },
 });
 

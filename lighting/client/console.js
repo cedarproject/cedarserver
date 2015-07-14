@@ -14,19 +14,25 @@ Template.lightConsole.helpers({
     lightSelector: {
         collection: lights,
         displayTemplate: 'light',
-        fields: ['title']
+        fields: [{field: 'title', type: String}],
+        sort: [['title', 1]],
+        addbutton: true
     },
     
     groupSelector: {
         collection: lightgroups,
         displayTemplate: 'lightGroup',
-        fields: ['title']
+        fields: [{field: 'title', type: String}],
+        sort: [['title', 1]],
+        addbutton: true
     },
     
     sceneSelector: {
         collection: lightscenes,
         displayTemplate: 'lightScene',
-        fields: ['title']
+        fields: [{field: 'title', type: String}],
+        sort: [['title', 1]],
+        addbutton: true
     }
 });
 

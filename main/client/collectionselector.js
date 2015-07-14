@@ -45,8 +45,6 @@ Template.collectionSelector.onCreated(function () {
             }
         }
         
-        console.log(values);
-        
         var p = [];
         for (var n = 1; n <= Math.ceil(t.collection.find(values).count() / items_per_page); n++) {
             p.push(n);
