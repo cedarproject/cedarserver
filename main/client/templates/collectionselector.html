@@ -3,6 +3,27 @@
         {{#each fields}}
             <input type="text" class="collection-filter form-control" data-filter={{this}} placeholder={{this}}>
         {{/each}}
+                
+        <nav>
+            <ul class="pagination">
+                <li>
+                    <a href="#" id="pageprev">
+                        <span>&laquo;</span>
+                    </a>
+                </li>
+
+                {{#each getPages}}
+                    <li class={{activePage}}><a href="#" class="pagenum">{{this}}</a></li>
+                {{/each}}
+                
+                <li>
+                    <a href="#" id="pagenext">
+                        <span>&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
         
         <ul class="list-group">
             {{#each filtered}}
