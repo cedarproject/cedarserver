@@ -78,10 +78,10 @@ function process_media(fileInfo, formFields) {
                     ['-movflags', 'faststart']
                 ).output(prefix + '/tmp/' + m.location).on('end', function () {
                     var fs = Npm.require('fs');
-                    fs.rename(prefix + '/tmp/' + m.location, prefix + '/' + m.location);
+                    fs.rename(prefix + '/tmp/' + m.location, prefix + '/' + m.location, $.noop());
                 }.bind(this)).on('error', function () {
                     var fs = Npm.require('fs');
-                    fs.unlink(prefix + '/tmp/' + m.location);
+                    fs.unlink(prefix + '/tmp/' + m.location, $.noop());
                 }.bind(this)).run();
             }
         }.bind(this)));
