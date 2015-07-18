@@ -1,4 +1,12 @@
 Template.actionSelector.helpers({
+    songSelector: {
+        collection: songs,
+        displayTemplate: 'song',
+        fields: [{field: 'title', type: String}, {field: 'tags', type: Array}],
+        sort: [['title', 1]],
+        addbutton: true
+    },
+        
     mediaSelector: {
         collection: media,
         displayTemplate: 'mediaItem',

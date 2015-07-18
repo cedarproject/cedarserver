@@ -82,6 +82,10 @@ Meteor.methods({
             else if (action.type == 'lightscene') {
                 Meteor.call('sceneActionActivate', action);
             }
+            
+            else if (action.type == 'song') {
+                Meteor.call('songActionActivate', action);
+            }
         }
     },
     

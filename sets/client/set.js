@@ -113,6 +113,12 @@ Template.set.events({
             action.lightscene = $(event.target).data('id');
         }
         
+        else if (col == 'songs') {
+            action.type = 'song';
+            action.song = $(event.target).data('id');
+            action.arrangement = songarrangements.findOne({song: action.song})._id; // TODO this should be user-specified!
+        }
+        
         Meteor.call('actionAdd', action);
                     
         $(event.target).parents('.modal').modal('hide');

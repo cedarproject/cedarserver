@@ -1,0 +1,17 @@
+<template name="songSection">
+    <p>{{title}}</p>
+
+    <ul class="list-group">
+        {{#each contents}}
+            <li class="list-group-item">
+                <textarea class="content-text form-control" rows="4">{{text}}</textarea>
+                
+                {{! TODO triggers}}
+            </li>
+        {{/each}}
+    </ul>
+    
+    <button class="btn btn-primary" id="content-add">
+        <span class="glyphicon glyphicon-plus"></span>
+    </button>
+</template>

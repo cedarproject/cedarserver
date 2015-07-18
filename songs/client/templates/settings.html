@@ -1,0 +1,47 @@
+<template name="songSettings">
+    <div class="container">
+        <h3>
+            <span id="title">
+                {{title}}
+                <small><span class="glyphicon glyphicon-pencil"></span></small>
+            </span>
+            <input id="titleedit" class="hidden" value={{title}}>
+        </h3>
+        
+        <div>
+            <h4>Sections</h4>
+
+            <ul class="list-group">
+                {{#each sections}}
+                    <li class="list-group-item">
+                        {{> songSection}}
+                    </li>
+                {{/each}}
+            </ul>
+            
+            <button class="btn btn-primary" id="section-add">
+                <span class="glyphicon glyphicon-plus"></span>
+                Add Section
+            </button>
+        </div>
+        
+        <hr>
+        
+        <div>
+            <h4>Arrangements</h4>
+
+            <ul class="list-group">
+                {{#each arrangements}}
+                    <li class="list-group-item">
+                        {{> songArrangement}}
+                    </li>
+                {{/each}}
+            </ul>
+
+            <button class="btn btn-primary" id="arrangement-add">
+                <span class="glyphicon glyphicon-plus"></span>
+                Add Arrangement
+            </button>
+        </div>            
+    </div>
+</template>

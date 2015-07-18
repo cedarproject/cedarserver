@@ -1,0 +1,11 @@
+.songcontent {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    
+    border: 1px solid gray;
+    border-radius: 2.5px;
+    background: #FAFAFA;
+    color: black;
+    min-height: 5em;
+}

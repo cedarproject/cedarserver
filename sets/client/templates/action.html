@@ -1,7 +1,7 @@
 <template name="setAction">
     {{#if actionType 'media'}}
         {{#with getMedia}}
-            <div class="media {{isActive}}">
+            <div class="media">
                 {{> mediaItem}}
             </div>
         {{/with}}
@@ -10,6 +10,12 @@
     {{#if actionType 'lightscene'}}
         {{#with getLightScene}}
             {{> lightScene}}
+        {{/with}}
+    {{/if}}
+    
+    {{#if actionType 'song'}}
+        {{#with getSong}}
+            {{> songDisplay}}
         {{/with}}
     {{/if}}
 </template>

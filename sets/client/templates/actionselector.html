@@ -10,6 +10,10 @@
                     <div role="tabpanel">
                         <ul class="nav nav-tabs" role="tablist">
                             <li role="presentation" class="active">
+                                <a href="#songs" role="tab" data-toggle="tab">Songs</a>
+                            </li>
+                            
+                            <li role="presentation">
                                 <a href="#media" role="tab" data-toggle="tab">Media</a>
                             </li>
                             
@@ -19,7 +23,11 @@
                         </ul>
                     
                         <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane fade in active" id="media">
+                            <div role="tabpanel" class="tab-pane fade in active" id="songs">
+                                {{> collectionSelector songSelector}}
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane fade" id="media">
                                 {{> collectionSelector mediaSelector}}
                             </div>
                             

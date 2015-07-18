@@ -13,5 +13,11 @@ Template.setAction.helpers({
     
     getLightScene: function () {
         return lightscenes.findOne(this.lightscene);
-    },   
+    },
+    
+    getSong: function () {
+        var song = songs.findOne(this.song);
+        song.arrangement = songarrangements.findOne(this.arrangement);
+        return song;
+    }
 });
