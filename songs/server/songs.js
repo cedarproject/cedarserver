@@ -41,6 +41,10 @@ Meteor.methods({
         songarrangements.update({song: songid}, {$pull: {order: sectionid}}, {multi: true});
     },
     
+    songSectionTitle: function (sectionid, title) {
+        songsections.update(sectionid, {$set: {title: title}});
+    },
+    
     songSectionAddContent: function (sectionid) {
         songsections.update(sectionid, {$push: {contents: {
             text: '',
@@ -86,6 +90,10 @@ Meteor.methods({
         songarrangements.remove(arrid);
     },
     
+    songArrangementTitle: function (arrid, title) {
+        songarrangements.update(arrid, {$set: {title: title}});
+    },
+    
     songArrangementAddSection: function (arrid, sectionid) {
         songarrangements.update(arrid, {$push: {order: sectionid}});
     },
@@ -96,7 +104,16 @@ Meteor.methods({
         var neworder = arr.order;
         neworder.splice(index, 1);
         songarrangements.update(arrid, {$set: {order: neworder}});
-    }
+    },
     
-    // TODO write song activate code, display code
+    songActionActivate: function (action) {
+        var set = sets.findOne(action.set);
+        var targets = minions.find({stage: set.stage, roles: {$all: [action.role]}});
+        
+        action.time = (Date.now() * 0.001) + 0.1; // Get current time as float, add 100ms
+        
+        targets.forEach(function (minion) {
+            Meteor.call('minionAddAction', minion._id, action);
+        });
+    }
 });

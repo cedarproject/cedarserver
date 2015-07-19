@@ -64,9 +64,10 @@ Meteor.methods({
         actions.update({_id: actionid}, {$set: {order: index}});
     },
     
-    setActivate: function (setid, actionid) {
+    setActivate: function (setid, actionid, args) {
         var set = checkSet(setid);
         var action = actions.findOne(actionid);
+        action.args = args;
         var triggers = actions.find({actionid: action._id}).fetch();
 
         var set_actions = [action].concat(triggers);

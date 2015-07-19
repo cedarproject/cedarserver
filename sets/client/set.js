@@ -86,6 +86,17 @@ Template.set.events({
         return false;
     },
     
+    'click .song-content': function (event, template) {
+        var action = Template.parentData();
+        if (action._id != template.data.active) {
+            var args = {
+                section: section,
+                index: index
+            };
+            Meteor.call('setActivate', template.data._id, action._id);
+        }
+    },
+    
     'click .set-add-item': function (event) {
         $(event.target).siblings('.action-selector-modal').modal('show');
     },

@@ -9,6 +9,17 @@ Template.songArrangement.helpers({
 });
 
 Template.songArrangement.events({
+    'click .arrangement-title': function (event, template) {
+        template.$('.arrangement-title').addClass('hidden');
+        template.$('.arrangement-title-edit').removeClass('hidden');
+    },
+    
+    'blur .arrangement-title-edit': function (event, template) {
+        Meteor.call('songArrangementTitle', this._id, template.$('.arrangement-title-edit').val());
+        template.$('.arrangement-title').addClass('hidden');
+        template.$('.arrangement-title-edit').removeClass('hidden');
+    },
+    
     'click .order-add': function (event, template) {
         Meteor.call('songArrangementAddSection', template.data._id, this._id);
     },

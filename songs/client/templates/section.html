@@ -1,5 +1,8 @@
 <template name="songSection">
-    <p>{{title}}</p>
+    <p>
+        <span class="section-title">{{title}}</span>
+        <input class="section-title-edit hidden" value={{title}}>
+    </p>
 
     <ul class="list-group">
         {{#each contents}}

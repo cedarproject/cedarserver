@@ -9,15 +9,15 @@ Template.songSettings.helpers({
 });
 
 Template.songSettings.events({
-    'click #title': function (event, template) {
-        $('#title').addClass('hidden');
-        $('#titleedit').removeClass('hidden');
+    'click .song-title': function (event, template) {
+        template.$('.song-title').addClass('hidden');
+        template.$('.song-title-edit').removeClass('hidden');
     },
     
-    'blur #titleedit': function (event, template) {
-        Meteor.call('songTitle', this._id, $('#titleedit').val());
-        $('#titleedit').addClass('hidden');
-        $('#title').removeClass('hidden');
+    'blur .song-title-edit': function (event, template) {
+        Meteor.call('songTitle', this._id, template.$('.song-title-edit').val());
+        template.$('.song-title-edit').addClass('hidden');
+        template.$('.song-title').removeClass('hidden');
     },
     
     'click #section-add': function (event, template) {
