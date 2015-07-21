@@ -42,7 +42,7 @@ Template.lightSceneSettings.events({
     
     'blur #scene-settings-fade': function (event, template) {
         var fade = parseFloat($(event.target).val());
-        if (!isNaN(fade)) Meteor.call('sceneSetting', 'fade', fade);
+        if (!isNaN(fade)) Meteor.call('sceneSetting', template.data._id, 'fade', fade);
     },
     
     'click #add-light': function (event) {

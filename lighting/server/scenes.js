@@ -36,9 +36,9 @@ Meteor.methods({
     },
     
     'sceneSetting': function (sceneid, setting, value) {
-        var scene = checkScene(scendid);
-        var s = 'settings.' + setting;
-        lightscenes.update(scene, {$set: {s: value}});
+        var scene = checkScene(sceneid);
+        var s = {}; s['settings.' + setting] = value;
+        lightscenes.update(scene, {$set: s});
     },
     
     'sceneAddLight': function (sceneid, lightid) {

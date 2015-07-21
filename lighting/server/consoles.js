@@ -25,8 +25,8 @@ Meteor.methods({
     
     lightConsoleSetting: function (consoleid, setting, value) {
         var console = checkConsole(consoleid);
-        var s = 'settings.' + setting;
-        lightconsoles.update(console, {$set: {s: value}});
+        var s = {}; s['settings.' + setting] = value;
+        lightconsoles.update(console, {$set: s});
     },
     
     lightConsoleAddLight: function (consoleid, lightid) {

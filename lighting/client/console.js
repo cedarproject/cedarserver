@@ -50,7 +50,7 @@ Template.lightConsole.events({
 
     'blur #console-settings-fade': function (event, template) {
         var fade = parseFloat($(event.target).val());
-        if (!isNaN(fade)) Meteor.call('lightConsoleSetting', 'fade', fade);
+        if (!isNaN(fade)) Meteor.call('lightConsoleSetting', template.data._id, 'fade', fade);
     },
     
     'click #add-light': function (event) {
