@@ -11,6 +11,7 @@ Meteor.methods({
     'sceneAdd': function () {
         var sceneid = lightscenes.insert({
             title: 'New Scene',
+            settings: {fade: 1},
             lights: []
         });
         
@@ -32,6 +33,12 @@ Meteor.methods({
     'sceneTitle': function (sceneid, title) {
         var scene = checkScene(sceneid);
         lightscenes.update(scene, {$set: {title: title}});
+    },
+    
+    'sceneSetting': function (sceneid, setting, value) {
+        var scene = checkScene(scendid);
+        var s = 'settings.' + setting;
+        lightscenes.update(scene, {$set: {s: value}});
     },
     
     'sceneAddLight': function (sceneid, lightid) {
@@ -65,11 +72,11 @@ Meteor.methods({
     
     'sceneActivate': function (sceneid) {
         var scene = checkScene(sceneid);
-
+        
         for (var i in scene.lights) {
             var l = scene.lights[i];
-            if (l['light']) Meteor.call('lightValues', l.light, l.values);
-            else if (l['group']) Meteor.call('lightGroupValues', l.group, l.values);
+            if (l['light']) Meteor.call('lightValues', l.light, l.values, scene.settings);
+            else if (l['group']) Meteor.call('lightGroupValues', l.group, l.values, scene.settings);
         }
     },
     

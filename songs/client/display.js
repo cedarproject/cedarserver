@@ -8,6 +8,7 @@ Template.songDisplay.helpers({
                 content.section = section._id;
                 content.index = c;
                 content.push(section.contents[c]);
+            }
         }
         return content;
     },

@@ -47,6 +47,11 @@ Template.lightConsole.events({
         $('#titleedit').addClass('hidden');
         $('#title').removeClass('hidden');
     },
+
+    'blur #console-settings-fade': function (event, template) {
+        var fade = parseFloat($(event.target).val());
+        if (!isNaN(fade)) Meteor.call('lightConsoleSetting', 'fade', fade);
+    },
     
     'click #add-light': function (event) {
         $('#add-light-modal').modal('show');
@@ -95,8 +100,8 @@ Template.lightConsole.events({
         var values = this.values;
         values[channel] = parseFloat($(event.target).val());
         
-        if (type == 'light') Meteor.call('lightValues', this._id, values);
-        else if (type == 'group') Meteor.call('lightGroupValues', this._id, values);
+        if (type == 'light') Meteor.call('lightValues', this._id, values, template.data.settings);
+        else if (type == 'group') Meteor.call('lightGroupValues', this._id, values, template.data.settings);
     },
     
     'click .scenebutton': function (event, template) {

@@ -53,12 +53,11 @@ Meteor.methods({
         lights.update(light, {$set: {channels: channels}});
     },
     
-    lightValues: function (lightid, values) {
+    lightValues: function (lightid, values, settings) {
         var light = checkLight(lightid);
         
-        var time = (Date.now() * 0.001) + 0.1; // Get current time as float, add 100ms
-        var fade = 1; //TODO this needs to be set from the Scene!
+        settings.time = (Date.now() * 0.001) + 0.1; // Get current time as float, add 100ms
 
-        if (!light.disabled) lights.update(light, {$set: {values: values, 'settings.time': time, 'settings.fade': fade}});
+        if (!light.disabled) lights.update(light, {$set: {values: values, settings: settings}});
     }
 });

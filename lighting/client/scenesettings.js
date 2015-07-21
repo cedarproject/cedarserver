@@ -40,6 +40,11 @@ Template.lightSceneSettings.events({
         Meteor.call('sceneTitle', this._id, title);
     },
     
+    'blur #scene-settings-fade': function (event, template) {
+        var fade = parseFloat($(event.target).val());
+        if (!isNaN(fade)) Meteor.call('sceneSetting', 'fade', fade);
+    },
+    
     'click #add-light': function (event) {
         $('#add-light-modal').modal('show');
     },

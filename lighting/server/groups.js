@@ -88,7 +88,7 @@ Meteor.methods({
         updateChannels(groupid);
     },
     
-    lightGroupValues: function (groupid, values) {
+    lightGroupValues: function (groupid, values, settings) {
         var group = checkGroup(groupid);
         
         lightgroups.update(group, {$set: {values: values}});
@@ -111,7 +111,7 @@ Meteor.methods({
                 if (typeof lightValues[n] === 'undefined') lightValues[n] = light.values[n];
             }
             
-            Meteor.call('lightValues', group.members[i], lightValues);
+            Meteor.call('lightValues', group.members[i], lightValues, settings);
         }
     }
 });
