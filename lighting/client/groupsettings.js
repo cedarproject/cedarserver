@@ -1,4 +1,14 @@
 Template.lightGroupSettings.helpers({
+    stages: function () {
+        return stages.find({_id: {$ne: this.stage}});
+    },
+    
+    titleOf: function (stageid) {
+        var stage = stages.findOne({_id: stageid});
+        if (stage) {return stage.title;}
+        else {return 'Unassigned';}
+    },
+
     members: function () {
         var members = [];
         this.members.forEach(function (memberid) {
@@ -10,7 +20,7 @@ Template.lightGroupSettings.helpers({
     lightSelector: {
         collection: lights,
         displayTemplate: 'light',
-        fields: [{field: 'title', type: String}],
+        fields: [{field: 'title', type: String}, {field: 'stage', type: Stage}],
         sort: [['title', 1]],
         addbutton: true
     }
@@ -60,6 +70,9 @@ Template.lightGroupSettings.events({
     'click .group-settings-save': function (event, template) {
         template.$('.group-settings-modal').modal('hide');
         var title = template.$('.group-title').val();
-        Meteor.call('lightGroupTitle', this._id, title);
+        if (title) Meteor.call('lightGroupTitle', this._id, title);
+        
+        var stage = template.$('.group-stage').val();
+        if (stage) Meteor.call('lightGroupStage', this._id, stage);
     }
 });

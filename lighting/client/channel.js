@@ -1,10 +1,15 @@
 Template.lightChannel.helpers({
+    typeIs: function (type) {
+        if (this.type == type) return true;
+    },
+
     types: function () {
         var types = [
             'red',
             'green',
             'blue',
-            'intensity'
+            'intensity',
+            'fixed'
         ];
         
         for (var i in types) {

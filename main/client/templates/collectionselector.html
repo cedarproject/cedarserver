@@ -1,15 +1,17 @@
 <template name="collectionSelector">
     <div class="collectionselector">
         {{#each fields}}
-            {{#if isStage}}
-                <select class="collection-filter form-control" data-filter={{field}}>
-                    <option value="" selected>All Stages</option>
-                    {{#each getStages}}
-                        <option value="{{_id}}">{{title}}</option>
-                    {{/each}}
-                </select>
-            {{else}}
-                <input type="text" class="collection-filter form-control" data-filter={{field}} placeholder={{field}}>
+            {{#if notFixed}}
+                {{#if isStage}}
+                    <select class="collection-filter form-control" data-filter={{field}}>
+                        <option value="" selected>All Stages</option>
+                        {{#each getStages}}
+                            <option value="{{_id}}">{{title}}</option>
+                        {{/each}}
+                    </select>
+                {{else}}
+                    <input type="text" class="collection-filter form-control" data-filter={{field}} placeholder={{field}}>
+                {{/if}}
             {{/if}}
         {{/each}}
                 

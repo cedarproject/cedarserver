@@ -5,6 +5,10 @@ Template.collectionSelector.helpers({
         return Template.parentData().collection._name;
     },
     
+    notFixed: function () {
+        if (!this.fixed) return true;
+    },
+    
     isStage: function (type) {
         if (this.type == Stage) return true;
     },
@@ -30,20 +34,24 @@ Template.collectionSelector.helpers({
 
 Template.collectionSelector.onCreated(function () {
     var t = Template.currentData();
+    console.log(t);
     t.filters = {};
     for (var i in t.fields) {
         t.filters[t.fields[i].field] = {
             filter: new ReactiveVar(null),
             type: t.fields[i].type
         };
+        
+        if (t.fields[i].fixed) t.filters[t.fields[i].field].filter.set(t.fields[i].fixed);
     }
-
-    t.query = new ReactiveVar({});    
+    
+    t.query = new ReactiveVar({});
     t.page = new ReactiveVar(1);
     t.pages = new ReactiveVar([]);
     
     this.autorun(function () {
         var t = Template.currentData();
+        console.log(t);
 
         var values = {};
         for (var k in t.filters) {

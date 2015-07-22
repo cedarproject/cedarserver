@@ -11,5 +11,10 @@
         
         <label>Address:</label>
         <input type="number" class="channel-address form-control" value={{address}}>
+        
+        {{#if typeIs 'fixed'}}
+            <label>Value:</label>
+            <input type="number" class="channel-value form-control" min=0 max=1 step=0.01 value={{value}}>
+        {{/if}}
     </form>
 </template>

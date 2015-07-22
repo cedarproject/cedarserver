@@ -1,4 +1,14 @@
 Template.lightConsole.helpers({
+    stages: function () {
+        return stages.find({_id: {$ne: this.stage}});
+    },
+    
+    titleOf: function (stageid) {
+        var stage = stages.findOne({_id: stageid});
+        if (stage) {return stage.title;}
+        else {return 'Unassigned';}
+    },
+
     getLight: function (lightid) {
         return lights.findOne(lightid);
     },
@@ -14,7 +24,7 @@ Template.lightConsole.helpers({
     lightSelector: {
         collection: lights,
         displayTemplate: 'light',
-        fields: [{field: 'title', type: String}],
+        fields: [{field: 'title', type: String}, {field: 'stage', type: Stage}],
         sort: [['title', 1]],
         addbutton: true
     },
@@ -22,7 +32,7 @@ Template.lightConsole.helpers({
     groupSelector: {
         collection: lightgroups,
         displayTemplate: 'lightGroup',
-        fields: [{field: 'title', type: String}],
+        fields: [{field: 'title', type: String}, {field: 'stage', type: Stage}],
         sort: [['title', 1]],
         addbutton: true
     },
@@ -30,7 +40,7 @@ Template.lightConsole.helpers({
     sceneSelector: {
         collection: lightscenes,
         displayTemplate: 'lightScene',
-        fields: [{field: 'title', type: String}],
+        fields: [{field: 'title', type: String}, {field: 'stage', type: Stage}],
         sort: [['title', 1]],
         addbutton: true
     }
@@ -46,6 +56,10 @@ Template.lightConsole.events({
         Meteor.call('lightConsoleTitle', this._id, $('#titleedit').val());
         $('#titleedit').addClass('hidden');
         $('#title').removeClass('hidden');
+    },
+    
+    'change #console-stage': function (event, template) {
+        Meteor.call('lightConsoleStage', this._id, $('#console-stage').val());
     },
 
     'blur #console-settings-fade': function (event, template) {

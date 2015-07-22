@@ -1,8 +1,18 @@
 Template.lightSceneSettings.helpers({
+    stages: function () {
+        return stages.find({_id: {$ne: this.stage}});
+    },
+    
+    titleOf: function (stageid) {
+        var stage = stages.findOne({_id: stageid});
+        if (stage) {return stage.title;}
+        else {return 'Unassigned';}
+    },
+    
     lightSelector: {
         collection: lights,
         displayTemplate: 'light',
-        fields: [{field: 'title', type: String}],
+        fields: [{field: 'title', type: String}, {field: 'stage', type: Stage}],
         sort: [['title', 1]],
         addbutton: true
     },
@@ -10,7 +20,7 @@ Template.lightSceneSettings.helpers({
     groupSelector: {
         collection: lightgroups,
         displayTemplate: 'lightGroup',
-        fields: [{field: 'title', type: String}],
+        fields: [{field: 'title', type: String}, {field: 'stage', type: Stage}],
         sort: [['title', 1]],
         addbutton: true
     },
@@ -38,6 +48,10 @@ Template.lightSceneSettings.events({
     'blur #scene-title': function (event) {
         var title = $(event.target).val();
         Meteor.call('sceneTitle', this._id, title);
+    },
+    
+    'change #scene-stage': function (event, template) {
+        Meteor.call('sceneStage', this._id, $('#scene-stage').val());
     },
     
     'blur #scene-settings-fade': function (event, template) {

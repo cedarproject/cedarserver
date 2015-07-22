@@ -8,6 +8,14 @@
             <input id="titleedit" class="hidden" value={{title}}>
         </h3>
 
+        <label>Stage:</label>
+        <select id="console-stage" class="form-control">
+            <option value="{{stage}}" selected>{{titleOf stage}}</option>
+            {{#each stages}}
+                <option value="{{_id}}">{{title}}</option>
+            {{/each}}
+        </select>
+
         <label>Fade:</label>
         <input id="console-settings-fade" class="form-control" type="number" min=0 step=0.1 max=120 value={{settings.fade}}>
         <p><small>Only affects Lights and Groups, not Scenes.</small></p>

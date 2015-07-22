@@ -8,6 +8,7 @@ Meteor.methods({
     lightConsoleNew: function () {
         lightconsoles.insert({
             title: 'New Console',
+            stage: null,
             settings: {fade: 0},
             controls: []
         });
@@ -21,6 +22,11 @@ Meteor.methods({
     lightConsoleTitle: function (consoleid, title) {
         var console = checkConsole(consoleid);
         lightconsoles.update(console, {$set: {title: title}});
+    },
+    
+    lightConsoleStage: function (consoleid, stage) {
+        var console = checkConsole(consoleid);
+        lightconsoles.update(console, {$set: {stage: stage}});
     },
     
     lightConsoleSetting: function (consoleid, setting, value) {

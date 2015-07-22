@@ -6,7 +6,7 @@ Template.lightScenes.helpers({
     sceneSelector: {
         collection: lightscenes,
         displayTemplate: 'lightscenesListItem',
-        fields: [{field: 'title', type: String}],
+        fields: [{field: 'title', type: String}, {field: 'stage', type: Stage}],
         sort: [['title', 1]],
         addbutton: false
     },

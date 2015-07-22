@@ -5,6 +5,13 @@
         <label>Title:</label>
         <input id="scene-title" class="form-control" value={{title}}>
         
+        <label>Stage:</label>
+        <select id="scene-stage" class="form-control">
+            <option value="{{stage}}" selected>{{titleOf stage}}</option>
+            {{#each stages}}
+                <option value="{{_id}}">{{title}}</option>
+            {{/each}}
+        </select>
         
         <label>Fade:</label>
         <input id="scene-settings-fade" class="form-control" type="number" min=0 step=0.1 max=120 value={{settings.fade}}>

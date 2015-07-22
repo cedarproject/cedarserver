@@ -52,6 +52,14 @@
                 <div class="modal-body">
                     <label>Title:</label>
                     <input class="group-title form-control" type="text" value={{title}}>
+                    
+                    <label>Stage:</label>
+                    <select class="group-stage form-control">
+                        <option value="{{stage}}" selected>{{titleOf stage}}</option>
+                        {{#each stages}}
+                            <option value="{{_id}}">{{title}}</option>
+                        {{/each}}
+                    </select>
                 </div>
                 
                 <div class="modal-footer">

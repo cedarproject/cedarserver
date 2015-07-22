@@ -6,7 +6,7 @@ Template.lightConsoles.helpers({
     consoleSelector: {
         collection: lightconsoles,
         displayTemplate: 'lightconsolesListItem',
-        fields: [{field: 'title', type: String}],
+        fields: [{field: 'title', type: String}, {field: 'stage', type: Stage}],
         sort: [['title', 1]],
         addbutton: false
     },

@@ -11,6 +11,7 @@ Meteor.methods({
     'sceneAdd': function () {
         var sceneid = lightscenes.insert({
             title: 'New Scene',
+            stage: null,
             settings: {fade: 1},
             lights: []
         });
@@ -33,6 +34,11 @@ Meteor.methods({
     'sceneTitle': function (sceneid, title) {
         var scene = checkScene(sceneid);
         lightscenes.update(scene, {$set: {title: title}});
+    },
+    
+    sceneStage: function (sceneid, stage) {
+        var scene = checkScene(sceneid);
+        lightscenes.update(scene, {$set: {stage: stage}});
     },
     
     'sceneSetting': function (sceneid, setting, value) {

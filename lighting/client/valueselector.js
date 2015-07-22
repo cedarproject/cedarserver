@@ -2,7 +2,11 @@
 
 Template.valueSelector.helpers({
     channels: function () {
-        return this.channels;
+        var dc = [];
+        for (var c in this.channels) {
+            if (this.channels[c].type != 'fixed') dc.push(this.channels[c]);
+        }
+        return dc;
     },
     
     hasColor: function () {

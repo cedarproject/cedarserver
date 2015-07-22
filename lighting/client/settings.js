@@ -77,6 +77,11 @@ Template.lightSettings.events({
             
             var address = parseInt($(this).find('.channel-address').val());
             if (!isNaN(address) && address >= 0) nc[i].address = address;
+            
+            if (nc[i].type == 'fixed') {
+                var value = parseFloat($(this).find('.channel-value').val());
+                if (!isNaN(value) && value >= 0 && value <= 1) nc[i].value = value;
+            }
         });
         
         Meteor.call('lightChannels', this._id, nc);

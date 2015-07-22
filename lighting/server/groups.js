@@ -55,6 +55,7 @@ Meteor.methods({
     lightGroupNew: function () {
         var groupid = lightgroups.insert({
             title: 'New Group',
+            stage: null,
             members: [],
             channels: [],
             values: [],
@@ -69,6 +70,11 @@ Meteor.methods({
     lightGroupTitle: function (groupid, title) {
         var group = checkGroup(groupid);
         lightgroups.update(group, {$set: {title: title}});
+    },
+    
+    lightGroupStage: function (groupid, stage) {
+        var group = checkGroup(groupid);
+        lightgroups.update(group, {$set: {stage: stage}});
     },
     
     lightGroupAddLight: function (groupid, lightid) {
