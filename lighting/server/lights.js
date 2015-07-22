@@ -12,6 +12,7 @@ Meteor.methods({
         var lightid = lights.insert({
             title: 'New Light',
             minion: null,
+            stage: null,
             enabled: true,
             channels: [],
             values: [],
@@ -39,7 +40,8 @@ Meteor.methods({
     
     lightMinion: function (lightid, minionid) {
         var light = checkLight(lightid);
-        lights.update(light, {$set: {minion: minionid}});
+        var stageid = minions.findOne(minionid).stage;
+        lights.update(light, {$set: {minion: minionid, stage: stageid}});
     },
     
     lightEnabled: function (lightid, enabled) {

@@ -6,7 +6,7 @@ Template.lights.helpers({
     lightSelector: {
         collection: lights,
         displayTemplate: 'lightsListItem',
-        fields: [{field: 'title', type: String}],
+        fields: [{field: 'title', type: String}, {field: 'stage', type: Stage}],
         sort: [['title', 1]],
         addbutton: false
     },

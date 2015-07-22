@@ -5,6 +5,14 @@ Template.collectionSelector.helpers({
         return Template.parentData().collection._name;
     },
     
+    isStage: function (type) {
+        if (this.type == Stage) return true;
+    },
+    
+    getStages: function () {
+        return stages.find();
+    },
+    
     getPages: function () {
         return this.pages.get();
     },
@@ -40,7 +48,8 @@ Template.collectionSelector.onCreated(function () {
         var values = {};
         for (var k in t.filters) {
             if (t.filters.hasOwnProperty(k) && t.filters[k].filter.get() != null) {
-                if (t.filters[k].type == String) values[k] = t.filters[k].filter.get();
+                if (t.filters[k].type == String ||
+                    t.filters[k].type == Stage) values[k] = t.filters[k].filter.get();
                 else if (t.filters[k].type == Array) values[k] = {$in: t.filters[k].filter.get()}
             }
         }
@@ -56,11 +65,12 @@ Template.collectionSelector.onCreated(function () {
 });
 
 Template.collectionSelector.events({
-    'keyup .collection-filter': function (event) {
+    'keyup .collection-filter, change .collection-filter': function (event) {
         var filter = Template.currentData().filters[$(event.target).data('filter')];
         var val = $(event.target).val();
         if (val.length > 0) {
             if (filter.type == String) filter.filter.set(new RegExp(val, 'i'))
+            if (filter.type == Stage) filter.filter.set(val);
             else if (filter.type == Array) {
                 var nf = [];
                 val.split(',').forEach(function (t) {nf.push(t.trim());});
@@ -69,7 +79,7 @@ Template.collectionSelector.events({
         }
 
         else filter.filter.set(null);
-    },
+    },   
     
     'click .pagenum': function (event, template) {
         template.data.page.set(this);
