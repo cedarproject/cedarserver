@@ -31,9 +31,8 @@ Meteor.methods({
         
         var prefix = settings.findOne({key: 'mediadir'}).value + '/';
         
-        // Using jQuery's noop because fs.unlink comlains if there's no callback.
-        fs.unlink(prefix + m.location, $.noop());
-        if (m['thumbnail']) fs.unlink(prefix + m.thumbnail, $.noop());
+        fs.unlink(prefix + m.location, function () {});
+        if (m['thumbnail']) fs.unlink(prefix + m.thumbnail, function () {});
 
         media.remove(m);
     },
