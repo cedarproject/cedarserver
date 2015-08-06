@@ -7,6 +7,7 @@ Template.songDisplay.helpers({
                 var content = section.contents[c];
                 content.section = section._id;
                 content.index = c;
+                content.action = this.action;
                 contents.push(content);
             }
         }
@@ -14,6 +15,6 @@ Template.songDisplay.helpers({
     },
     
     getText: function () {
-        return this.text.replace(/(\r\n|\n|\r)/gm, '<br>');
+        return songTextToHTML(this.text);
     }
 });

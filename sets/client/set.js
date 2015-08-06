@@ -87,14 +87,13 @@ Template.set.events({
     },
     
     'click .song-content': function (event, template) {
-        var action = Template.parentData();
-        if (action._id != template.data.active) {
-            var args = {
-                section: section,
-                index: index
-            };
-            Meteor.call('setActivate', template.data._id, action._id);
-        }
+        event.stopImmediatePropagation();
+        var args = {
+            section: this.section,
+            index: this.index
+        };
+        console.log(this);
+        Meteor.call('setActivate', template.data._id, this.action, args);
     },
     
     'click .set-add-item': function (event) {

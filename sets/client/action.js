@@ -18,6 +18,7 @@ Template.setAction.helpers({
     getSong: function () {
         var song = songs.findOne(this.song);
         song.arrangement = songarrangements.findOne(this.arrangement);
+        song.action = this._id;
         return song;
     }
 });
