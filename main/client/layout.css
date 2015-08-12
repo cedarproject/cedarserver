@@ -1,0 +1,10 @@
+.navbar-image {
+    height: 100%;
+}
+
+body {
+    background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.75), rgba(29, 156, 65, 1)),
+        url('/YoungCedarTree.svg') bottom left no-repeat fixed;
+        
+    background-size: auto, auto 50%;
+}
