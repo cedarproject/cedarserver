@@ -12,15 +12,22 @@ function process_media(fileInfo, formFields) {
     var m = media.findOne(mediaid);
     var prefix = settings.findOne({key: 'mediadir'}).value;
 
-    var type = MIME.lookup(m.location).split('/')[0];
+    var mimetype = MIME.lookup(m.location)
+    var type = mimetype.split('/')[0];
     
     if (type == 'image') {
-        gm(prefix + '/' + m.location)
-            .resize(64, 64)
-            .write(prefix + '/thumbs/' + m.location, Meteor.bindEnvironment(function (err) {
-                if (err) console.log(err);
-                media.update(m, {$set: {type: 'image', thumbnail: 'thumbs/' + m.location}});
-        }.bind(this)));
+        if (mimetype == 'image/svg+xml') {
+            media.update(m, {$set: {type: 'image', thumbnail: m.location}});
+        }
+        
+        else {            
+            gm(prefix + '/' + m.location)
+                .resize(64, 64)
+                .write(prefix + '/thumbs/' + m.location, Meteor.bindEnvironment(function (err) {
+                    if (err) console.log(err);
+                    media.update(m, {$set: {type: 'image', thumbnail: 'thumbs/' + m.location}});
+            }.bind(this)));
+        }
     }
     
     else if (type == 'audio') {        
