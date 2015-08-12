@@ -40,34 +40,21 @@ Meteor.methods({
     mediaActionActivate: function (action) {
         var set = sets.findOne(action.set);
         
-        if (action['minions'] && action.minions.length > 0) {
-            var targets = action.minions;
-        } else {
-            var targets = minions.find({stage: set.stage, roles: {$all: [action.role]}}).fetch();
-            targets.forEach(function (target, index, targets) {
-                targets[index] = target._id;
-            });
-        } 
-                   
+        var targets = minions.find({stage: set.stage}).fetch();                   
         var actMedia = media.findOne(action.media);
-        
-        if (actMedia.type == 'video' || actMedia.type == 'image') {
-            // If media is a video or an image, stop any other playing videos/images
-            targets.forEach(function (minionid) {
-                minions.update(minionid, {$pull: {actions: {mediatype: {$in: ['video', 'image']}}}});
-            });
-        }
-        else if (actMedia.type == 'audio') {
-            // If media is audio, stop any other playing audio
-            targets.forEach(function (minionid) {
-                minions.update(minionid, {$pull: {actions: {mediatype: 'audio'}}});
-            });
-        }
-        
+                
         action.time = (Date.now() * 0.001) + 0.1; // Get current time as float, add 100ms
 
-        targets.forEach(function (minionid) {
-            Meteor.call('minionAddAction', minionid, action);
+        if (!action.settings['layer']) { //TODO delete me, debugging!
+            if (actMedia.type == 'audio') action.settings.layer = 'audio';
+            else action.settings.layer = 'background';
+        }
+        
+        var s = {}; s['layers.' + action.settings.layer] = action;
+        targets.forEach(function (minion) {
+            if (minion.layers.hasOwnProperty(action.settings.layer)) {
+                minions.update(minion._id, {$set: s});
+            }
         });
     }
 });

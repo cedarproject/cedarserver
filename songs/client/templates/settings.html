@@ -14,6 +14,9 @@
             <ul class="list-group">
                 {{#each sections}}
                     <li class="list-group-item">
+                        <button class="section-del btn btn-default btn-sm pull-right">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
                         {{> songSection}}
                     </li>
                 {{/each}}
@@ -33,6 +36,9 @@
             <ul class="list-group">
                 {{#each arrangements}}
                     <li class="list-group-item">
+                        <button class="arrangement-del btn btn-default btn-sm pull-right">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
                         {{> songArrangement}}
                     </li>
                 {{/each}}

@@ -17,9 +17,8 @@ Meteor.methods({
             name: 'New ' + type + ' minion',
             stage: null,
             type: type,
-            roles: ['background'],
+            layers: {background: null, foreground: null, audio: null},
             settings: {},
-            actions: [],
             connected: false
         });
         
@@ -53,9 +52,16 @@ Meteor.methods({
         // Silently fail on invalid stage id, because of how I coded the <select> on the client
     },
     
-    minionRoles: function (minionid, groups) {
+    minionAddLayer: function (minionid, layer) {
         var minion = checkMinion(minionid);
-        minions.update(minion, {$set: {groups: groups}});
+        var s = {}; s['layers.' + layer] = null;
+        minions.update(minion, {$set: s});
+    },
+    
+    minionDelLayer: function (minionid, layer) {
+        var minion = checkMinion(minionid);
+        var u = 'layers.' + layer;
+        minoions.update(minion, {$unset: u});
     },
     
     minionSetting: function (minionid, key, value) {
@@ -64,13 +70,4 @@ Meteor.methods({
         s['settings.' + key] = value;
         minions.update(minion, {$set: s});
     },
-    
-    minionAddAction: function (minionid, action) {
-        var minion = checkMinion(minionid);
-        minions.update(minion, {$push: {actions: action}});
-    },
-    minionDelAction: function (minionid, actionindex) {
-        var minion = checkMinion(minionid);
-        minions.update(minion, {$pull: {$position: actionindex}});
-    }
 });

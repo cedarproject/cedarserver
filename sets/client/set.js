@@ -48,7 +48,7 @@ Template.set.helpers({
 
 Template.set.events({
     'click .moving': function (event) {
-        $('.set-action').removeClass('moving').removeClass('movetarget');
+        $('.set-action').removeClass('moving').removeClass('movetarget').removeClass('disabled');
         event.stopImmediatePropagation();
         return false;
     },
@@ -94,6 +94,9 @@ Template.set.events({
         };
         console.log(this);
         Meteor.call('setActivate', template.data._id, this.action, args);
+        
+        $('.song-content').removeClass('active');
+        $(event.currentTarget).addClass('active');
     },
     
     'click .set-add-item': function (event) {
@@ -137,6 +140,7 @@ Template.set.events({
 
     'click .set-clear': function (event) {
         Meteor.call('setDeactivate', this._id);
+        $('.song-content').removeClass('active');
     },
 
     'click .set-settings': function (event) {

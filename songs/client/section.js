@@ -14,6 +14,10 @@ Template.songSection.events({
         Meteor.call('songSectionAddContent', this._id);
     },
     
+    'click .content-del': function (event, template) {
+        Meteor.call('songSectionDelContent', template.data._id, template.data.contents.indexOf(this));
+    },
+    
     'blur .content-text': function (event, template) {
         var index = template.data.contents.indexOf(this);
         var text = $(event.target).val();

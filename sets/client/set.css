@@ -1,5 +1,5 @@
 .set-action {
-    transition: opacity 1s, transform 1s, box-shadow 0.25s;
+    transition: background 0.25s, opacity 1s, transform 1s, box-shadow 0.25s;
     border: 1px solid rgba(200, 200, 200, 1);
     border-radius: 5px;
     padding: 5px;

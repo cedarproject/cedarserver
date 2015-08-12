@@ -34,7 +34,6 @@ Template.collectionSelector.helpers({
 
 Template.collectionSelector.onCreated(function () {
     var t = Template.currentData();
-    console.log(t);
     t.filters = {};
     for (var i in t.fields) {
         t.filters[t.fields[i].field] = {
@@ -51,7 +50,6 @@ Template.collectionSelector.onCreated(function () {
     
     this.autorun(function () {
         var t = Template.currentData();
-        console.log(t);
 
         var values = {};
         for (var k in t.filters) {

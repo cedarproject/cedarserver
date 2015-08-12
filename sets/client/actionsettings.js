@@ -18,6 +18,7 @@ Template.actionSettings.events({
     
         var action = {};
         action.actionid = template.data._id;
+        action.settings = {};
         
         if (t.data('collection') == 'media') {
             action.type = 'media';

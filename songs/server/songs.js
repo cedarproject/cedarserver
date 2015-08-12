@@ -35,10 +35,10 @@ Meteor.methods({
         return sectionid;
     },
     
-    songDelSection: function (songid, sectionid) {
-        var song = checkSong(songid);
+    songDelSection: function (sectionid) {
+        var section = songsections.findOne(sectionid);
         songsections.remove(sectionid);
-        songarrangements.update({song: songid}, {$pull: {order: sectionid}}, {multi: true});
+        songarrangements.update({song: section.song}, {$pull: {order: sectionid}}, {multi: true});
     },
     
     songSectionTitle: function (sectionid, title) {
@@ -53,8 +53,8 @@ Meteor.methods({
     },
     
     songSectionDelContent: function (sectionid, index) {
-        var content = songsections.findOne(sectionid).content[index];
-        songsections.update(sectionid, {$pull: {content: content}});
+        var content = songsections.findOne(sectionid).contents[index];
+        songsections.update(sectionid, {$pull: {contents: content}});
     },
     
     songSectionChangeContent: function (sectionid, index, text) {
@@ -112,9 +112,11 @@ Meteor.methods({
         
         action.time = (Date.now() * 0.001) + 0.1; // Get current time as float, add 100ms
         
+        if (!action.settings['layer']) action.settings.layer = 'foreground';
+
+        var s = {}; s['layers.' + action.settings.layer] = action;        
         targets.forEach(function (minion) {
-            minions.update(minion._id, {$pull: {actions: {type: 'song'}}});
-            Meteor.call('minionAddAction', minion._id, action);
+            minions.update(minion._id, {$set: s});
         });
     }
 });

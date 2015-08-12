@@ -47,9 +47,9 @@ Meteor.methods({
         actions.update({order: {$gte: index}}, {$inc: {order: -1}}, {multi: true});
     },
     
-    actionTitle: function (actionid, title) {
-        actions.update(actionid, {$set: {title: title}});
-    },        
+    actionSetting: function (actionid, key, value) {
+        actions.update(actionid, {$set: {key: value}});
+    },
     
     actionMove: function (actionid, index) {
         var action = actions.findOne(actionid);
@@ -76,6 +76,7 @@ Meteor.methods({
 
         for (var i in set_actions) {
             var action = set_actions[i];
+            action.set = setid;
             if (action.type == 'media') {
                 Meteor.call('mediaActionActivate', action);
             }
@@ -97,6 +98,10 @@ Meteor.methods({
             sets.update(set, {$set: {active: null}});
         }
 
-        minions.update({type: 'media', stage: set.stage}, {$set: {actions: []}}, {multi: true});
+        // TODO below should get list of layers from Stage!
+        var l = {}
+        var layers = ['background', 'foreground', 'audio'];
+        for (var i in layers) l['layers.' + layers[i]] = null;
+        minions.update({type: 'media', stage: set.stage}, {$set: l}, {multi: true});
     }
 });

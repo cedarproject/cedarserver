@@ -87,7 +87,6 @@ var create_blocks = function (play) {
             m[2], m[5],   0,    1
         );
 
-        console.log(play.texture.format);
         var material = new THREE.ShaderMaterial({
             vertexShader: vertShaderSource,
             fragmentShader: fragShaderSource,
@@ -120,8 +119,7 @@ var create_blocks = function (play) {
 
 var changed = function (id, fields) {
     var newsettings = fields['settings'];
-    var actions = fields['actions'];
-    console.log(actions);
+    var layers = fields['layers'];
     
     if (newsettings) {
         if (newsettings['blocks']) {
@@ -139,168 +137,25 @@ var changed = function (id, fields) {
         }
     }
     
-    if (actions) for (var i in actions) {
-        var action = actions[i];
-
-        var isActive = false;
-        for (var p in this.playing) {
-            if (this.playing[p]._id == action._id) {
+    if (layers) for (var i in layers) {
+        if (layers.hasOwnProperty(i)) var action = layers[i];
+        else continue;
+                
+        // Check if the layer's action has changed.
+        if (action != null && this.layers[i]) {
+            if (action._id == this.layers[i]._id) {
                 if (action.type == 'song') {
-                    if (this.playing[p] == action.args) isActive = true;
+                    if (action.args && this.layers[i].args && action.args == this.layers[i].args) continue;
                 }
-                else isActive = true;
-                break;
+                else continue;
             }
         }
         
-        if (isActive) continue;
-        
-        var play = {_id: action._id, settings: action.settings, args: action.args};
+        // Remove the layer's previous action, if any.    
+        if (this.layers[i]) {
+            var play = this.layers[i];
 
-        if (action.type == 'media') {
-            var m = media.findOne(action.media);
-            
-            if (m.type == 'video' || m.type == 'image') {
-                if (m.type == 'video') {
-                    play.type = 'video';
-                    play.video = document.createElement('video');
-                    play.video.src = settings.findOne({key: 'mediaurl'}).value + m.location;
-                    play.video.controls = false;
-                    play.video.autoplay = true;
-//                    play.video.loop = true; // TODO make this a setting!
-                    
-                    play.video.addEventListener('ended', function () {
-                        this.play();
-                    }.bind(play.video));
-                    
-                    play.texture = new THREE.VideoTexture(play.video);
-                    play.texture.minFilter = THREE.LinearFilter;
-                    play.texture.magFilter = THREE.LinearFilter;
-                }
-                
-                else if (m.type == 'image') {
-                    play.type = 'image';
-                    play.texture = THREE.ImageUtils.loadTexture(settings.findOne({key: 'mediaurl'}).value + m.location);
-                    play.texture.minFilter = THREE.LinearFilter;
-                    play.texture.magFilter = THREE.LinearFilter;
-                }
-                
-                play.materials = [];
-                play.meshes = [];
-                play.opacity = 0; //TODO this whole mess is ugly, fix it! 
-                play.z = 0;
-
-                this.create_blocks(play);
-
-                this.fades.push({
-                    start: 0, end: 1,
-                    length: play.settings['fade'] || 1,
-                    time: action.time,
-                    callback: function (v) {
-                        for (var n in this.materials) {
-                            this.opacity = v;
-                            this.materials[n].uniforms.opacity.value = v;
-                        }
-                    }.bind(play)
-                });
-            }
-            
-            else if (m.type == 'audio') {
-                play.type = 'audio';
-                play.audio = document.createElement('audio');
-                play.audio.src = settings.findOne({key: 'mediaurl'}).value + m.location;
-                play.audio.controls = false;
-                play.audio.autoplay = true;
-//                play.audio.loop = true;
-                play.audio.volume = 0;
-
-                play.audio.addEventListener('ended', function () {
-                    this.play();
-                }.bind(play.audio));
-
-                this.fades.push({
-                    start: 0, end: 1,
-                    length: play.settings['fade'] || 1,
-                    time: action.time,
-                    callback: function (v) {this.volume = v}.bind(audio)
-                });
-            }
-        }
-        
-        else if (action.type == 'song') {
-            play.type = 'song';
-
-            if (!action.args) continue;
-            var section = songsections.findOne(action.args.section)
-            var contents = section.contents[action.args.index]
-            play.text = contents.text.split('\n');
-            
-            play.canvas = document.createElement('canvas');
-            play.canvas.width = window.innerWidth;
-            play.canvas.height = window.innerHeight;
-
-            play.cx = play.canvas.getContext('2d');
-
-            play.cx.fillStyle = 'rgba(255,0,0,0.5)';
-            play.cx.fill();
-
-            play.cx.font = 'Bold 72px Impact'; // TODO should be grabbed from a setting!
-            play.cx.textAlign = 'center';
-            play.cx.textBaseline = 'middle';
-            play.cx.fillStyle = 'white';
-            
-            for (var l in play.text) {
-                var line = play.text[l];
-                play.cx.fillText(line, window.innerWidth/2,
-                    window.innerHeight/2 - (72 * play.text.length)/2 + (72 * l)
-                );
-            }
-            
-            play.texture = new THREE.Texture(play.canvas);
-            play.texture.minFilter = THREE.LinearFilter;
-            play.texture.magFilter = THREE.LinearFilter;
-            play.texture.needsUpdate = true;
-
-            play.materials = [];
-            play.meshes = [];
-            play.opacity = 0; //TODO this whole mess is ugly, fix it! 
-            play.z = 0.001;
-
-            this.create_blocks(play);            
-
-            this.fades.push({
-                start: 0, end: 1,
-                length: play.settings['fade'] || 1,
-                time: action.time,
-                callback: function (v) {
-                    for (var n in this.materials) {
-                        this.opacity = v;
-                        this.materials[n].uniforms.opacity.value = v;
-                    }
-                }.bind(play)
-            });
-        }
-
-        this.playing.push(play);
-    }
-
-    if (actions) for (var i = this.playing.length - 1; i >= 0; i--) {
-        var play = this.playing[i];
-        
-        var isActive = false;
-        for (var a in actions) {
-            if (actions[a]._id == play._id) {
-                if (actions[a].type == 'song') {
-                    console.log(actions[a].args == play.args);
-                    if (actions[a].args == play.args) isActive = true;
-                }
-                else isActive = true;
-                break;
-            }
-        }
-            
-        if (!isActive) {
-            console.log('removing');
+            console.log('removing ' + play.type, play);
             if (play.type == 'video' || play.type == 'image') {
                 this.fades.push({
                     start: 1, end: 0,
@@ -358,11 +213,150 @@ var changed = function (id, fields) {
                     }.bind(play, this.scene)
                 });
             }
-
-            this.playing.pop(i);
         }
         
-        console.log(this.playing);
+        // Set up the new action
+        if (action) {
+            var play = {_id: action._id, settings: action.settings, args: action.args};
+            console.log(play);
+
+            if (action.type == 'media') {
+                var m = media.findOne(action.media);
+                
+                if (m.type == 'video' || m.type == 'image') {
+                    if (m.type == 'video') {
+                        play.type = 'video';
+                        play.video = document.createElement('video');
+                        play.video.src = settings.findOne({key: 'mediaurl'}).value + m.location;
+                        play.video.controls = false;
+                        play.video.autoplay = true;
+    //                    play.video.loop = true; // TODO make this a setting!
+                        
+                        play.video.addEventListener('ended', function () {
+                            this.play();
+                        }.bind(play.video));
+                        
+                        play.texture = new THREE.VideoTexture(play.video);
+                        play.texture.minFilter = THREE.LinearFilter;
+                        play.texture.magFilter = THREE.LinearFilter;
+                    }
+                    
+                    else if (m.type == 'image') {
+                        play.type = 'image';
+                        play.texture = THREE.ImageUtils.loadTexture(settings.findOne({key: 'mediaurl'}).value + m.location);
+                        play.texture.minFilter = THREE.LinearFilter;
+                        play.texture.magFilter = THREE.LinearFilter;
+                    }
+                    
+                    play.materials = [];
+                    play.meshes = [];
+                    play.opacity = 0; //TODO this whole mess is ugly, fix it! 
+                    play.z = 0;
+
+                    this.create_blocks(play);
+
+                    this.fades.push({
+                        start: 0, end: 1,
+                        length: play.settings['fade'] || 1,
+                        time: action.time,
+                        callback: function (v) {
+                            for (var n in this.materials) {
+                                this.opacity = v;
+                                this.materials[n].uniforms.opacity.value = v;
+                            }
+                        }.bind(play)
+                    });
+                }
+                
+                else if (m.type == 'audio') {
+                    play.type = 'audio';
+                    play.audio = document.createElement('audio');
+                    play.audio.src = settings.findOne({key: 'mediaurl'}).value + m.location;
+                    play.audio.controls = false;
+                    play.audio.autoplay = true;
+    //                play.audio.loop = true;
+                    play.audio.volume = 0;
+
+                    play.audio.addEventListener('ended', function () {
+                        this.play();
+                    }.bind(play.audio));
+
+                    this.fades.push({
+                        start: 0, end: 1,
+                        length: play.settings['fade'] || 1,
+                        time: action.time,
+                        callback: function (v) {this.volume = v}.bind(play.audio)
+                    });
+                }
+            }
+            
+            else if (action.type == 'song') {
+                console.log('song');
+                play.type = 'song';
+
+                if (!action.args) continue;
+                var section = songsections.findOne(action.args.section)
+                var contents = section.contents[action.args.index]
+                play.text = contents.text.split('\n');
+                
+                play.canvas = document.createElement('canvas');
+                play.canvas.width = window.innerWidth;
+                play.canvas.height = window.innerHeight;
+
+                play.cx = play.canvas.getContext('2d');
+
+                play.cx.fillStyle = 'rgba(255,0,0,0.5)';
+                play.cx.fill();
+
+                play.cx.font = 'Bold 72px Comfortaa'; // TODO should be grabbed from a setting!
+                play.cx.textAlign = 'center';
+                play.cx.textBaseline = 'middle';
+                play.cx.fillStyle = 'white';
+                play.cx.strokeStyle = 'black';
+                
+                for (var l in play.text) {
+                    var line = play.text[l];
+                    play.cx.fillText(line, window.innerWidth/2,
+                        window.innerHeight/2 - (72 * play.text.length)/2 + (72 * l),
+                        window.innerWidth
+                    );
+                    
+                    play.cx.strokeText(line, window.innerWidth/2,
+                        window.innerHeight/2 - (72 * play.text.length)/2 + (72 * l),
+                        window.innerWidth
+                    );
+                    
+                }
+                
+                play.texture = new THREE.Texture(play.canvas);
+                play.texture.minFilter = THREE.LinearFilter;
+                play.texture.magFilter = THREE.LinearFilter;
+                play.texture.needsUpdate = true;
+
+                play.materials = [];
+                play.meshes = [];
+                play.opacity = 0; //TODO this whole mess is ugly, fix it! 
+                play.z = 0.001;
+
+                this.create_blocks(play);            
+
+                this.fades.push({
+                    start: 0, end: 1,
+                    length: play.settings['fade'] || 1,
+                    time: action.time,
+                    callback: function (v) {
+                        for (var n in this.materials) {
+                            this.opacity = v;
+                            this.materials[n].uniforms.opacity.value = v;
+                        }
+                    }.bind(play)
+                });
+            }
+
+        }
+
+        if (action) this.layers[i] = play;
+        else this.layers[i] = null;
     }
 }
 
@@ -373,8 +367,10 @@ var resize = function () {
     
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     
-    for (var i = 0; i < this.playing.length; i++) {
-        var play = this.playing[i];
+    for (var i in this.layers) {
+        if (this.layers.hasOwnProperty(i) && this.layers[i]) var play = this.layers[i];
+        else continue;
+
         if (play.meshes && (play.type == 'video' || play.type == 'image' || play.type == 'song')) {
             for (var i = 0; i < play.meshes.length; i++) {
                 this.scene.remove(play.meshes[i]);
@@ -413,7 +409,7 @@ Template.webminionmedia.onRendered(function () {
     this.render = render;
     this.create_blocks = create_blocks;
         
-    this.playing = [];
+    this.layers = {};
     this.fades = [];
     this.blocks = [];
     

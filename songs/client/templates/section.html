@@ -7,8 +7,10 @@
     <ul class="list-group">
         {{#each contents}}
             <li class="list-group-item">
+                <button class="content-del btn btn-default btn-xs pull-right">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
                 <textarea class="content-text form-control" rows="4">{{text}}</textarea>
-                
                 {{! TODO triggers}}
             </li>
         {{/each}}

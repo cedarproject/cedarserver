@@ -24,7 +24,15 @@ Template.songSettings.events({
         Meteor.call('songAddSection', this._id);
     },
     
+    'click .section-del': function (event, template) {
+        Meteor.call('songDelSection', this._id);
+    },
+    
     'click #arrangement-add': function (event, template) {
         Meteor.call('songAddArrangement', this._id);
+    },
+    
+    'click .arrangement-del': function (event, template) {
+        Meteor.call('songDelArrangement', this._id);
     }
 });

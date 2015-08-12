@@ -15,3 +15,10 @@ Cedar requires the following software:
 * GraphicsMagick
 
 After installing the above and downloading Cedar, then simply run command `meteor` in Cedar's directory, then open a browser to http://localhost:3000/.
+
+Credits
+=======
+
+Cedar is designed and developed by Isaac "hunternet93" Smith.
+
+The Cedar logo was created by jilllio and released into public domain on openclipart.org ([https://openclipart.org/detail/224342/Young-Cedar-Tree Link to image])
