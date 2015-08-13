@@ -108,7 +108,7 @@ Meteor.methods({
     
     songActionActivate: function (action) {
         var set = sets.findOne(action.set);
-        var targets = minions.find({stage: set.stage});
+        var targets = minions.find({type: 'media', stage: set.stage});
         
         action.time = (Date.now() * 0.001) + 0.1; // Get current time as float, add 100ms
         
