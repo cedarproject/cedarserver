@@ -9,6 +9,10 @@ Template.set.helpers({
         return stages.find({_id: {$ne: this.stage}});
     },
     
+    getLayers: function () {
+        return stages.findOne({_id: this.stage}).settings.layers;
+    },
+    
     actions: function () {
         return actions.find({set: this._id}, {sort: {order: 1}});
     },
@@ -139,7 +143,11 @@ Template.set.events({
         return false;
     },
 
-    'click .set-clear': function (event) {
+    'click .set-clear-layer': function (event, template) {
+        Meteor.call('setClearLayer', template.data._id, this.toString());
+    },
+
+    'click .set-deactivate': function (event) {
         Meteor.call('setDeactivate', this._id);
         $('.song-content').removeClass('active');
     },

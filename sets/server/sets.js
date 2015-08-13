@@ -94,6 +94,16 @@ Meteor.methods({
         }
     },
     
+    setClearLayer: function (setid, layer) {
+        var set = checkSet(setid);
+        
+        var s = {}; s['layers.' + layer] = null;
+        minions.find({type: 'media', stage: set.stage}).forEach(function (minion) {
+            if (minion.layers.hasOwnProperty(layer))
+                minions.update(minion, {$set: s});
+        });
+    },
+    
     setDeactivate: function (setid) {
         var set = checkSet(setid);
         if (set.active !== null) {

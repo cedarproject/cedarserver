@@ -32,9 +32,15 @@
         </button>
 
         <div id="control-fixed">
-            <button type="button" class="set-clear btn btn-default pull-right">
+            {{#each getLayers}}
+                <button type="button" class="set-clear-layer btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    {{this}}
+                </button>
+            {{/each}}
+            <button type="button" class="set-deactivate btn btn-default btn-sm pull-right">
                 <span class="glyphicon glyphicon-remove"></span>
-                Clear
+                All
             </button>
         </div>
         

@@ -39,8 +39,8 @@
     z-index: 100;
     bottom: 0;
     right: 0;
-    padding: 5px;
-    font-size: 2.5em;
-    border: 1px dashed gray;
+    padding: 1px;
+    font-size: 1em;
+    border: 1px solid gray;
     border-radius: 5px;
 }
