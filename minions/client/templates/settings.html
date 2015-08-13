@@ -32,6 +32,30 @@
                             </p>
                         {{/each}}
                         
+                        <h4>Songs:</h4>
+                        
+                        <label>Font:</label>
+                        <input data-setting="songs_font" class="setting form-control" value={{getSetting 'songs_font'}}>
+                        
+                        <label>Font Size:</label>
+                        <input type="number" min=0 max=200 step=1 data-setting="songs_font_size"
+                            class="setting form-control" value={{getSetting 'songs_font_size'}}>
+                        
+                        <label>Align:</label>
+                        <select data-setting="songs_text_align" class="setting form-control">
+                            <option value="top" {{isSelected 'songs_text_align' 'top'}}>Top</option>
+                            <option value="center" {{isSelected 'songs_text_align' 'center'}}>Center</option>
+                            <option value="bottom" {{isSelected 'songs_text_align' 'bottom'}}>Bottom</option>
+                        </select>
+                        
+                        <label>Justify:</label>
+                        <select data-setting="songs_text_justify" class="setting form-control">
+                            <option value="left" {{isSelected 'songs_text_justify' 'top'}}>Left</option>
+                            <option value="center" {{isSelected 'songs_text_justify' 'center'}}>Center</option>
+                            <option value="right" {{isSelected 'songs_text_justify' 'right'}}>Right</option>
+                        </select>
+                        
+                        <br>
                     
                         <div class="well well-sm">
                             <p><a href={{pathFor 'webminionmedia' _id}}>Launch Web Minion</a></p>

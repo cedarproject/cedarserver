@@ -123,6 +123,7 @@ var changed = function (id, fields) {
     var layers = fields['layers'];
     
     if (newsettings) {
+        this.settings = newsettings;
         if (newsettings['blocks']) {
             this.blocks = newsettings.blocks;
             resize.bind(this)();
@@ -300,33 +301,39 @@ var changed = function (id, fields) {
                 var contents = section.contents[action.args.index];
                 play.text = contents.text.split('\n');
                 
+                var s = combineSettings(this.settings);
+                
                 play.canvas = document.createElement('canvas');
                 play.canvas.width = window.innerWidth;
                 play.canvas.height = window.innerHeight;
 
                 play.cx = play.canvas.getContext('2d');
 
-                play.cx.fillStyle = 'rgba(255,0,0,0.5)';
-                play.cx.fill();
-
-                play.cx.font = 'Bold 72px Comfortaa'; // TODO should be grabbed from a setting!
-                play.cx.textAlign = 'center';
-                play.cx.textBaseline = 'middle';
-                play.cx.fillStyle = 'white';
-                play.cx.strokeStyle = 'black';
+                play.cx.font = [s.songs_font_weight, s.songs_font_size + 'px',s.songs_font].join(' ');
+                play.cx.textAlign = s.songs_text_justify;
+                play.cx.fillStyle = s.songs_font_color;
+                play.cx.strokeStyle = s.songs_font_outline + 'px ' + s.songs_font_outline_color;
                 
+                if (s.songs_text_justify == 'left') var x = 0;
+                else if (s.songs_text_justify == 'center') var x = window.innerWidth/2;
+                else if (s.songs_text_justify == 'right') var x = window.innerWidth;
+                
+                if (s.songs_text_align == 'top') {
+                    play.cx.textBaseline = 'top';
+                    var y = 0;
+                } else if (s.songs_text_align == 'center') {
+                    play.cx.textBaseline = 'middle';
+                    var y = window.innerHeight/2 - (s.songs_font_size * play.text.length)/2;
+                } else if (s.songs_text_align == 'bottom') {
+                    play.cx.textBaseline = 'bottom';
+                    var y = window.innerHeight - s.songs_font_size * play.text.length;
+                }
+                                
                 for (var l in play.text) {
                     var line = play.text[l];
-                    play.cx.fillText(line, window.innerWidth/2,
-                        window.innerHeight/2 - (72 * play.text.length)/2 + (72 * l),
-                        window.innerWidth
-                    );
-                    
-                    play.cx.strokeText(line, window.innerWidth/2,
-                        window.innerHeight/2 - (72 * play.text.length)/2 + (72 * l),
-                        window.innerWidth
-                    );
-                    
+
+                    play.cx.fillText(line, x, y + (s.songs_font_size * l), window.innerWidth);                    
+                    play.cx.strokeText(line, x, y + (s.songs_font_size * l), window.innerWidth);                                        
                 }
                 
                 play.texture = new THREE.Texture(play.canvas);
@@ -408,7 +415,8 @@ Template.webminionmedia.onRendered(function () {
     $('body').addClass('no-scrollbars');
     this.render = render;
     this.create_blocks = create_blocks;
-        
+    
+    this.settings = {};
     this.layers = {};
     this.fades = [];
     this.blocks = [];

@@ -10,7 +10,11 @@ Template.minionsettings.helpers({
     },
     
     getSetting: function (setting) {
-        return this.settings[setting];
+        return combineSettings(this.settings)[setting];
+    },
+    
+    isSelected: function (setting, value) {
+        if (combineSettings(this.settings)[setting] == value) return 'selected';
     },
     
     typeIs: function (type) {
@@ -38,6 +42,12 @@ Template.minionsettings.events({
             if (template.data.layers.hasOwnProperty(this.toString()))
                 Meteor.call('minionDelLayer', template.data._id, this.toString());
         }
+    },
+    
+    'change .setting': function (event, template) {
+        var setting = $(event.target).data('setting');
+        var value = $(event.target).val();
+        Meteor.call('minionSetting', template.data._id, setting, value);
     },
 
     'click .minion-settings-cancel': function (event) {
