@@ -51,6 +51,10 @@ Meteor.methods({
         actions.update(actionid, {$set: {key: value}});
     },
     
+    actionArgs: function (actionid, args) {
+        actions.update(actionid, {$set: {args: args}});
+    },
+    
     actionMove: function (actionid, index) {
         var action = actions.findOne(actionid);
         var setid = action.set;
@@ -64,10 +68,9 @@ Meteor.methods({
         actions.update({_id: actionid}, {$set: {order: index}});
     },
     
-    setActivate: function (setid, actionid, args) {
+    setActivate: function (setid, actionid) {
         var set = checkSet(setid);
         var action = actions.findOne(actionid);
-        action.args = args;
         var triggers = actions.find({actionid: action._id}).fetch();
 
         var set_actions = [action].concat(triggers);
@@ -98,10 +101,12 @@ Meteor.methods({
             sets.update(set, {$set: {active: null}});
         }
 
-        // TODO below should get list of layers from Stage!
-        var l = {}
-        var layers = ['background', 'foreground', 'audio'];
-        for (var i in layers) l['layers.' + layers[i]] = null;
-        minions.update({type: 'media', stage: set.stage}, {$set: l}, {multi: true});
+        minions.find({type: 'media', stage: set.stage}).forEach(function (minion) {
+            var l = {};
+            for (var i in minion.layers) {
+                if (minion.layers.hasOwnProperty(i)) l['layers.' + i] = null;
+            }
+            minions.update(minion, {$set: l});
+        });                
     }
 });

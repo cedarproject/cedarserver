@@ -24,6 +24,15 @@
                     </select>
                     
                     {{#if typeIs 'media'}}
+                        <label>Display Layers:</label>
+                        {{#each getLayers}}
+                            <p>
+                                <input type="checkbox" checked={{isLayerChecked}} class="display-layer-checkbox">
+                                {{this}}
+                            </p>
+                        {{/each}}
+                        
+                    
                         <div class="well well-sm">
                             <p><a href={{pathFor 'webminionmedia' _id}}>Launch Web Minion</a></p>
                             <p>Direct link: <pre>{{urlFor 'webminionmedia' _id}}</pre></p>

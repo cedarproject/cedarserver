@@ -295,9 +295,9 @@ var changed = function (id, fields) {
             else if (action.type == 'song') {
                 play.type = 'song';
 
-                if (!action.args) continue;
-                var section = songsections.findOne(action.args.section)
-                var contents = section.contents[action.args.index]
+                if (!(action.args.section && action.args.index)) continue;
+                var section = songsections.findOne(action.args.section);
+                var contents = section.contents[action.args.index];
                 play.text = contents.text.split('\n');
                 
                 play.canvas = document.createElement('canvas');

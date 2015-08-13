@@ -17,7 +17,7 @@ Template.set.helpers({
         return n + 1;
     },
     
-    isActive: function (n) {
+    isActive: function () {
         if (Template.parentData()['active'] == this._id) return 'active';
     }
 });
@@ -81,6 +81,7 @@ Template.set.events({
     'click .set-action': function (event) {
         var set = Template.parentData();
         if (this._id != set.active) {
+            Meteor.call('actionArgs', this._id, {}); // Reset Song/Presentation active slide index.
             Meteor.call('setActivate', set._id, this._id);
         };
         return false;
@@ -90,13 +91,12 @@ Template.set.events({
         event.stopImmediatePropagation();
         var args = {
             section: this.section,
-            index: this.index
+            index: this.index,
+            number: this.number
         };
-        console.log(this);
-        Meteor.call('setActivate', template.data._id, this.action, args);
         
-        $('.song-content').removeClass('active');
-        $(event.currentTarget).addClass('active');
+        Meteor.call('actionArgs', this.action, args);
+        Meteor.call('setActivate', template.data._id, this.action);        
     },
     
     'click .set-add-item': function (event) {
@@ -106,6 +106,7 @@ Template.set.events({
     'click .collection-add': function (event, template) {    
         var action = {
             set: template.data._id,
+            args: {},
             settings: {}
         };
         

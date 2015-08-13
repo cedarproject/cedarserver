@@ -15,12 +15,33 @@ Template.minionsettings.helpers({
     
     typeIs: function (type) {
         return type == this.type;
+    },
+    
+    getLayers: function () {
+        var stage = stages.findOne({_id: this.stage});
+        return stage.settings.layers;
+    },
+    
+    isLayerChecked: function () {
+        if (Template.parentData().layers.hasOwnProperty(this)) return 'true';
     }
 });
 
 Template.minionsettings.events({
+    'click .display-layer-checkbox': function (event, template) {
+        if (event.target.checked) {
+            if (!template.data.layers.hasOwnProperty(this.toString())) 
+                Meteor.call('minionAddLayer', template.data._id, this.toString());
+        }
+        
+        else {
+            if (template.data.layers.hasOwnProperty(this.toString()))
+                Meteor.call('minionDelLayer', template.data._id, this.toString());
+        }
+    },
+
     'click .minion-settings-cancel': function (event) {
-        Router.go('/minions');    
+        Router.go('/minions');
     },
     
     'click .minion-settings-save': function (event) {

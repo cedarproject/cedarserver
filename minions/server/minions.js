@@ -60,8 +60,9 @@ Meteor.methods({
     
     minionDelLayer: function (minionid, layer) {
         var minion = checkMinion(minionid);
-        var u = 'layers.' + layer;
-        minoions.update(minion, {$unset: u});
+        var u = {}; u['layers.' + layer] = null;
+        console.log(u);
+        minions.update(minion, {$unset: u});
     },
     
     minionSetting: function (minionid, key, value) {
