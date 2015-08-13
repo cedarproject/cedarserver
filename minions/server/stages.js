@@ -11,7 +11,10 @@ Meteor.methods({
     stageNew: function () {
         stages.insert({
             title: 'New Stage',
-            active: null
+            active: null,
+            settings: {
+                layers: ['audio', 'background', 'foreground']
+            }
         });
     },
     
@@ -25,6 +28,12 @@ Meteor.methods({
     
     stageTitle: function (stageid, newtitle) {
         var stage = checkStage(stageid);
-        stages.update(stage, {title: newtitle});
+        stages.update(stage, {$set: {title: newtitle}});
+    },
+    
+    stageSetting: function (stageid, key, value) {
+        var stage = checkStage(stageid);
+        var s = {}; s['settings.' + key] = value;
+        stages.update(stage, {$set: s});
     }
 });

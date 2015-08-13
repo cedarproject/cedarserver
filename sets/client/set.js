@@ -173,9 +173,9 @@ Template.set.events({
         $(event.target).parents('.modal').modal('hide');
     },
     
-    'click .set-delete-confirm': function (event) {
-        $(event.target).parents('.modal').modal('hide');
-        Meteor.call('setDelete', this._id);
+    'click .set-delete-confirm': function (event, template) {
+        $(event.target).parents('.modal').removeClass('fade').modal('hide');
+        Meteor.call('setDelete', template.data._id);
         Router.go('/sets');
     },
 });

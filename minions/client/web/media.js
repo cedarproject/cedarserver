@@ -118,6 +118,7 @@ var create_blocks = function (play) {
 }
 
 var changed = function (id, fields) {
+    console.log('change!');
     var newsettings = fields['settings'];
     var layers = fields['layers'];
     
@@ -140,12 +141,15 @@ var changed = function (id, fields) {
     if (layers) for (var i in layers) {
         if (layers.hasOwnProperty(i)) var action = layers[i];
         else continue;
-                
+                        
         // Check if the layer's action has changed.
         if (action != null && this.layers[i]) {
             if (action._id == this.layers[i]._id) {
                 if (action.type == 'song') {
-                    if (action.args && this.layers[i].args && action.args == this.layers[i].args) continue;
+                    if (action.args && this.layers[i].args && 
+                        action.args.section == this.layers[i].args.section &&
+                        action.args.index == this.layers[i].args.index)
+                            continue;
                 }
                 else continue;
             }
@@ -155,7 +159,6 @@ var changed = function (id, fields) {
         if (this.layers[i]) {
             var play = this.layers[i];
 
-            console.log('removing ' + play.type, play);
             if (play.type == 'video' || play.type == 'image') {
                 this.fades.push({
                     start: 1, end: 0,
@@ -218,8 +221,7 @@ var changed = function (id, fields) {
         // Set up the new action
         if (action) {
             var play = {_id: action._id, settings: action.settings, args: action.args};
-            console.log(play);
-
+            
             if (action.type == 'media') {
                 var m = media.findOne(action.media);
                 
@@ -291,7 +293,6 @@ var changed = function (id, fields) {
             }
             
             else if (action.type == 'song') {
-                console.log('song');
                 play.type = 'song';
 
                 if (!action.args) continue;
@@ -335,7 +336,7 @@ var changed = function (id, fields) {
 
                 play.materials = [];
                 play.meshes = [];
-                play.opacity = 0; //TODO this whole mess is ugly, fix it! 
+                play.opacity = 0;
                 play.z = 0.001;
 
                 this.create_blocks(play);            
@@ -352,7 +353,6 @@ var changed = function (id, fields) {
                     }.bind(play)
                 });
             }
-
         }
 
         if (action) this.layers[i] = play;
