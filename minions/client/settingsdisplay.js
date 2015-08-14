@@ -6,6 +6,7 @@ var block_props = [
     {prop: 'y', def: 0, title: 'Y', min: 0, max: 1, step: 0.01},
     {prop: 'width', def: 1, title: 'Width', min: 0, max: 1, step: 0.01},
     {prop: 'height', def: 1, title: 'Height', min: 0, max: 1, step: 0.01},
+    {prop: 'brightness', def: 1, title: 'Brightness', min: 0, max: 2, step: 0.01},
     {prop: 'block-0-0', def: -1, title: 'X', min: -1, max: 1, step: 0.001},
     {prop: 'block-0-1', def: 1, title: 'Y', min: -1, max: 1, step: 0.001},
     {prop: 'block-1-0', def: 1, title: 'X', min: -1, max: 1, step: 0.001},
@@ -17,11 +18,11 @@ var block_props = [
 ];
 
 var block_groups = [
-    {heading: 'Source', props: block_props.slice(0, 4)},
-    {heading: 'Top-Left', props: block_props.slice(4, 6)},
-    {heading: 'Top-Right', props: block_props.slice(6, 8)},
-    {heading: 'Bottom-Left', props: block_props.slice(8, 10)},
-    {heading: 'Bottom-Right', props: block_props.slice(10, 12)}
+    {heading: 'Source', props: block_props.slice(0, 5)},
+    {heading: 'Top-Left', props: block_props.slice(5, 7)},
+    {heading: 'Top-Right', props: block_props.slice(7, 9)},
+    {heading: 'Bottom-Left', props: block_props.slice(9, 11)},
+    {heading: 'Bottom-Right', props: block_props.slice(11, 13)}
 ];
 
 Template.minionsettingsdisplay.helpers({

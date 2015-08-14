@@ -10,10 +10,11 @@ var vertShaderSource = [
 var fragShaderSource = [
     'varying vec2 vUv;',
     'uniform sampler2D uSampler;',
+    'uniform float brightness;',
     'uniform float opacity;',
     'void main(void)  {',
     '    gl_FragColor = texture2D(uSampler, vUv);',
-    '    gl_FragColor.a *= opacity;',
+    '    gl_FragColor *= vec4(brightness, brightness, brightness, opacity);',
     '}'
 ].join('\n');
     
@@ -92,6 +93,7 @@ var create_blocks = function (play) {
             fragmentShader: fragShaderSource,
             transparent: true,  
             uniforms: {
+                brightness: {type: 'f', value: block.brightness || 1.0},
                 opacity: {type: 'f', value: play.opacity},
                 uTransformMatrix: {type: 'm4', value: matrix},
                 uSampler: {type: 't', value: play.texture}
@@ -118,7 +120,6 @@ var create_blocks = function (play) {
 }
 
 var changed = function (id, fields) {
-    console.log('change!');
     var newsettings = fields['settings'];
     var layers = fields['layers'];
     
@@ -127,15 +128,6 @@ var changed = function (id, fields) {
         if (newsettings['blocks']) {
             this.blocks = newsettings.blocks;
             resize.bind(this)();
-/*            for (var i = 0; i < this.playing.length; i++) {
-                var play = this.playing[i];
-                if (play.type == 'video' || play.type == 'image') {
-                    for (var i = 0; i < play.meshes.length; i++) {
-                        this.scene.remove(play.meshes[i]);
-                    }
-                    this.create_blocks(play);
-                }
-            } */
         }
     }
     
@@ -382,7 +374,8 @@ var resize = function () {
             for (var i = 0; i < play.meshes.length; i++) {
                 this.scene.remove(play.meshes[i]);
             }
-            play.meshes = this.create_blocks(play);            
+            play.meshes = [];
+            this.create_blocks(play);            
         }
     }
 }
