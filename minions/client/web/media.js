@@ -166,7 +166,7 @@ var changed = function (id, fields) {
                             for (var i in this.meshes) {
                                 scene.remove(this.meshes[i]);
                             }
-                            if (play.type == 'video') {
+                            if (this.type == 'video') {
                                 this.video.pause();
                                 $(this.video).remove();
                             }
