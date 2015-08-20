@@ -1,10 +1,6 @@
 Template.setAction.helpers({
     actionType: function (type) {
-        if (this.type == type) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.type == type
     },
     
     getMedia: function () {
@@ -17,8 +13,14 @@ Template.setAction.helpers({
     
     getSong: function () {
         var song = songs.findOne(this.song);
-        song.arrangement = songarrangements.findOne(this.arrangement);
+        song.arrangement = songarrangements.findOne(this.settings.arrangement);
         song.action = this._id;
         return song;
+    }
+});
+
+Template.setAction.events({
+    'click .settings-button': function (event, template) {
+        template.$('.settings').collapse('toggle');
     }
 });

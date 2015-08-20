@@ -76,19 +76,15 @@ Template.set.events({
         event.stopImmediatePropagation();
         return false;
     },
-    
-    'click .settings-button': function (event) {
-        event.stopImmediatePropagation();
-        return true;
-    },
-    
+        
     'click .set-action': function (event) {
+        if ($(event.target).hasClass('btn')) return;
         var set = Template.parentData();
         if (this._id != set.active) {
             Meteor.call('actionArgs', this._id, {}); // Reset Song/Presentation active slide index.
             Meteor.call('setActivate', set._id, this._id);
         };
-        return false;
+//        return false;
     },
     
     'click .song-content': function (event, template) {
@@ -103,13 +99,13 @@ Template.set.events({
         Meteor.call('setActivate', template.data._id, this.action);        
     },
     
-    'click .set-add-item': function (event) {
-        $(event.target).siblings('.action-selector-modal').modal('show');
+    'click .set-add-item': function (event, template) {
+        Session.set('add-to', {type: 'set'});
+        template.$('.action-selector-modal').modal('show');
     },
-
+    
     'click .collection-add': function (event, template) {    
         var action = {
-            set: template.data._id,
             args: {},
             settings: {}
         };
@@ -122,8 +118,9 @@ Template.set.events({
         if (col == 'media') {
             action.type = 'media';
             action.media = $(event.target).data('id');
-            action.mediatype = media.findOne(action.media).type;
-            action.role = 'background';
+            var m = media.findOne(action.media);
+            action.mediatype = m.type;
+            action.layer = m.layer;
         }
         
         else if (col == 'lightscenes') {
@@ -134,8 +131,12 @@ Template.set.events({
         else if (col == 'songs') {
             action.type = 'song';
             action.song = $(event.target).data('id');
-            action.arrangement = songarrangements.findOne({song: action.song})._id; // TODO this should be user-specified!
+            action.settings.arrangement = songarrangements.findOne({song: action.song})._id;
+            action.settings.layer = 'foreground';
         }
+        
+        if (Session.get('add-to')['type'] == 'set') action['set'] = template.data._id;
+        else action['actionid'] = Session.get('add-to').action;
         
         Meteor.call('actionAdd', action);
                     

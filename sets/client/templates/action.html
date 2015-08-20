@@ -1,4 +1,19 @@
 <template name="setAction">
+    <div class="btn-group btn-group-sm pull-right" role="group">
+        <button class="settings-button btn btn-default">
+            <span class="glyphicon glyphicon-cog"></span>
+        </button>
+        {{#if set}}
+            <button type="button" class="action-move btn btn-default">
+                <span class="glyphicon glyphicon-sort"></span>
+            </button>
+        {{/if}}
+    </div>
+    
+    <div class="settings collapse">
+        {{> actionSettings}}
+    </div>
+
     {{#if actionType 'media'}}
         {{#with getMedia}}
             <div class="media">

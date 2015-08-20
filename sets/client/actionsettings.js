@@ -1,41 +1,58 @@
 Template.actionSettings.helpers({
+    typeIs: function () {
+        for (var i in arguments) {
+            if (arguments[i] == this.type) return true;
+        }
+    },
+    
     triggers: function () {
         return actions.find({actionid: this._id});
+    },
+    
+    getLayers: function () {
+        var stageid = Template.parentData().stage;
+        if (!stageid) stageid = Template.parentData(2).stage;
+        var stage = stages.findOne({_id: stageid});
+        return stage.settings.layers;
+    },
+
+    isLayerSelected: function () {
+        if (Template.parentData().layer == this.toString()) return 'selected';
+    },
+    
+    getSongArrangements: function () {
+        return songarrangements.find({song: this.song});
+    },
+    
+    isActiveArrangement: function () {
+        if (Template.parentData().settings.arragement == this._id) return 'selected';
     }
 });
 
 Template.actionSettings.events({
-    'click .trigger-add': function (event, template) {
-        template.$('.action-selector-modal').modal('show');
+    'change .action-layer': function (event, template) {
+        Meteor.call('actionLayer', template.data._id, $(event.target).val());
     },
-
+    
+    'change .song-arrangement': function (event, template) {
+        Meteor.call('actionSetting', template.data._id, 'arrangement', $(event.target).val());
+    },
+    
     'click .trigger-del': function (event, template) {
         Meteor.call('actionRemove', this._id);
     },
-    
-    'click .collection-add': function (event, template) {
-        var t = $(event.target);
-    
-        var action = {};
-        action.actionid = template.data._id;
-        action.settings = {};
-        
-        if (t.data('collection') == 'media') {
-            action.type = 'media';
-            action.media = t.data('id');
-            action.mediatype = media.findOne(action.media).type;
-        }
-        
-        else if (t.data('collection') == 'lightscenes') {
-            action.type = 'lightscene';
-            action.lightscene = t.data('id');
-        }
 
-        Meteor.call('actionAdd', action);
+    'click .trigger-add': function (event, template) {
+        Session.set('add-to', {type: 'action', action: this._id });
+        $('.action-selector-modal').modal('show');
     },
-    
+        
     'click .action-del': function (event, template) {
         Meteor.call('actionRemove', template.data._id);
-        Router.go('/set/' + template.data.set);
+    },
+    
+    'click .well': function(event, template) {
+        event.stopImmediatePropagation();
+        return false;
     }
 });

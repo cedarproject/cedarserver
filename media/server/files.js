@@ -5,6 +5,7 @@ function process_media(fileInfo, formFields) {
         type: null,
         duration: null,
         thumbnail: null,
+        layer: 'background',
         tags: [],
         new: true
     });
@@ -40,7 +41,7 @@ function process_media(fileInfo, formFields) {
                 }
             }
             
-            media.update(m._id, {$set: {type: 'audio', duration: metadata.format.duration}});
+            media.update(m._id, {$set: {type: 'audio', layer: 'audio', duration: metadata.format.duration}});
             
             ffmpeg(metadata.format.filename).noAudio().videoCodec('png').size('64x64')
             .on('end', Meteor.bindEnvironment(function () {
