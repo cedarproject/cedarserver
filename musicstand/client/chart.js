@@ -33,10 +33,17 @@ Template.musicstandchart.helpers({
     getText: function () {
         return songTextToChordChart(this.text, Template.parentData(2).transpose.get());
     },
+    
+    isHeaderActive: function () {
+        var action = Template.parentData();
+        if (action._id == Template.parentData(2).active) {
+            if (action.args['number'] === undefined) return 'musicstand-active';
+        }
+    },
 
     isActive: function () {
         var action = Template.parentData(3);
-        if (action['args']) {
+        if (action._id == Template.parentData(4).active) {
             var n = Template.parentData().number + Template.parentData().contents.indexOf(this);
             if (n == action.args.number) return 'musicstand-active';
         }

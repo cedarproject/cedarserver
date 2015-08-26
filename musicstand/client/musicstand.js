@@ -22,23 +22,17 @@ Template.musicstand.helpers({
 Template.musicstand.onRendered(function () {
     this.autorun(function () {
         // Bind to the current Set and Action data context so this gets autorun when they change.
-        var active = Template.currentData().active;
-        var args = actions.findOne(active);
+        var activeid = Template.currentData().active;
+        var action = actions.findOne(activeid);
         
-        if ($('#scroll-lock').hasClass('active')) {
-            $('html, body').animate({
-                scrollTop: $('.musicstand-active').offset().top - window.innerHeight * 0.3
-            }, 1000);
-        }
+        if ($('#scroll-lock').hasClass('active') && $('.musicstand-active').length > 0)
+            scrollTo('.musicstand-active');
     });
 });
 
 Template.musicstand.events({
     'click #scroll-lock': function (event, template) {
         $(event.currentTarget).toggleClass('active');
-        if ($(event.currentTarget).hasClass('active'))
-            $('html, body').animate({
-                scrollTop: $('.musicstand-active').offset().top - window.innerHeight * 0.3
-            }, 1000);
+        if ($(event.currentTarget).hasClass('active'));
     }
 });
