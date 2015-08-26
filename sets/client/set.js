@@ -110,7 +110,7 @@ Template.set.events({
             settings: {}
         };
         
-        var a = actions.findOne({set: action.set}, {sort: {order: -1}, fields: {order: 1}});
+        var a = actions.findOne({set: template.data._id}, {sort: {order: -1}, fields: {order: 1}});
         if (a) action.order = a.order + 1;
         else action.order = 0;
         
