@@ -17,6 +17,13 @@
                     <option value="{{_id}}" {{isActiveArrangement}}>{{title}}</option>
                 {{/each}}
             </select>
+            
+            <label>Key:</label>
+            <select class="song-key form-control">
+                {{#each getSongKeys}}
+                    <option value="{{this}}" {{isSongKeySelected this}}>{{this}}</option>
+                {{/each}}
+            </select>
         {{/if}}
     
         {{#if set}}

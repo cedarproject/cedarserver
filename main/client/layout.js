@@ -1,6 +1,7 @@
 Template.layout.helpers({
     notFullscreen: function () {
-        if (Router.current().lookupTemplate() == 'Webminionmedia') return false;
+        var curr = Router.current().lookupTemplate();
+        if (curr == 'Webminionmedia') return false;
         else return true;
     },
 

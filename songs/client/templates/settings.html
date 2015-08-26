@@ -8,46 +8,49 @@
             <input class="song-title-edit hidden" value={{title}}>
         </h3>
         
-        <div>
-            <h4>Sections</h4>
-
-            <ul class="list-group">
-                {{#each sections}}
-                    <li class="list-group-item">
-                        <button class="section-del btn btn-default btn-sm pull-right">
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                        {{> songSection}}
-                    </li>
-                {{/each}}
-            </ul>
-            
-            <button class="btn btn-primary" id="section-add">
-                <span class="glyphicon glyphicon-plus"></span>
-                Add Section
-            </button>
-        </div>
+        <label>Key:</label>
+        <select id="song-key" class="form-control">
+            {{#each getKeys}}
+                <option value={{this}} {{keySelected this}}>{{this}}</option>
+            {{/each}}
+        </select>
         
+        <h4>Sections</h4>
+
+        <ul class="list-group">
+            {{#each sections}}
+                <li class="list-group-item">
+                    <button class="section-del btn btn-default btn-sm pull-right">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    {{> songSection}}
+                </li>
+            {{/each}}
+        </ul>
+        
+        <button class="btn btn-primary" id="section-add">
+            <span class="glyphicon glyphicon-plus"></span>
+            Add Section
+        </button>
+    
         <hr>
-        
-        <div>
-            <h4>Arrangements</h4>
+    
+        <h4>Arrangements</h4>
 
-            <ul class="list-group">
-                {{#each arrangements}}
-                    <li class="list-group-item">
-                        <button class="arrangement-del btn btn-default btn-sm pull-right">
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                        {{> songArrangement}}
-                    </li>
-                {{/each}}
-            </ul>
+        <ul class="list-group">
+            {{#each arrangements}}
+                <li class="list-group-item">
+                    <button class="arrangement-del btn btn-default btn-sm pull-right">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    {{> songArrangement}}
+                </li>
+            {{/each}}
+        </ul>
 
-            <button class="btn btn-primary" id="arrangement-add">
-                <span class="glyphicon glyphicon-plus"></span>
-                Add Arrangement
-            </button>
-        </div>            
+        <button class="btn btn-primary" id="arrangement-add">
+            <span class="glyphicon glyphicon-plus"></span>
+            Add Arrangement
+        </button>
     </div>
 </template>

@@ -1,0 +1,40 @@
+.musicstand-action {
+    transition: box-shadow 0.2s;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.musicstand-active {
+    box-shadow: 0px 0px 10px 2px #337AB7;
+}
+
+.musicstand-header {
+    position: sticky;
+    top: 0em;
+    border: 1px solid #C8C8C8;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 100;
+}
+
+.musicstand-chart {
+    transition: box-shadow 0.2s;
+    line-height: 2.5;
+    margin-bottom: 2em;
+}
+
+.musicstand-chord {
+    position: relative;
+}
+
+.musicstand-chord > span {
+    position: absolute;
+    top: -1.5em;
+    font-weight: bold;
+}
+
+#scroll-lock {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+}

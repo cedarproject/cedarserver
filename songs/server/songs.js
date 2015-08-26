@@ -9,6 +9,7 @@ Meteor.methods({
         var songid = songs.insert({
             title: 'New Song',
             tags: [],
+            key: 'C'
             // TODO add author/copyright metadata!
         });
         return songid;
@@ -22,6 +23,11 @@ Meteor.methods({
     songTitle: function (songid, title) {
         var song = checkSong(songid);
         songs.update(song, {$set: {title: title}});
+    },
+    
+    songKey: function (songid, key) {
+        var song = checkSong(songid);
+        songs.update(song, {$set: {key: key}});
     },
     
     songAddSection: function (songid) {

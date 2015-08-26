@@ -1,0 +1,25 @@
+<template name="musicstandchart">
+    <div class="musicstand-header">
+        <form class="form-inline pull-right">
+            <label>Key:</label>
+            <select class="chart-key form-control">
+                {{#each getKeys}}
+                    <option value={{this}} {{keySelected this}}>{{this}}</option>
+                {{/each}}
+            </select>
+        </form>
+        <h3>{{title}}</h3>
+        <p><small>{{order}}</small></p>
+    </div>
+    
+    {{#each sections}}
+        <div class="">
+            <p><b>{{title}}</b></p>
+            {{#each contents}}
+                <p class="musicstand-chart {{isActive}}">
+                    {{{getText}}}
+                </p>
+            {{/each}}
+        </div>
+    {{/each}}            
+</template>

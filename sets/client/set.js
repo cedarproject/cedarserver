@@ -132,6 +132,7 @@ Template.set.events({
             action.type = 'song';
             action.song = $(event.target).data('id');
             action.settings.arrangement = songarrangements.findOne({song: action.song})._id;
+            action.settings.key = songs.findOne(action.song).key;
             action.settings.layer = 'foreground';
         }
         

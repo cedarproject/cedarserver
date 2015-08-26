@@ -1,0 +1,21 @@
+<template name="actionDisplay">
+    {{#if actionType 'media'}}
+        {{#with getMedia}}
+            <div class="media">
+                {{> mediaItem}}
+            </div>
+        {{/with}}
+    {{/if}}
+    
+    {{#if actionType 'lightscene'}}
+        {{#with getLightScene}}
+            {{> lightScene}}
+        {{/with}}
+    {{/if}}
+    
+    {{#if actionType 'song'}}
+        {{#with getSong}}
+            {{> songDisplay}}
+        {{/with}}
+    {{/if}}
+</template>

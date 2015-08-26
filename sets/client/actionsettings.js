@@ -26,6 +26,16 @@ Template.actionSettings.helpers({
     
     isActiveArrangement: function () {
         if (Template.parentData().settings.arragement == this._id) return 'selected';
+    },
+
+    getSongKeys: function () {
+        var keys = [];
+        for (var p in key2num) if (key2num.hasOwnProperty(p)) keys.push(p);
+        return keys;
+    },
+    
+    isSongKeySelected: function (key) {
+        if (Template.parentData().settings.key == key) return 'selected';
     }
 });
 
@@ -36,6 +46,10 @@ Template.actionSettings.events({
     
     'change .song-arrangement': function (event, template) {
         Meteor.call('actionSetting', template.data._id, 'arrangement', $(event.target).val());
+    },
+    
+    'change .song-key': function (event, template) {
+        Meteor.call('actionSetting', template.data._id, 'key', $(event.target).val());
     },
     
     'click .trigger-del': function (event, template) {
