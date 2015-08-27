@@ -21,6 +21,8 @@
     transition: box-shadow 0.2s;
     line-height: 2.5;
     margin-bottom: 2em;
+    font-size: 3vw;
+    white-space: pre;
 }
 
 .musicstand-chord {
