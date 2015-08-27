@@ -1,6 +1,14 @@
 Template.songArrangement.helpers({
-    getTitle: function (_id) {
-        return songsections.findOne(_id).title;
+    getOrder: function () {
+        var out = [];
+        for (var i in this.order) {
+            out.push({
+                title: songsections.findOne(this.order[i]).title,
+                index: i
+            });
+        }
+
+        return out;
     },
     
     sections: function () {
@@ -28,26 +36,23 @@ Template.songArrangement.events({
 
     'click .order-down': function (event, template) {
         var order = template.data.order;
-        var i = order.indexOf(this.toString());
-        if (i < order.length-1) {
-            order.splice(i+1, 0, order.splice(i, 1)[0]);
+        if (this.index < order.length-1) {
+            order.splice(this.index+1, 0, order.splice(this.index, 1)[0]);
             Meteor.call('songArrangementOrder', template.data._id, order);
         }
     },
 
     'click .order-up': function (event, template) {
         var order = template.data.order;
-        var i = order.indexOf(this.toString());
-        if (i > 0) {
-            order.splice(i-1, 0, order.splice(i, 1)[0]);
+        if (this.index > 0) {
+            order.splice(this.index-1, 0, order.splice(this.index, 1)[0]);
             Meteor.call('songArrangementOrder', template.data._id, order);
         }
     },
     
     'click .order-del': function (event, template) {
         var order = template.data.order;
-        var i = order.indexOf(this.toString());
-        order.splice(i, 1);
+        order.splice(this.index, 1);
         Meteor.call('songArrangementOrder', template.data._id, order);
     },
     

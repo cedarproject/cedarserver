@@ -6,7 +6,7 @@
     
     <div class="well">
         <ul class="list-group">
-            {{#each order}}
+            {{#each getOrder}}
                 <li class="list-group-item">
                     <div class="btn-group btn-group-sm pull-right">
                         <button class="order-up btn btn-default">
@@ -19,7 +19,7 @@
                             <span class="glyphicon glyphicon-remove"></span>
                         </button>
                     </div>
-                    {{getTitle this}}
+                    {{title}}
                 </li>
             {{/each}}
         </ul>
