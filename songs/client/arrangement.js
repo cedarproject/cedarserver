@@ -21,7 +21,34 @@ Template.songArrangement.events({
     },
     
     'click .order-add': function (event, template) {
-        Meteor.call('songArrangementAddSection', template.data._id, this._id);
+        var order = template.data.order;
+        order.push(this._id);
+        Meteor.call('songArrangementOrder', template.data._id, order);
+    },
+
+    'click .order-down': function (event, template) {
+        var order = template.data.order;
+        var i = order.indexOf(this.toString());
+        if (i < order.length-1) {
+            order.splice(i+1, 0, order.splice(i, 1)[0]);
+            Meteor.call('songArrangementOrder', template.data._id, order);
+        }
+    },
+
+    'click .order-up': function (event, template) {
+        var order = template.data.order;
+        var i = order.indexOf(this.toString());
+        if (i > 0) {
+            order.splice(i-1, 0, order.splice(i, 1)[0]);
+            Meteor.call('songArrangementOrder', template.data._id, order);
+        }
+    },
+    
+    'click .order-del': function (event, template) {
+        var order = template.data.order;
+        var i = order.indexOf(this.toString());
+        order.splice(i, 1);
+        Meteor.call('songArrangementOrder', template.data._id, order);
     },
     
     'click #arrangement-del': function (event, template) {

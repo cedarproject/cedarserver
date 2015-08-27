@@ -26,29 +26,49 @@ Template.set.helpers({
     }
 });
 
-// TODO fix -- this is complicated
-/*Template.set.onRendered(function () {
-    $('body').keypress(function (event, set) {
-        console.log(event.key);
-        console.log(this);
-        var set = this;
-        if (set.active) {
-            if (event.key == 'ArrowUp' || event.key == 'Up' &&
-                    set.active > 0) {
-                var currAction = actions.findOne(set.active);
-                var prevAction = actions.findOne({order: currAction.order - 1});
-                if (prevAction) Meteor.call('setActivate', set._id, prevAction._id);
-            }
+/* Still needs more work
+Template.set.onRendered(function () {
+    $(window).keypress(function (event, setid) {
+        var set = sets.findOne(setid);
+        if (this.active) {
+            var action = actions.findOne(this.active);
+            var num = actions.findOne({}, {sort: {order: -1}}).order;
 
-            else if (event.key == 'ArrowDown' || event.key == 'Down' && 
-                    set.active < this.actions.length - 1) {
-                var currAction = actions.findOne(set.active);
-                var nextAction = actions.findOne({order: currAction.order + 1});
-                if (nextAction) Meteor.call('setActivate', set._id, nextAction._id);
+            if (event.key == 'ArrowRight' && action.order < num) {
+                if (action.type == 'song') {
+                    var args = action.args;
+                    var arrangement = songarrangements.findOne(action.settings.arrangement);
+                    
+                    if (!args['section'] || !args['index'] || !args['number']) {
+                        args = {section: arrangement.order[0], index: 0, number: 0};
+                        Meteor.call('actionArgs', action._id, args);
+                        return;
+                    }
+                        
+                    else {
+                        var section = songsections.findOne(args.section);
+                        if (section.length < args.index + 1) {
+                            var i = arrangement.order.indexOf(args.section)
+                            if (arrangement.order.length > i + 1) {
+                                args = {section: arrangement.order[i + 1], index: 0, number: args.number + 1};
+                                Meteor.call('actionArgs', action._id, args);
+                                return;
+                            }
+                        }
+                        
+                        else {
+                            args = {section: args.section, index: args.index + 1, number: args.number + 1};
+                            Meteor.call('actionArgs', action._id, args);
+                            return;
+                        }
+                    }
+                }
+                
+                Meteor.call('setActivate', this._id, actions.findOne({set: this._id, order: action.order + 1})._id);
             }
         }
-    }, Template.currentData());
-});*/
+    }.bind(this, Template.currentData()._id));
+}); */
 
 Template.set.events({
     'click .moving': function (event) {
@@ -133,7 +153,7 @@ Template.set.events({
             action.song = $(event.target).data('id');
             action.settings.arrangement = songarrangements.findOne({song: action.song})._id;
             action.settings.key = songs.findOne(action.song).key;
-            action.settings.layer = 'foreground';
+            action.layer = 'foreground';
         }
         
         if (Session.get('add-to')['type'] == 'set') action['set'] = template.data._id;

@@ -5,15 +5,24 @@
     </p>
     
     <div class="well">
-        <div class="row">
+        <ul class="list-group">
             {{#each order}}
-                <div class="col-lg-1 col-xs-4">
-                    <p>
-                        <span class="label label-default">{{getTitle this}}</span>
-                    </p>
-                </div>
+                <li class="list-group-item">
+                    <div class="btn-group btn-group-sm pull-right">
+                        <button class="order-up btn btn-default">
+                            <span class="glyphicon glyphicon-arrow-up"></span>
+                        </button>
+                        <button class="order-down btn btn-default">
+                            <span class="glyphicon glyphicon-arrow-down"></span>
+                        </button>
+                        <button class="order-del btn btn-default">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                    </div>
+                    {{getTitle this}}
+                </li>
             {{/each}}
-        </div>
+        </ul>
     </div>
         
     <div class="btn-group">

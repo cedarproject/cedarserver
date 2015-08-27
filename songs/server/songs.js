@@ -100,16 +100,8 @@ Meteor.methods({
         songarrangements.update(arrid, {$set: {title: title}});
     },
     
-    songArrangementAddSection: function (arrid, sectionid) {
-        songarrangements.update(arrid, {$push: {order: sectionid}});
-    },
-    
-    songArrangementDelSection: function (arrid, index) {
-        // $pull would remove all instances of a Section instead of just one, so doing this way instead.
-        var arr = songarrangements.findOne(arrid);
-        var neworder = arr.order;
-        neworder.splice(index, 1);
-        songarrangements.update(arrid, {$set: {order: neworder}});
+    songArrangementOrder: function (arrid, order) {
+        songarrangements.update(arrid, {$set: {order: order}});
     },
     
     songActionActivate: function (action) {
