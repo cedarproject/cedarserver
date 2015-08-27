@@ -44,15 +44,10 @@ Meteor.methods({
         var actMedia = media.findOne(action.media);
                 
         action.time = (Date.now() * 0.001) + 0.1; // Get current time as float, add 100ms
-
-        if (!action.settings['layer']) { //TODO delete me, debugging!
-            if (actMedia.type == 'audio') action.settings.layer = 'audio';
-            else action.settings.layer = 'background';
-        }
         
-        var s = {}; s['layers.' + action.settings.layer] = action;
+        var s = {}; s['layers.' + action.layer] = action;
         targets.forEach(function (minion) {
-            if (minion.layers.hasOwnProperty(action.settings.layer))
+            if (minion.layers.hasOwnProperty(action.layer))
                 minions.update(minion._id, {$set: s});
         });
     }
