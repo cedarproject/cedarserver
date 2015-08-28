@@ -291,7 +291,7 @@ var changed = function (id, fields) {
                 if (!(action.args.section && action.args.index)) continue;
                 var section = songsections.findOne(action.args.section);
                 var contents = section.contents[action.args.index];
-                play.text = contents.text.split('\n');
+                play.text = songTextToCanvas(contents.text).split('\n');
                 
                 var s = combineSettings(this.settings);
                 
@@ -322,7 +322,7 @@ var changed = function (id, fields) {
                 }
                                 
                 for (var l in play.text) {
-                    var line = play.text[l];
+                    var line = play.text[l].trim();
 
                     play.cx.fillText(line, x, y + (s.songs_font_size * l), window.innerWidth);                    
                     play.cx.strokeText(line, x, y + (s.songs_font_size * l), window.innerWidth);                                        

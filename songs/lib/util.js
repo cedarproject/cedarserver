@@ -4,6 +4,10 @@ key2num = {'A': 0, 'Bb': 1, 'B': 2, 'C': 3, 'C#': 4, 'Db': 4, 'D': 5, 'D#': 6, '
 num2key = {};
 for (var p in key2num) if (key2num.hasOwnProperty(p)) num2key[key2num[p]] = p;
 
+songTextToCanvas = function (text) {
+    return text.replace(/\[[^\[]*\]/g, '').replace(/  +/g, ' ');;
+};
+
 songTextToHTML = function (text) {
     text = text.replace(/(\r\n|\n|\r)/gm, '<br>')
     text = text.replace(/\[[^\[]*\]/g, '');
