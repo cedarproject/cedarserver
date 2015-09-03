@@ -19,7 +19,9 @@ Template.musicstandchart.helpers({
     },
     
     keySelected: function (key) {
-        if (Template.parentData(2).settings.key == key) return 'selected';
+        if (Template.parentData(2).settings.key == key) {
+            return 'selected';
+        }
     },
         
     order: function () {
@@ -52,18 +54,16 @@ Template.musicstandchart.helpers({
 
 Template.musicstandchart.onCreated(function () {
     var t = Template.currentData();
-    t.transpose = new ReactiveVar(0);
-
-    if (!Session.get('transpose-' + t._id)) Session.set('transpose-' + t._id, false);
     this.autorun(function () {
         var t = Template.currentData();
         if (!t.transpose) t.transpose = new ReactiveVar(0);
 
         var songkey = key2num[t.key];
-        var actionkey = key2num[Template.parentData().settings.key];
-        var userkey = key2num[Session.get('transpose-'+t._id)] || 0;
+        var userkey = key2num[Session.get('transpose-' + t._id)];
+        if (userkey === undefined) userkey = key2num[Template.parentData().settings.key];
         
-        t.transpose.set((songkey - actionkey) - (songkey - userkey));
+        console.log(userkey - songkey);
+        t.transpose.set(userkey - songkey);
     });
 });
 
