@@ -19,7 +19,7 @@ Meteor.methods({
     setDelete: function (setid) {
         var set = checkSet(setid);
         
-        var actionids = actions.find({set: setid}, {_id: 1});
+        var actionids = actions.find({set: setid}, {_id: 1}).fetch();
         for (var i in actionids) actionids[i] = actionids[i]._id;
         actions.remove({action: {$in: actionids}});
         
