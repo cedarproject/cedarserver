@@ -4,17 +4,15 @@
         <input class="section-title-edit hidden" value={{title}}>
     </p>
 
-    <ul class="list-group">
-        {{#each contents}}
-            <li class="list-group-item">
-                <button class="content-del btn btn-default btn-xs pull-right">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </button>
-                <textarea class="content-text form-control" rows="4">{{text}}</textarea>
-                {{! TODO triggers}}
-            </li>
-        {{/each}}
-    </ul>
+    {{#each contents}}
+        <div class="song-section-container">
+            <textarea class="content-text form-control" rows="4">{{text}}</textarea>
+            <button class="content-del btn btn-default btn-xs pull-right">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
+        </div>
+        {{! TODO triggers}}
+    {{/each}}
     
     <button class="btn btn-primary" id="content-add">
         <span class="glyphicon glyphicon-plus"></span>

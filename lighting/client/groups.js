@@ -14,6 +14,8 @@ Template.lightGroups.helpers({
 
 Template.lightGroups.events({
     'click .group-add': function (event) {
-        Meteor.call('lightGroupNew');
+        Meteor.call('lightGroupNew', function (err, val) {
+            if (!err) Router.go('/lighting/group/' + val);
+        });
     }
 });

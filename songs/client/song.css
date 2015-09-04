@@ -1,0 +1,9 @@
+.song-section-container {
+    position: relative;
+}
+
+.content-del {
+    position: absolute;
+    top: 0;
+    right: 0;
+}

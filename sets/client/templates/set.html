@@ -2,13 +2,32 @@
     <div class="container">        
         <h3>
             {{title}}
-            <button type="button" class="set-settings btn btn-default pull-right">
+            <button id="settings-toggle" class="btn btn-default pull-right">
                 <span class="glyphicon glyphicon-cog"></span>
             </button>
         </h3>
 
         <p><small>Stage: {{stageTitle stage}}</small></p>
+        
+        <div id="set-settings" class="collapse">
+            <div class="well">
+                <label>Title:</label>
+                <input class="set-title form-control" type="text" value={{title}}>
 
+                <label>Stage:</label>
+                <select class="set-stage form-control">
+                    <option value="{{stage}}" selected>{{stageTitle stage}}</option>
+                    {{#each stages}}
+                        <option value="{{_id}}">{{title}}</option>
+                    {{/each}}
+                </select>
+                
+                <br>
+                <hr>
+                
+                <button id="set-delete" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
 
         <ul class="list-group">
             {{#each actions}}
@@ -36,37 +55,8 @@
         </div>
         
         {{> actionSelector}}
-        
-        <div class="set-settings-modal modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4>Set Settings</h4>
-                    </div>
-                    
-                    <div class="modal-body">
-                        <label>Title:</label>
-                        <input class="set-title form-control" type="text" value={{title}}>
-
-                        <label>Stage:</label>
-                        <select class="set-stage form-control">
-                            <option value="{{stage}}" selected>{{stageTitle stage}}</option>
-                            {{#each stages}}
-                                <option value="{{_id}}">{{title}}</option>
-                            {{/each}}
-                        </select>
-                    </div>
-                    
-                    <div class="modal-footer">
-                        <button class="set-settings-delete btn btn-danger pull-left">Delete</button>
-                        <button class="set-settings-cancel btn">Cancel</button>                       
-                        <button class="set-settings-save btn btn-primary">Save</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                
+        <div id="delete-confirm-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -78,8 +68,8 @@
                     </div>
                     
                     <div class="modal-footer">
-                        <button class="set-delete-cancel btn">Cancel</button>
-                        <button class="set-delete-confirm btn btn-danger">Delete</button>
+                        <button id="set-delete-cancel" class="btn btn-default pull-right">Cancel</button>
+                        <button id="set-delete-confirm" class="btn btn-danger pull-left">Delete</button>
                     </div>
                 </div>
             </div>

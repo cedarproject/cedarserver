@@ -62,7 +62,6 @@ Template.musicstandchart.onCreated(function () {
         var userkey = key2num[Session.get('transpose-' + t._id)];
         if (userkey === undefined) userkey = key2num[Template.parentData().settings.key];
         
-        console.log(userkey - songkey);
         t.transpose.set(userkey - songkey);
     });
 });

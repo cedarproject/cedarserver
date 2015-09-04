@@ -14,10 +14,14 @@ Template.lights.helpers({
 
 Template.lights.events({
     'click .light-add': function (event) {
-        Meteor.call('lightNew');
+        Meteor.call('lightNew', function (err, val) {
+            if (!err) Router.go('/lighting/light/' + val);
+        });
     },
     
     'click .light-clone': function (event) {
-        Meteor.call('lightClone', this._id);
+        Meteor.call('lightClone', this._id, function (err, val) {
+            if (!err) Router.go('/lighting/light/' + val);
+        });
     }
 });

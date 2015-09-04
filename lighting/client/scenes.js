@@ -14,10 +14,14 @@ Template.lightScenes.helpers({
 
 Template.lightScenes.events({
     'click .scene-add': function (event) {
-        Meteor.call('sceneAdd');
+        Meteor.call('sceneAdd', function (err, val) {
+            if (!err) Router.go('/lighting/scene/' + val);
+        });
     },
     
     'click .scene-clone': function (event, template) {
-        Meteor.call('sceneClone', this._id);
+        Meteor.call('sceneClone', this._id, function (err, val) {
+            if (!err) Router.go('/lighting/scene/' + val);
+        });
     }
 });

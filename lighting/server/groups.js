@@ -53,7 +53,7 @@ function updateChannels(groupid) {
 
 Meteor.methods({
     lightGroupNew: function () {
-        var groupid = lightgroups.insert({
+        return lightgroups.insert({
             title: 'New Group',
             stage: null,
             members: [],

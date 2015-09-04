@@ -14,6 +14,8 @@ Template.lightConsoles.helpers({
 
 Template.lightConsoles.events({
     'click #new-console': function () {
-        Meteor.call('lightConsoleNew');
+        Meteor.call('lightConsoleNew', function (err, val) {
+            if (!err) Router.go('/lighting/console/' + val);
+        });
     }
 });

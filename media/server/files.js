@@ -81,7 +81,6 @@ function process_media(fileInfo, formFields) {
                    rewritten to allow the video to start playing before it's fully downloaded.
                    See http://multimedia.cx/eggs/improving-qt-faststart/ for more info */
                 
-                console.log('faststarting!', metadata.format.filename, m.location);
                 ffmpeg(metadata.format.filename).videoCodec('copy').audioCodec('copy').outputOptions(
                     ['-movflags', 'faststart']
                 ).output(prefix + '/tmp/' + m.location).on('end', function () {

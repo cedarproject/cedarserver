@@ -10,7 +10,7 @@ Template.set.helpers({
     },
     
     getLayers: function () {
-        return stages.findOne({_id: this.stage}).settings.layers;
+        if (this.stage) return stages.findOne({_id: this.stage}).settings.layers;
     },
     
     actions: function () {
@@ -174,39 +174,29 @@ Template.set.events({
         $('.song-content').removeClass('active');
     },
 
-    'click .set-settings': function (event) {
-        $(event.target).parent().siblings('.set-settings-modal').modal('show');
+    'click #settings-toggle': function (event, template) {
+        template.$('#set-settings').collapse('toggle');
     },
     
-    'click .set-settings-cancel': function (event) {
-        $(event.target).parents('.modal').modal('hide');
+    'blur .set-title': function (event, template) {
+        Meteor.call('setTitle', template.data._id, $(event.target).val());
     },
     
-    'click .set-settings-save': function (event) {
-        var modalbody = $(event.target).parent().prev('.modal-body');
-        
-        var newtitle = modalbody.children('.set-title').val();
-        if (newtitle) Meteor.call('setTitle', this._id, newtitle);
-        
-        var stageid = modalbody.children('.set-stage').val();
-        if (stageid) Meteor.call('setStage', this._id, stageid);
-
-        modalbody.parents('.modal').modal('hide');
+    'change .set-stage': function (event, template) {
+        Meteor.call('setStage', template.data._id, $(event.target).val());
+    },
+        // TODO fix set delete modal!
+    'click #set-delete': function (event, template) {
+        template.$('#delete-confirm-modal').modal('show');
     },
     
-    'click .set-settings-delete': function (event) {
-        var settingsmodal = $(event.target).parents('.modal');
-        settingsmodal.modal('hide');
-        settingsmodal.next('.modal').modal('show');
+    'click #set-delete-cancel': function (event, template) {
+        template.$('#delete-confim-modal').modal('hide');
     },
     
-    'click .set-delete-cancel': function (event) {
-        $(event.target).parents('.modal').modal('hide');
-    },
-    
-    'click .set-delete-confirm': function (event, template) {
-        $(event.target).parents('.modal').removeClass('fade').modal('hide');
+    'click #set-delete-confirm': function (event, template) {
+        template.$('#delete-confirm-modal').removeClass('fade').modal('hide');
         Meteor.call('setDelete', template.data._id);
         Router.go('/sets');
-    },
+    }
 });

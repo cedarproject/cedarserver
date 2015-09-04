@@ -9,7 +9,7 @@ function checkSet(setid) {
 
 Meteor.methods({
     setNew: function () {
-        sets.insert({
+        return sets.insert({
             title: 'New Set',
             stage: null,
             active: null

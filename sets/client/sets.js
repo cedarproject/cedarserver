@@ -6,6 +6,8 @@ Template.setsMenu.helpers({
 
 Template.setsMenu.events({
     'click .sets-new': function () {
-        Meteor.call('setNew');
+         Meteor.call('setNew', function (err, val) {
+            if (!err) Router.go('/set/' + val);
+        });
     },
 });

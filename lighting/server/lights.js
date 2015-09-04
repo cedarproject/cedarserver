@@ -24,8 +24,14 @@ Meteor.methods({
     lightClone: function (lightid) {
         var light = checkLight(lightid);
         delete light._id;
-        light.title = 'Copy of ' + light.title;
-        lights.insert(light);
+        
+        var t = light.title.split(' ');
+        if (!isNaN(parseInt(t[t.length-1]))) {
+            t[t.length-1] = parseInt(t[t.length-1]) + 1;
+            light.title = t.join(' ');
+        } else light.title = light.title + ' (copy)';
+
+        return lights.insert(light);
     },
     
     lightDelete: function (lightid) {

@@ -45,7 +45,7 @@ Template.lightSettings.events({
     },
     
     'click .light-delete-confirm': function (event) {
-        $(event.target).parents('.delete-modal').modal('hide');
+        $(event.target).parents('.delete-modal').removeClass('fade').modal('hide');
         Meteor.call('lightDelete', this._id);
         Router.go('lights');
     },
