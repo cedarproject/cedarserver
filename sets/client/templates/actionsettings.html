@@ -1,5 +1,10 @@
 <template name="actionSettings">
     <div class="well">
+        {{#if set}}
+            <label>Action Title</label>
+            <input class="action-title form-control" value={{title}}>
+        {{/if}}
+        
         {{#if typeIs 'media' 'song'}}
             <label>Layer:</label>
             

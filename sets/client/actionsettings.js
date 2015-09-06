@@ -40,6 +40,10 @@ Template.actionSettings.helpers({
 });
 
 Template.actionSettings.events({
+    'blur .action-title': function (event, template) {
+        Meteor.call('actionTitle', template.data._id, $(event.target).val());
+    },
+    
     'change .action-layer': function (event, template) {
         Meteor.call('actionLayer', template.data._id, $(event.target).val());
     },

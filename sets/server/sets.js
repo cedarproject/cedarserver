@@ -47,6 +47,10 @@ Meteor.methods({
         actions.update({order: {$gte: index}}, {$inc: {order: -1}}, {multi: true});
     },
     
+    actionTitle: function (actionid, title) {
+        actions.update(actionid, {$set: {title: title}});
+    },
+    
     actionLayer: function (actionid, layer) {
         actions.update(actionid, {$set: {layer: layer}});
     },
