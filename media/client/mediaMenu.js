@@ -1,4 +1,8 @@
 Template.mediaMenu.helpers({
+    mediaFormData: {
+        type: 'uploadmedia'
+    },
+    
     mediaSelector: {
         collection: media,
         displayTemplate: 'media',

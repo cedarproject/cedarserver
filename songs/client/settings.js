@@ -30,6 +30,11 @@ Template.songSettings.events({
         template.$('.song-title').removeClass('hidden');
     },
     
+    'click #song-del': function (event, template) {
+        Meteor.call('songDel', template.data._id);
+        Router.go('/songs');
+    },
+    
     'change #song-key': function (event, template) {
         Meteor.call('songKey', template.data._id, $(event.target).val());
     },

@@ -1,4 +1,4 @@
-function process_media(fileInfo, formFields) {
+process_media = function (fileInfo, formFields) {
     var mediaid = media.insert({
         title: fileInfo.name,
         location: fileInfo.name,
@@ -94,12 +94,3 @@ function process_media(fileInfo, formFields) {
         }.bind(this)));
     }
 }
-
-Meteor.startup(function () {
-    var dir = settings.findOne({key: 'mediadir'}).value;
-    UploadServer.init({
-        uploadDir: dir,
-        tmpDir: dir + '/tmp',
-        finished: process_media
-    })
-});

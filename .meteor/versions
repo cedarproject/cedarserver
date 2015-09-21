@@ -39,9 +39,11 @@ minifiers@1.1.5
 minimongo@1.0.8
 mobile-status-bar@1.0.3
 mongo@1.1.0
+mrt:bootstrap-select@1.5.4
 observe-sequence@1.0.6
 ordered-dict@1.0.3
 patte:mime-npm@0.0.1
+pfafman:font-awesome-4@4.4.0
 random@1.0.3
 reactive-dict@1.1.0
 reactive-var@1.0.5
@@ -55,6 +57,7 @@ templating@1.1.1
 tomi:upload-jquery@2.1.8
 tomi:upload-server@1.2.8
 tracker@1.0.7
+trever:quill@0.0.5
 twbs:bootstrap@3.3.5
 ui@1.0.6
 underscore@1.0.3

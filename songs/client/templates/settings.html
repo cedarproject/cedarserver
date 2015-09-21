@@ -1,6 +1,16 @@
 <template name="songSettings">
     <div class="container">
+        {{! TODO change settings UI to a collapse like Sets}}
         <h3>
+            <button id="song-del" class="btn btn-danger pull-right">
+                Delete
+            </button>
+            
+            <a href={{pathFor 'songdownload' _id}} class="btn btn-default pull-right">
+                <span class="glyphicon glyphicon-download-alt"></span>
+                Download
+            </a>
+        
             <span class="song-title">
                 {{title}}
                 <small><span class="glyphicon glyphicon-pencil"></span></small>

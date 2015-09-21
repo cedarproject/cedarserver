@@ -17,6 +17,8 @@ Meteor.methods({
     
     songDel: function (songid) {
         var song = checkSong(songid);
+        songsections.remove({song: songid});
+        songarrangements.remove({song: songid});
         songs.remove(song);
     },
     

@@ -7,6 +7,9 @@
         <button class="btn btn-primary" id="song-new">
             <span class="glyphicon glyphicon-plus"></span>
             New Song
-        </button>        
+        </button>
+        
+        <h4>Import Songs</h4>
+        {{> upload_bootstrap multiple=true fileTypes='.cedarsong' formData=songFormData}}
     </div>
 </template>

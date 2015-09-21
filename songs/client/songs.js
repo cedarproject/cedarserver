@@ -1,4 +1,8 @@
 Template.songs.helpers({
+    songFormData: {
+        type: 'importsong'
+    },
+    
     songsSelector: {
         collection: songs,
         displayTemplate: 'song',
