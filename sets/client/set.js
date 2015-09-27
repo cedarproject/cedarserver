@@ -129,11 +129,7 @@ Template.set.events({
             args: {},
             settings: {}
         };
-        
-        var a = actions.findOne({set: template.data._id}, {sort: {order: -1}, fields: {order: 1}});
-        if (a) action.order = a.order + 1;
-        else action.order = 0;
-        
+                
         var col = $(event.target).data('collection')
         if (col == 'media') {
             action.type = 'media';
@@ -156,7 +152,14 @@ Template.set.events({
             action.layer = 'foreground';
         }
         
-        if (Session.get('add-to')['type'] == 'set') action['set'] = template.data._id;
+        if (Session.get('add-to')['type'] == 'set') {
+            var a = actions.findOne({set: template.data._id}, {sort: {order: -1}, fields: {order: 1}});
+            if (a) action.order = a.order + 1;
+            else action.order = 0;
+
+            action['set'] = template.data._id;
+        }
+
         else action['actionid'] = Session.get('add-to').action;
         
         Meteor.call('actionAdd', action);
