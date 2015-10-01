@@ -231,6 +231,7 @@ var changed = function (id, fields) {
                             for (var i in this.meshes) {
                                 scene.remove(this.meshes[i]);
                             }
+                            
                             $(this.img).remove();
                             window.URL.revokeObjectURL(this.url);
                         }
@@ -283,8 +284,8 @@ var changed = function (id, fields) {
                         length: play.settings['fade'] || 1,
                         time: action.time,
                         callback: function (v) {
+                            this.opacity = v;
                             for (var n in this.materials) {
-                                this.opacity = v;
                                 this.materials[n].uniforms.opacity.value = v;
                             }
                         }.bind(play)
@@ -373,8 +374,8 @@ var changed = function (id, fields) {
                     length: play.settings['fade'] || 1,
                     time: action.time,
                     callback: function (v) {
+                        this.opacity = v;
                         for (var n in this.materials) {
-                            this.opacity = v;
                             this.materials[n].uniforms.opacity.value = v;
                         }
                     }.bind(play)
@@ -385,6 +386,7 @@ var changed = function (id, fields) {
                 play.type = 'presentation';
                 
                 if (action.args.order === undefined) continue;
+
                 var html = presentationslides.findOne({presentation: action.presentation, order: action.args.order}).content;
                 
                 var s = combineSettings(this.settings);
@@ -403,8 +405,6 @@ var changed = function (id, fields) {
 
 ${s.presentations_custom_css}
 `;
-                console.log(style);
-
                 play.content = new XMLSerializer().serializeToString(new DOMParser().parseFromString(html, 'text/html'));
                 
                 play.blob = new Blob([`
@@ -429,21 +429,21 @@ ${s.presentations_custom_css}
                     play.texture.minFilter = THREE.LinearFilter;
                     play.texture.magFilter = THREE.LinearFilter;
                     play.texture.needsUpdate = true;
-
+                    
                     play.materials = [];
                     play.meshes = [];
                     play.opacity = 0;
                     play.z = 0.001;
 
-                    this.create_blocks(play);            
+                    this.create_blocks(play);
 
                     this.fades.push({
                         start: 0, end: 1,
                         length: play.settings['fade'] || 1,
                         time: action.time,
                         callback: function (v) {
+                            this.opacity = v;
                             for (var n in this.materials) {
-                                this.opacity = v;
                                 this.materials[n].uniforms.opacity.value = v;
                             }
                         }.bind(play)
@@ -468,7 +468,8 @@ var resize = function () {
         if (this.layers.hasOwnProperty(i) && this.layers[i]) var play = this.layers[i];
         else continue;
 
-        if (play.meshes && (play.type == 'video' || play.type == 'image' || play.type == 'song')) {
+        if (play.meshes && (play.type == 'video' || play.type == 'image' ||
+                play.type == 'song' || play.type == 'presentation')) {
             for (var i = 0; i < play.meshes.length; i++) {
                 this.scene.remove(play.meshes[i]);
             }
