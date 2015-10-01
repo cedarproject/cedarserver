@@ -1,12 +1,4 @@
-Template.actionSelector.helpers({
-    songSelector: {
-        collection: songs,
-        displayTemplate: 'song',
-        fields: [{field: 'title', type: String}, {field: 'tags', type: Array}],
-        sort: [['title', 1]],
-        addbutton: true
-    },
-        
+Template.actionSelector.helpers({        
     mediaSelector: {
         collection: media,
         displayTemplate: 'mediaItem',
@@ -14,9 +6,26 @@ Template.actionSelector.helpers({
         sort: [['title', 1]],
         addbutton: true
     },
+    
     sceneSelector: {
         collection: lightscenes,
         displayTemplate: 'lightScene',
+        fields: [{field: 'title', type: String}],
+        sort: [['title', 1]],
+        addbutton: true
+    },
+
+    songSelector: {
+        collection: songs,
+        displayTemplate: 'song',
+        fields: [{field: 'title', type: String}, {field: 'tags', type: Array}],
+        sort: [['title', 1]],
+        addbutton: true
+    },
+
+    presentationSelector: {
+        collection: presentations,
+        displayTemplate: 'presentation',
         fields: [{field: 'title', type: String}],
         sort: [['title', 1]],
         addbutton: true

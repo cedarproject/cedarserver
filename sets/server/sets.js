@@ -100,6 +100,10 @@ Meteor.methods({
             else if (action.type == 'song') {
                 Meteor.call('songActionActivate', action);
             }
+            
+            else if (action.type == 'presentation') {
+                Meteor.call('presentationActionActivate', action);
+            }
         }
     },
     

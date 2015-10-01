@@ -23,6 +23,8 @@
                         {{/each}}
                     </select>
                     
+                    <br>
+                    
                     {{#if typeIs 'media'}}
                         <label>Display Layers:</label>
                         {{#each getLayers}}
@@ -32,6 +34,8 @@
                             </p>
                         {{/each}}
                         
+                        <br>
+                        
                         <h4>Songs:</h4>
                         
                         <label>Font:</label>
@@ -40,23 +44,81 @@
                         <label>Font Size:</label>
                         <input type="number" min=0 max=200 step=1 data-setting="songs_font_size"
                             class="setting form-control" value={{getSetting 'songs_font_size'}}>
+                            
+                        <label>Font Weight:</label>
+                        <select data-setting="songs_font_weight" class="setting form-control">
+                            <option value="normal" {{isSelected 'songs_font_weight' 'normal'}}>Normal</option>
+                            <option value="bold" {{isSelected 'songs_font_weight' 'bold'}}>Bold</option>
+                        </select>
+                            
+                        <label>Font Color:</label>
+                        <input type="text" data-setting="songs_font_color" class="setting form-control" value={{getSetting 'songs_font_'}}>
+                        
+                        <label>Font Shadow:</label>
+                        <input type="number" min=0 max=10 step=1 data-setting="songs_font_shadow" class="setting form-control" value={{getSetting 'songs_font_shadow'}}>
+                        
+                        <label>Font Shadow Color:</label>
+                        <input type="text" data-setting="songs_font_shadow_color" class="setting form-control" value={{getSetting 'songs_font_shadow_color'}}>
                         
                         <label>Align:</label>
                         <select data-setting="songs_text_align" class="setting form-control">
-                            <option value="top" {{isSelected 'songs_text_align' 'top'}}>Top</option>
+                            <option value="left" {{isSelected 'songs_text_align' 'left'}}>Left</option>
                             <option value="center" {{isSelected 'songs_text_align' 'center'}}>Center</option>
-                            <option value="bottom" {{isSelected 'songs_text_align' 'bottom'}}>Bottom</option>
+                            <option value="right" {{isSelected 'songs_text_align' 'right'}}>Right</option>
                         </select>
                         
-                        <label>Justify:</label>
-                        <select data-setting="songs_text_justify" class="setting form-control">
-                            <option value="left" {{isSelected 'songs_text_justify' 'top'}}>Left</option>
-                            <option value="center" {{isSelected 'songs_text_justify' 'center'}}>Center</option>
-                            <option value="right" {{isSelected 'songs_text_justify' 'right'}}>Right</option>
+                        <label>Vertical Align</label>
+                        <select data-setting="songs_text_vertical_align" class="setting form-control">
+                            <option value="top" {{isSelected 'songs_text_vertical_align' 'top'}}>Top</option>
+                            <option value="center" {{isSelected 'songs_text_vertical_align' 'center'}}>Center</option>
+                            <option value="bottom" {{isSelected 'songs_text_vertical_align' 'bottom'}}>Bottom</option>
                         </select>
                         
                         <br>
-                    
+                        
+                        <h4>Presentations:</h4>
+
+                        <label>Font:</label>
+                        <input data-setting="presentations_font" class="setting form-control" value={{getSetting 'presentations_font'}}>
+                        
+                        <label>Font Size:</label>
+                        <input type="number" min=0 max=200 step=1 data-setting="presentations_font_size"
+                            class="setting form-control" value={{getSetting 'presentations_font_size'}}>
+
+                        <label>Font Weight:</label>
+                        <select data-setting="presentations_font_weight" class="setting form-control">
+                            <option value="normal" {{isSelected 'presentations_font_weight' 'normal'}}>Normal</option>
+                            <option value="bold" {{isSelected 'presentations_font_weight' 'bold'}}>Bold</option>
+                        </select>
+
+                        <label>Font Color:</label>
+                        <input type="text" data-setting="presentations_font_color" class="setting form-control" value={{getSetting 'presentations_font_color'}}>
+
+                        <label>Font Shadow:</label>
+                        <input type="number" min=0 max=10 step=1 data-setting="presentations_font_shadow" class="setting form-control" value={{getSetting 'presentations_font_shadow'}}>
+                        
+                        <label>Font Shadow Color:</label>
+                        <input type="text" data-setting="presentations_font_shadow_color" class="setting form-control" value={{getSetting 'presentations_font_shadow_color'}}>
+                                                
+                        <label>Align:</label>
+                        <select data-setting="presentations_text_align" class="setting form-control">
+                            <option value="left" {{isSelected 'presentations_text_align' 'left'}}>Left</option>
+                            <option value="center" {{isSelected 'presentations_text_align' 'center'}}>Center</option>
+                            <option value="right" {{isSelected 'presentations_text_align' 'right'}}>Right</option>
+                        </select>
+                        
+                        <label>Vertical Align</label>
+                        <select data-setting="presentations_text_vertical_align" class="setting form-control">
+                            <option value="flex-start" {{isSelected 'presentations_text_vertical_align' 'flex-start'}}>Top</option>
+                            <option value="center" {{isSelected 'presentations_text_vertical_align' 'center'}}>Center</option>
+                            <option value="flex-end" {{isSelected 'presentations_text_vertical_align' 'flex-end'}}>Bottom</option>
+                        </select>
+                        
+                        <label>Custom CSS</label>
+                        <textarea data-setting="presentations_custom_css" class="setting form-control">{{getSetting 'presentations_custom_css'}}</textarea>
+                        
+                        <br>
+                        
                         <div class="well well-sm">
                             <p><a href={{pathFor 'webminionmedia' _id}}>Launch Web Minion</a></p>
                             <p>Direct link: <pre>{{urlFor 'webminionmedia' _id}}</pre></p>

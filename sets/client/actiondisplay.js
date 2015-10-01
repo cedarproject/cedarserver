@@ -15,5 +15,11 @@ Template.actionDisplay.helpers({
         song.arrangement = songarrangements.findOne(this.settings.arrangement);
         song.action = this._id;
         return song;
+    },
+    
+    getPresentation: function () {
+        var pres = presentations.findOne(this.presentation);
+        pres.action = this._id;
+        return pres;
     }
 });

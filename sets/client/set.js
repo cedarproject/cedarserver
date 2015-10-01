@@ -119,6 +119,16 @@ Template.set.events({
         Meteor.call('setActivate', template.data._id, this.action);        
     },
     
+    'click .presentation-content': function (event, template) {
+        event.stopImmediatePropagation();
+        var args = {
+            order: this.order
+        };
+        
+        Meteor.call('actionArgs', this.action, args);
+        Meteor.call('setActivate', template.data._id, this.action);
+    },
+    
     'click .set-add-item': function (event, template) {
         Session.set('add-to', {type: 'set'});
         template.$('.action-selector-modal').modal('show');
@@ -149,7 +159,13 @@ Template.set.events({
             action.song = $(event.target).data('id');
             action.settings.arrangement = songarrangements.findOne({song: action.song})._id;
             action.settings.key = songs.findOne(action.song).key;
-            action.layer = 'foreground';
+            action.layer = 'foreground'; // TODO fix this to default to the topmost layer, or something.
+        }
+        
+        else if (col == 'presentations') {
+            action.type = 'presentation';
+            action.presentation = $(event.target).data('id');
+            action.layer = 'foreground'; // TODO fix this to default to the topmost layer, or something.
         }
         
         if (Session.get('add-to')['type'] == 'set') {

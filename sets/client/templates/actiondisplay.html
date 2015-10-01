@@ -18,4 +18,10 @@
             {{> songDisplay}}
         {{/with}}
     {{/if}}
+    
+    {{#if actionType 'presentation'}}
+        {{#with getPresentation}}
+            {{> presentationDisplay}}
+        {{/with}}
+    {{/if}}
 </template>

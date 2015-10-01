@@ -1,22 +1,22 @@
-var vertShaderSource = [
-    'uniform mat4 uTransformMatrix;',
-    'varying vec2 vUv;',
-    'void main(void) {',
-    '    vUv = uv;',
-    '    gl_Position = uTransformMatrix * vec4( position, 1.0 );',
-    '}'
-].join('\n');
+var vertShaderSource = `
+    uniform mat4 uTransformMatrix;
+    varying vec2 vUv;
+    void main(void) {
+        vUv = uv;
+        gl_Position = uTransformMatrix * vec4( position, 1.0 );
+    }
+`;
 
-var fragShaderSource = [
-    'varying vec2 vUv;',
-    'uniform sampler2D uSampler;',
-    'uniform float brightness;',
-    'uniform float opacity;',
-    'void main(void)  {',
-    '    gl_FragColor = texture2D(uSampler, vUv);',
-    '    gl_FragColor *= vec4(brightness, brightness, brightness, opacity);',
-    '}'
-].join('\n');
+var fragShaderSource = `
+    varying vec2 vUv;
+    uniform sampler2D uSampler;
+    uniform float brightness;
+    uniform float opacity;
+    void main(void)  {
+        gl_FragColor = texture2D(uSampler, vUv);
+        gl_FragColor *= vec4(brightness, brightness, brightness, opacity);
+    }
+`;
     
 var render = function () {
     if (this.continue) {
@@ -49,7 +49,7 @@ var render = function () {
                 
         this.renderer.render(this.scene, this.camera);
     }
-}
+};  
 
 var create_blocks = function (play) {
     for (var i = 0; i < this.blocks.length; i++) {
@@ -117,7 +117,7 @@ var create_blocks = function (play) {
         play.meshes.push(mesh);
         this.scene.add(mesh);
     }
-}
+};
 
 var changed = function (id, fields) {
     var newsettings = fields['settings'];
@@ -144,6 +144,13 @@ var changed = function (id, fields) {
                         action.args.index == this.layers[i].args.index)
                             continue;
                 }
+                
+                else if (action.type == 'presentation') {
+                    if (action.args && this.layers[i].args &&
+                        action.args.order == this.layers[i].order)
+                            continue;
+                }
+                
                 else continue;
             }
         }
@@ -205,6 +212,27 @@ var changed = function (id, fields) {
                             for (var i in this.meshes) {
                                 scene.remove(this.meshes[i]);
                             }
+                        }
+                    }.bind(play, this.scene)
+                });
+            }
+            
+            else if (play.type == 'presentation') {
+                this.fades.push({
+                    start: 1, end: 0,
+                    length: play.settings['fade'] || 1,
+                    time: Date.now() * 0.001,
+                    callback: function (scene, v) {
+                        for (var n in this.materials) {
+                            this.opacity = v;
+                            this.materials[n].uniforms.opacity.value = v;
+                        }
+                        if (v == 0) {
+                            for (var i in this.meshes) {
+                                scene.remove(this.meshes[i]);
+                            }
+                            $(this.img).remove();
+                            window.URL.revokeObjectURL(this.url);
                         }
                     }.bind(play, this.scene)
                 });
@@ -280,7 +308,7 @@ var changed = function (id, fields) {
                         start: 0, end: 1,
                         length: play.settings['fade'] || 1,
                         time: action.time,
-                        callback: function (v) {this.volume = v}.bind(play.audio)
+                        callback: function (v) {this.volume = v;}.bind(play.audio)
                     });
                 }
             }
@@ -304,7 +332,7 @@ var changed = function (id, fields) {
                 play.cx.font = [s.songs_font_weight, s.songs_font_size + 'px',s.songs_font].join(' ');
                 play.cx.textAlign = s.songs_text_justify;
                 play.cx.fillStyle = s.songs_font_color;
-                play.cx.strokeStyle = s.songs_font_outline + 'px ' + s.songs_font_outline_color;
+                play.cx.strokeStyle = s.songs_font_shadow + 'px ' + s.songs_font_shadow_color;
                 
                 if (s.songs_text_justify == 'left') var x = 0;
                 else if (s.songs_text_justify == 'center') var x = window.innerWidth/2;
@@ -325,7 +353,7 @@ var changed = function (id, fields) {
                     var line = play.text[l].trim();
 
                     play.cx.fillText(line, x, y + (s.songs_font_size * l), window.innerWidth);                    
-                    play.cx.strokeText(line, x, y + (s.songs_font_size * l), window.innerWidth);                                        
+//                    play.cx.strokeText(line, x, y + (s.songs_font_size * l), window.innerWidth);
                 }
                 
                 play.texture = new THREE.Texture(play.canvas);
@@ -352,15 +380,85 @@ var changed = function (id, fields) {
                     }.bind(play)
                 });
             }
+            
+            else if (action.type == 'presentation') {
+                play.type = 'presentation';
+                
+                if (action.args.order === undefined) continue;
+                var html = presentationslides.findOne({presentation: action.presentation, order: action.args.order}).content;
+                
+                var s = combineSettings(this.settings);
+                
+                var style = `
+#container {display: flex; height: 100vh; align-items: ${s.presentations_text_vertical_align};}
+#content {
+    flex: 1 1 auto;
+    font-family: ${s.presentations_font};
+    font-size: ${s.presentations_font_size}px;
+    font-weight: ${s.presentations_font_weight};
+    color: ${s.presentations_font_color};
+    text-shadow: 0 0 ${s.presentations_font_shadow}px ${s.presentations_font_shadow_color};
+    text-align: ${s.presentations_text_align};
+}
+
+${s.presentations_custom_css}
+`;
+                console.log(style);
+
+                play.content = new XMLSerializer().serializeToString(new DOMParser().parseFromString(html, 'text/html'));
+                
+                play.blob = new Blob([`
+<svg xmlns="http://www.w3.org/2000/svg" width="${window.innerWidth}" height="${window.innerHeight}">
+    <foreignObject width="100%" height="100%">
+        <div xmlns="http://www.w3.org/1999/xhtml">
+            <style>${style}</style>
+            <div id="container">
+                <div id="content">${play.content}</div>
+            </div>
+        </div>
+    </foreignObject>
+</svg>`        ], {type: 'image/svg+xml;charset=utf-8'});
+
+                play.url = window.URL.createObjectURL(play.blob);
+
+                play.img = new Image();
+                play.img.src = play.url;
+                
+                play.img.onload = () => {
+                    play.texture = new THREE.Texture(play.img);
+                    play.texture.minFilter = THREE.LinearFilter;
+                    play.texture.magFilter = THREE.LinearFilter;
+                    play.texture.needsUpdate = true;
+
+                    play.materials = [];
+                    play.meshes = [];
+                    play.opacity = 0;
+                    play.z = 0.001;
+
+                    this.create_blocks(play);            
+
+                    this.fades.push({
+                        start: 0, end: 1,
+                        length: play.settings['fade'] || 1,
+                        time: action.time,
+                        callback: function (v) {
+                            for (var n in this.materials) {
+                                this.opacity = v;
+                                this.materials[n].uniforms.opacity.value = v;
+                            }
+                        }.bind(play)
+                    });
+                };
+            }
         }
 
         if (action) this.layers[i] = play;
         else this.layers[i] = null;
     }
-}
+};
 
 var resize = function () {
-    this.camera.aspect = window.innerWidth / window.innerHeight
+    this.camera.aspect = window.innerWidth / window.innerHeight;
     this.media_height = 2 * Math.tan((this.camera.fov * Math.PI / 180) / 2);
     this.media_width = this.media_height * this.camera.aspect;
     
@@ -378,7 +476,7 @@ var resize = function () {
             this.create_blocks(play);            
         }
     }
-}
+};
 
 var click = function (event) {
     if (this.gettingPoints > -1) {
@@ -394,7 +492,7 @@ var click = function (event) {
             this.gettingPoints = -1;
         }
     }
-}
+};
     
 var keypress = function (event) {
     var key = parseInt(String.fromCharCode(event.which));
@@ -402,7 +500,7 @@ var keypress = function (event) {
         this.gettingPoints = key - 1;
         this.points = [];
     }
-}
+};
 
 Template.webminionmedia.onRendered(function () {
     $('body').addClass('no-scrollbars');

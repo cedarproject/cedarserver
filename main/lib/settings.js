@@ -3,13 +3,25 @@ defaults = {
 
     songs_font: 'sans-serif',
     songs_font_size: '72',
-    songs_font_weight: 'bold',
+    songs_font_weight: 'bold', // (normal, bold)
     songs_font_color: 'white',
-    songs_font_outline: '1',
-    songs_font_outline_color: 'black',
+    songs_font_shadow: '1',
+    songs_font_shadow_color: 'black',
 
-    songs_text_align: 'center', // Vertical alignment (top, center, bottom)
-    songs_text_justify: 'center', // Horizontal justification (left, center, right)    
+    songs_text_align: 'center', // Horizontal alignment (left, center, right)
+    songs_text_vertical_align: 'center', // Vertical alignment (top, center, bottom)
+    
+    presentations_font: 'sans-serif',
+    presentations_font_size: '48',
+    presentations_font_weight: 'bold',
+    presentations_font_color: 'white',
+    presentations_font_shadow: '0',
+    presentations_font_shadow_color: 'black',
+    
+    presentations_text_align: 'left', // Horizontal alignment (left, center, right)
+    presentations_text_vertical_align: 'flex-start', // Vertical alignment (flex-start, center, flex-end)
+    
+    presentations_custom_css: '#content {}'
 };
 
 combineSettings = function () {

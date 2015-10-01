@@ -12,6 +12,10 @@
                             <li role="presentation" class="active">
                                 <a href="#songs" role="tab" data-toggle="tab">Songs</a>
                             </li>
+
+                            <li role="presentation">
+                                <a href="#presentations" role="tab" data-toggle="tab">Presentations</a>
+                            </li>
                             
                             <li role="presentation">
                                 <a href="#media" role="tab" data-toggle="tab">Media</a>
@@ -25,6 +29,10 @@
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade in active" id="songs">
                                 {{> collectionSelector songSelector}}
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane fade in active" id="presentations">
+                                {{> collectionSelector presentationSelector}}
                             </div>
 
                             <div role="tabpanel" class="tab-pane fade" id="media">
