@@ -1,0 +1,18 @@
+.presentation-content {
+    transition: box-shadow 0.25s;
+        
+    border: 1px solid gray;
+    border-radius: 2.5px;
+
+    background: #FAFAFA;
+    color: black;
+    font-size: 100%;
+    
+    margin: 2px;
+    height: 20em;
+    overflow: auto;
+}
+
+.presentation-content.active {
+    box-shadow: 0px 0px 16px 8px #FFFFFF;
+}

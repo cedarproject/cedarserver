@@ -1,0 +1,37 @@
+<template name="presentationSlide">
+    <div class="btn-group pull-right">
+        <button class="slide-up btn btn-default">
+            <span class="glyphicon glyphicon-arrow-up"></span>
+        </button>
+        <button class="slide-down btn btn-default">
+            <span class="glyphicon glyphicon-arrow-down"></span>
+        </button>
+        <button class="slide-del btn btn-danger">
+            <span class="glyphicon glyphicon-remove"></span>
+        </button>
+    </div>
+        
+    <div class="editor-toolbar">
+        <div class="btn-group">
+            <button class="ql-bold btn btn-default"><b>B</b></button>
+            <button class="ql-italic btn btn-default"><b><i>I</i></b></button>
+            <button class="ql-underline btn btn-default"><b><u>U</u></b></button>
+            <button class="ql-unformat btn btn-default"><b>X</b></button>
+        </div>
+        
+        <div class="btn-group">
+            <button class="size btn btn-default" data-value="1em">Normal</button>
+            <button class="size btn btn-default" data-value="1.5em">Large</button>
+            <button class="size btn btn-default" data-value="2em">Huge</button>
+        </div>
+
+        {{! Because Quill wants select instead of buttons and I'm too lazy to rewrite the size-changing code.}}
+        <select class="ql-size" hidden>
+            <option value="1em" selected></option>
+            <option value="1.5em"></option>
+            <option value="2em"></option>
+        </select>
+    </div>
+
+    <div class="slide-editor"></div>
+</template>

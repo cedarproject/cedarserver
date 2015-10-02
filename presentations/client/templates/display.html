@@ -1,0 +1,12 @@
+<template name="presentationDisplay">
+    <h4>{{title}}</h4>
+    <div class="row">
+        {{#each slides}}
+            <div class="col-lg-4 col-md-6 col-xs-12">
+                <div class="presentation-content {{isActive}}">
+                    {{{content}}}
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</template>
