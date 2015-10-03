@@ -9,6 +9,7 @@ Meteor.startup(function () {
     UploadServer.init({
         uploadDir: dir,
         tmpDir: dir + '/tmp',
+        checkCreateDirectories: true,
         finished: handle_upload
     })
 });

@@ -331,21 +331,21 @@ var changed = function (id, fields) {
                 play.cx = play.canvas.getContext('2d');
 
                 play.cx.font = [s.songs_font_weight, s.songs_font_size + 'px',s.songs_font].join(' ');
-                play.cx.textAlign = s.songs_text_justify;
                 play.cx.fillStyle = s.songs_font_color;
                 play.cx.strokeStyle = s.songs_font_shadow + 'px ' + s.songs_font_shadow_color;
                 
-                if (s.songs_text_justify == 'left') var x = 0;
-                else if (s.songs_text_justify == 'center') var x = window.innerWidth/2;
-                else if (s.songs_text_justify == 'right') var x = window.innerWidth;
+                play.cx.textAlign = s.songs_text_align;
+                if (s.songs_text_align == 'left') var x = 0;
+                else if (s.songs_text_align == 'center') var x = window.innerWidth/2;
+                else if (s.songs_text_align == 'right') var x = window.innerWidth;
                 
-                if (s.songs_text_align == 'top') {
+                if (s.songs_text_vertical_align == 'top') {
                     play.cx.textBaseline = 'top';
                     var y = 0;
-                } else if (s.songs_text_align == 'center') {
+                } else if (s.songs_text_vertical_align == 'center') {
                     play.cx.textBaseline = 'middle';
                     var y = window.innerHeight/2 - (s.songs_font_size * play.text.length)/2;
-                } else if (s.songs_text_align == 'bottom') {
+                } else if (s.songs_text_vertical_align == 'bottom') {
                     play.cx.textBaseline = 'bottom';
                     var y = window.innerHeight - s.songs_font_size * play.text.length;
                 }
@@ -384,6 +384,7 @@ var changed = function (id, fields) {
             
             else if (action.type == 'presentation') {
                 play.type = 'presentation';
+                play.time = action.time;
                 
                 if (action.args.order === undefined) continue;
 
@@ -440,7 +441,7 @@ ${s.presentations_custom_css}
                     this.fades.push({
                         start: 0, end: 1,
                         length: play.settings['fade'] || 1,
-                        time: action.time,
+                        time: play.time,
                         callback: function (v) {
                             this.opacity = v;
                             for (var n in this.materials) {

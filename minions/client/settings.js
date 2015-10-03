@@ -72,7 +72,7 @@ Template.minionsettings.events({
     },
     
     'click .minion-delete-confirm': function (event) {
-        $('.delete-modal').modal('hide');
+        $('.delete-modal').removeClass('fade').modal('hide');
         Meteor.call('minionDelete', this._id);
         Router.go('/minions');
     },

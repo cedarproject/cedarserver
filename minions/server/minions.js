@@ -13,16 +13,26 @@ Meteor.methods({
             throw new Meteor.Error('minion-invalid-type', 'Invalid type of minion: ' + type);
         }
         
-        minionid = minions.insert({
+        var minion = {
             name: 'New ' + type + ' minion',
             stage: null,
             type: type,
-            layers: {background: null, foreground: null, audio: null},
             settings: {},
             connected: false
-        });
+        };
         
-        return minionid;
+        if (type == 'media') {
+            minion.layers = {background: null, foreground: null, audio: null};
+            minion.settings.blocks = [{
+                points: [[-1, 1], [1, 1], [-1, -1], [1, -1]],
+                width: 1,
+                height: 1,
+                x: 0, y: 0,
+                brightness: 1
+            }];
+        }
+        
+        return minions.insert(minion);
     },
 
     minionConnect: function (minionid) {

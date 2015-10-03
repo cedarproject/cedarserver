@@ -26,15 +26,17 @@
                     <br>
                     
                     {{#if typeIs 'media'}}
-                        <label>Display Layers:</label>
-                        {{#each getLayers}}
-                            <p>
-                                <input type="checkbox" checked={{isLayerChecked}} class="display-layer-checkbox">
-                                {{this}}
-                            </p>
-                        {{/each}}
+                        {{#if stage}}
+                            <label>Display Layers:</label>
+                            {{#each getLayers}}
+                                <p>
+                                    <input type="checkbox" checked={{isLayerChecked}} class="display-layer-checkbox">
+                                    {{this}}
+                                </p>
+                            {{/each}}
                         
-                        <br>
+                            <br>
+                        {{/if}}
                         
                         <h4>Songs:</h4>
                         
@@ -52,7 +54,7 @@
                         </select>
                             
                         <label>Font Color:</label>
-                        <input type="text" data-setting="songs_font_color" class="setting form-control" value={{getSetting 'songs_font_'}}>
+                        <input type="text" data-setting="songs_font_color" class="setting form-control" value={{getSetting 'songs_font_color'}}>
                         
                         <label>Font Shadow:</label>
                         <input type="number" min=0 max=10 step=1 data-setting="songs_font_shadow" class="setting form-control" value={{getSetting 'songs_font_shadow'}}>

@@ -1,3 +1,9 @@
+Meteor.startup(function () {
+    var fs = Npm.require('fs');
+    var prefix = settings.findOne({key: 'mediadir'}).value;
+    fs.mkdir(prefix + '/thumbs', () => {});
+});
+
 process_media = function (fileInfo, formFields) {
     var mediaid = media.insert({
         title: fileInfo.name,
