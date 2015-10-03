@@ -1,7 +1,7 @@
 Meteor.startup(function () {
     var fs = Npm.require('fs');
     var prefix = settings.findOne({key: 'mediadir'}).value;
-    fs.mkdir(prefix + '/thumbs', () => {});
+    fs.mkdir(prefix + '/thumbs', function () {});
 });
 
 process_media = function (fileInfo, formFields) {
