@@ -16,7 +16,6 @@ patte:mime-npm
 cfs:graphicsmagick
 kidovate:bootstrap-slider
 pfafman:font-awesome-4
-trever:quill
 standard-minifiers
 meteor-base
 mobile-experience
@@ -31,3 +30,5 @@ random
 ejson
 spacebars
 check
+ecmascript
+trever:quill

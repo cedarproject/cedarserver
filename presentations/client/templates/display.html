@@ -5,6 +5,24 @@
             <div class="col-lg-4 col-md-6 col-xs-12">
                 <div class="presentation-content {{isActive}}">
                     {{{content}}}
+
+                    {{#each images}}
+                        {{#with getMedia}}
+                            <img src="/media/static/{{thumbnail}}" style="width: 64px; height: 64px">
+                        {{/with}}
+                    {{/each}}
+                    
+                    {{#if fillins}}
+                        <div class="fillin-controls text-center"><nav>
+                            <ul class="pagination pagination-sm">
+                                {{#each fillins}}
+                                    <li class="presentation-fillin {{fillinActive}}">
+                                        <span>{{fillin}}</span>
+                                    </li>
+                                {{/each}}
+                            </ul>
+                        </nav></div>
+                    {{/if}}
                 </div>
             </div>
         {{/each}}

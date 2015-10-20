@@ -1,16 +1,4 @@
 <template name="presentationSlide">
-    <div class="btn-group pull-right">
-        <button class="slide-up btn btn-default">
-            <span class="glyphicon glyphicon-arrow-up"></span>
-        </button>
-        <button class="slide-down btn btn-default">
-            <span class="glyphicon glyphicon-arrow-down"></span>
-        </button>
-        <button class="slide-del btn btn-danger">
-            <span class="glyphicon glyphicon-remove"></span>
-        </button>
-    </div>
-        
     <div class="editor-toolbar">
         <div class="btn-group">
             <button class="ql-bold btn btn-default"><b>B</b></button>
@@ -24,6 +12,14 @@
             <button class="size btn btn-default" data-value="1.5em">Large</button>
             <button class="size btn btn-default" data-value="2em">Huge</button>
         </div>
+        
+        <button class="fillin btn btn-default">
+            <span class="glyphicon glyphicon-text-color"></span>
+        </button>
+        
+        <button class="image-add btn btn-default">
+            <span class="glyphicon glyphicon-picture"></span>
+        </button>
 
         {{! Because Quill wants select instead of buttons and I'm too lazy to rewrite the size-changing code.}}
         <select class="ql-size" hidden>
@@ -31,7 +27,68 @@
             <option value="1.5em"></option>
             <option value="2em"></option>
         </select>
+
+        <div class="btn-group pull-right">
+            <button class="slide-settings-toggle btn btn-default">
+                <span class="glyphicon glyphicon-cog"></span>
+            </button>
+            <button class="slide-up btn btn-default">
+                <span class="glyphicon glyphicon-arrow-up"></span>
+            </button>
+            <button class="slide-down btn btn-default">
+                <span class="glyphicon glyphicon-arrow-down"></span>
+            </button>
+            <button class="slide-del btn btn-danger">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
+        </div>
+    </div>
+
+    <div class="slide-settings collapse">
+        <div class="well">
+            <h4>Slide Settings</h4>
+            <label>Image Position</label>
+            <select class="setting form-control" data-setting="presentations_image_side">
+                <option value="left" {{isSelected 'presentations_image_side' 'left'}}>Left</option>
+                <option value="right" {{isSelected 'presentations_image_side' 'right'}}>Right</option>
+                <option value="top" {{isSelected 'presentations_image_side' 'top'}}>Top</option>
+                <option value="bottom" {{isSelected 'presentations_image_side' 'bottom'}}>Bottom</option>
+            </select>
+        </div>
     </div>
 
     <div class="slide-editor"></div>
+    
+    <div class="image-modal modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Insert Image</h4>
+                </div>
+                
+                <div class="modal-body">
+                    {{> collectionSelector imageSelector}}
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="modal-close btn btn-default">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{#if images}}
+        <ul class="list-group">
+            {{#each images}}
+                {{#with getImage}}
+                    <li class="list-group-item">
+                        <button class="image-del btn btn-danger pull-right">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                        {{> mediaItem}}
+                    </li>
+                {{/with}}
+            {{/each}}
+        </ul>
+    {{/if}}
 </template>

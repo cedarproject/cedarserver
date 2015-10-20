@@ -21,11 +21,14 @@ defaults = {
     presentations_text_align: 'left', // Horizontal alignment (left, center, right)
     presentations_text_vertical_align: 'flex-start', // Vertical alignment (flex-start, center, flex-end)
     
+    presentations_image_side: 'right', // (left, right, top, bottom)
+    
     presentations_custom_css: '#content {}'
 };
 
 combineSettings = function () {
-    var out = defaults;
+    var out = Object.create(defaults);
+    
     for (var i in arguments) {
         for (var p in arguments[i]) {
             if (arguments[i].hasOwnProperty(p) && arguments[i][p] !== null)

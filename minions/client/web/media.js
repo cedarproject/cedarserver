@@ -1,3 +1,6 @@
+// FEAR THE 700-LINE MONSTROSITY!
+// Yeah, needs to be separated into smaller chunks, but works OK for now.
+
 var vertShaderSource = `
     uniform mat4 uTransformMatrix;
     varying vec2 vUv;
@@ -17,6 +20,11 @@ var fragShaderSource = `
         gl_FragColor *= vec4(brightness, brightness, brightness, opacity);
     }
 `;
+
+var getImageScale = function (image, maxwidth, maxheight) {
+    var ratio = Math.min(maxwidth / image.width, maxheight / image.height);
+    return [image.width * ratio, image.height * ratio];
+};
     
 var render = function () {
     if (this.continue) {
@@ -147,7 +155,8 @@ var changed = function (id, fields) {
                 
                 else if (action.type == 'presentation') {
                     if (action.args && this.layers[i].args &&
-                        action.args.order == this.layers[i].order)
+                        action.args.order == this.layers[i].order &&
+                        action.args.fillin == this.layers[i].fillin)
                             continue;
                 }
                 
@@ -232,7 +241,9 @@ var changed = function (id, fields) {
                                 scene.remove(this.meshes[i]);
                             }
                             
-                            $(this.img).remove();
+                            $(this.canvas).remove();
+                            $(this.domimg).remove();
+                            this.images.forEach((img) => {$(img).remove()});
                             window.URL.revokeObjectURL(this.url);
                         }
                     }.bind(play, this.scene)
@@ -354,7 +365,7 @@ var changed = function (id, fields) {
                     var line = play.text[l].trim();
 
                     play.cx.fillText(line, x, y + (s.songs_font_size * l), window.innerWidth);                    
-//                    play.cx.strokeText(line, x, y + (s.songs_font_size * l), window.innerWidth);
+                    play.cx.strokeText(line, x, y + (s.songs_font_size * l), window.innerWidth);
                 }
                 
                 play.texture = new THREE.Texture(play.canvas);
@@ -388,45 +399,74 @@ var changed = function (id, fields) {
                 
                 if (action.args.order === undefined) continue;
 
-                var html = presentationslides.findOne({presentation: action.presentation, order: action.args.order}).content;
+                var pres = presentations.findOne(action.presentation);
+                var slide = presentationslides.findOne({presentation: action.presentation, order: action.args.order});
+                var html = slide.content;
+                var images = slide.images;
                 
-                var s = combineSettings(this.settings);
+                var s = combineSettings(slide.settings, pres.settings, this.settings);
                 
-                var style = `
-#container {display: flex; height: 100vh; align-items: ${s.presentations_text_vertical_align};}
-#content {
-    flex: 1 1 auto;
-    font-family: ${s.presentations_font};
-    font-size: ${s.presentations_font_size}px;
-    font-weight: ${s.presentations_font_weight};
-    color: ${s.presentations_font_color};
-    text-shadow: 0 0 ${s.presentations_font_shadow}px ${s.presentations_font_shadow_color};
-    text-align: ${s.presentations_text_align};
-}
+                var loaded = 0;
+                var toload = 0;
 
-${s.presentations_custom_css}
-`;
-                play.content = new XMLSerializer().serializeToString(new DOMParser().parseFromString(html, 'text/html'));
-                
-                play.blob = new Blob([`
-<svg xmlns="http://www.w3.org/2000/svg" width="${window.innerWidth}" height="${window.innerHeight}">
-    <foreignObject width="100%" height="100%">
-        <div xmlns="http://www.w3.org/1999/xhtml">
-            <style>${style}</style>
-            <div id="container">
-                <div id="content">${play.content}</div>
-            </div>
-        </div>
-    </foreignObject>
-</svg>`        ], {type: 'image/svg+xml;charset=utf-8'});
+                play.canvas = document.createElement('canvas');
+                play.canvas.width = window.innerWidth;
+                play.canvas.height = window.innerHeight;
 
-                play.url = window.URL.createObjectURL(play.blob);
+                play.cx = play.canvas.getContext('2d');
 
-                play.img = new Image();
-                play.img.src = play.url;
-                
-                play.img.onload = () => {
-                    play.texture = new THREE.Texture(play.img);
+                var render = () => {
+                    loaded++;
+                    if (loaded < toload) return;
+                    
+                    if (play.domimg)
+                        play.cx.drawImage(play.domimg, 0, 0, window.innerWidth, window.innerHeight);
+                    
+                    if (play.images) {
+                        var rows = Math.round(Math.sqrt(play.images.length));
+                        var columns = Math.ceil(play.images.length / rows);
+                        
+                        var width = window.innerWidth;
+                        var height = window.innerHeight;
+                        var x = 0;
+                        var y = 0;
+
+                        if (html.length > 0) {
+                            if (s.presentations_image_side == 'left') {
+                                var width = width / 2;
+                            } if (s.presentations_image_side == 'right') {
+                                var x = width / 2;
+                                var width = width / 2;
+                            } if (s.presentations_image_side == 'top') {
+                                var height = height / 2;
+                            } if (s.presentations_image_side == 'bottom') {
+                                var y = height / 2;
+                                var height = height / 2;
+                            }
+                        }
+                                                
+                        var gridx = width / rows;
+                        var gridy = height / columns;
+                        
+                        for (var n in play.images) {
+                            var img = play.images[n];
+                            var row = n % rows;
+                            var col = Math.floor(n / rows);
+                            
+                            var size = getImageScale(img, gridx, gridy);
+                            
+                            var offx = (gridx - size[0]) / 2;
+                            var offy = (gridy - size[1]) / 2;
+                            
+                            play.cx.drawImage(img, 
+                                x + offx + gridx * row, 
+                                y + offy + gridy * col,
+                                size[0], size[1]
+                            );
+                        }
+                    }
+                    
+                    play.texture = new THREE.Texture(play.canvas);
                     play.texture.minFilter = THREE.LinearFilter;
                     play.texture.magFilter = THREE.LinearFilter;
                     play.texture.needsUpdate = true;
@@ -450,6 +490,107 @@ ${s.presentations_custom_css}
                         }.bind(play)
                     });
                 };
+                
+                if (html) {
+                    var width = '100vw';
+                    var height = '100vh';
+                    var x = '0vw';
+                    var y = '0vw';
+
+                    if (images.length > 0) {
+                         if (s.presentations_image_side == 'left') {
+                            var width = '50vw';
+                            var x = '50vw';
+                        } if (s.presentations_image_side == 'right') {
+                            var width = '50vw';
+                        } if (s.presentations_image_side == 'top') {
+                            var height = '50vh';
+                            var y = '50vh';
+                        } if (s.presentations_image_side == 'bottom') {
+                            var height = '50vh';
+                        }
+                    }
+                                        
+                    // TODO fix vertical alignment!
+                    var style = `
+                        #container {width: 100vw; height: 100vh;}
+                        #content {
+                            position: absolute;
+                            left: ${x};
+                            top: ${y};
+                            width: ${width};
+                            height: ${height};
+                            
+                            font-family: ${s.presentations_font};
+                            font-size: ${s.presentations_font_size}px;
+                            font-weight: ${s.presentations_font_weight};
+                            color: ${s.presentations_font_color};
+                            text-shadow: 0 0 ${s.presentations_font_shadow}px ${s.presentations_font_shadow_color};
+                            text-align: ${s.presentations_text_align};
+                        }
+                        
+                        s {
+                            text-decoration-line: none;
+                            text-decoration-color: ${s.presentations_font_color} !important;
+                        }
+                        
+                        s > u {
+                            text-decoration-line: underline !important;
+                            text-decoration-color: ${s.presentations_font_color} !important;
+                        }
+                        
+                        .hidden {
+                            color: rgba(0,0,0,0);
+                            text-shadow: none;
+                        }
+                        
+                        ${s.presentations_custom_css}
+                    `;
+
+                    var dom = new DOMParser().parseFromString(html, 'text/html');
+                    
+                    $('s', dom).each(function (i) {
+                        if (i >= action.args.fillin) $(this).addClass('hidden');
+                    });
+
+                    play.content = new XMLSerializer().serializeToString(dom);
+                    
+                    play.blob = new Blob([`
+                        <svg xmlns="http://www.w3.org/2000/svg" width="${window.innerWidth}" height="${window.innerHeight}">
+                            <foreignObject width="100%" height="100%">
+                                <div xmlns="http://www.w3.org/1999/xhtml">
+                                    <style>${style}</style>
+                                    <div id="container">
+                                        <div id="content">${play.content}</div>
+                                    </div>
+                                </div>
+                            </foreignObject>
+                        </svg>
+                    `], {type: 'image/svg+xml;charset=utf-8'});
+
+                    play.url = window.URL.createObjectURL(play.blob);
+
+                    play.domimg = new Image(window.innerWidth, window.innerHeight);
+                    play.domimg.src = play.url;
+                    play.domimg.onload = render;
+                    
+                    toload++;
+                }
+                
+                if (images) {
+                    play.images = [];
+
+                    for (var n in images) {
+                        var m = media.findOne(images[n]);
+
+                        var img = new Image();
+                        img.src = '/media/static/' + m.location;
+                        img.onload = render;
+                        
+                        play.images.push(img);
+                        toload++;
+                    }                    
+                }
             }
         }
 

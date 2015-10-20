@@ -121,8 +121,30 @@ Template.set.events({
     
     'click .presentation-content': function (event, template) {
         event.stopImmediatePropagation();
+        
+        var fillin = 0;
+        if (template.data.active == this.action) {
+            var action = actions.findOne(this.action);
+            if (action.args.order == this.order) {
+                fillin = action.args.fillin + 1;
+                if (fillin > this.fillins) fillin = 0;
+            }
+        }
+         
         var args = {
-            order: this.order
+            order: this.order,
+            fillin: fillin
+        };
+        
+        Meteor.call('actionArgs', this.action, args);
+        Meteor.call('setActivate', template.data._id, this.action);
+    },
+
+    'click .presentation-fillin': function (event, template) {
+        event.stopImmediatePropagation();
+        var args = {
+            order: this.order,
+            fillin: this.fillin
         };
         
         Meteor.call('actionArgs', this.action, args);
@@ -140,7 +162,7 @@ Template.set.events({
             settings: {}
         };
                 
-        var col = $(event.target).data('collection')
+        var col = $(event.target).data('collection');
         if (col == 'media') {
             action.type = 'media';
             action.media = $(event.target).data('id');

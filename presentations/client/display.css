@@ -16,3 +16,10 @@
 .presentation-content.active {
     box-shadow: 0px 0px 16px 8px #FFFFFF;
 }
+
+.fillin-controls {
+    position: absolute;
+    bottom: 1px;
+    left: 0;
+    width: 100%;
+}

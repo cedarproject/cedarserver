@@ -4,3 +4,9 @@
     right: 0;
     z-index: 100;
 }
+
+s {
+    text-decoration: none !important;
+    text-shadow: 0 0 8px #337AB7;
+    border: 1px dotted #AAA;
+}

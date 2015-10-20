@@ -32,8 +32,10 @@ Meteor.methods({
             
         return presentationslides.insert({
             presentation: presid,
-            content: '<p>Click to edit.<p>',
+            content: '<p>Click to edit.</p>',
             triggers: [],
+            images: [],
+            settings: {},
             order: order
         });
     },
@@ -46,6 +48,19 @@ Meteor.methods({
     
     presentationSlideContent: function (slideid, content) {
         presentationslides.update(slideid, {$set: {content: content}});
+    },
+    
+    presentationSlideImageAdd: function (slideid, mediaid) {
+        presentationslides.update(slideid, {$push: {images: mediaid}});
+    },
+    
+    presentationSlideImageDel: function (slideid, mediaid) {
+        presentationslides.update(slideid, {$pull: {images: mediaid}});
+    },
+    
+    presentationSlideSetting: function (slideid, setting, value) {
+        var s = {}; s['settings.' + setting] = value;
+        presentationslides.update(slideid, {$set: s});
     },
     
     presentationSlideMove: function (slideid, index) {
