@@ -45,6 +45,7 @@ Template.actionSettings.events({
     },
     
     'change .action-layer': function (event, template) {
+        event.stopImmediatePropagation();
         Meteor.call('actionLayer', template.data._id, $(event.target).val());
     },
     

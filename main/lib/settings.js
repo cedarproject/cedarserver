@@ -18,8 +18,10 @@ defaults = {
     presentations_font_shadow: '0',
     presentations_font_shadow_color: 'black',
     
-    presentations_text_align: 'left', // Horizontal alignment (left, center, right)
-    presentations_text_vertical_align: 'flex-start', // Vertical alignment (flex-start, center, flex-end)
+    presentations_position_horizontal: 'left', // Horizontal alignment (left, center, right)
+    presentations_position_vertical: 'top', // Vertical alignment (top, center, bottom)
+    presentations_width: 100,
+    presentations_height: 100,
     
     presentations_image_side: 'right', // (left, right, top, bottom)
     

@@ -426,22 +426,34 @@ var changed = function (id, fields) {
                         var rows = Math.round(Math.sqrt(play.images.length));
                         var columns = Math.ceil(play.images.length / rows);
                         
-                        var width = window.innerWidth;
-                        var height = window.innerHeight;
-                        var x = 0;
-                        var y = 0;
-
+                        var width = window.innerWidth * (s.presentations_width / 100);
+                        var height = window.innerHeight * (s.presentations_height / 100);
+                        
+                        if (s.presentations_position_horizontal == 'left')
+                            var x = 0;
+                        else if (s.presentations_position_horizontal == 'center')
+                            var x = (window.innerWidth - width) / 2;
+                        else if (s.presentations_position_horizontal == 'right')
+                            var x = window.innerWidth - width;
+                            
+                        if (s.presentations_position_vertical == 'top')
+                            var y = 0;
+                        else if (s.presentations_position_vertical == 'center')
+                            var y = (window.innerHeight - height) / 2;
+                        else if (s.presentations_position_vertical == 'bottom')
+                            var y = window.innerHeight - height;
+                        
                         if (html.length > 0) {
                             if (s.presentations_image_side == 'left') {
-                                var width = width / 2;
-                            } if (s.presentations_image_side == 'right') {
-                                var x = width / 2;
-                                var width = width / 2;
-                            } if (s.presentations_image_side == 'top') {
-                                var height = height / 2;
-                            } if (s.presentations_image_side == 'bottom') {
-                                var y = height / 2;
-                                var height = height / 2;
+                                width /= 2;
+                            } else if (s.presentations_image_side == 'right') {
+                                x += width / 2;
+                                width /= 2;
+                            } else if (s.presentations_image_side == 'top') {
+                                height /= 2;
+                            } else if (s.presentations_image_side == 'bottom') {
+                                y += height / 2;
+                                height /= 2;
                             }
                         }
                                                 
@@ -492,41 +504,75 @@ var changed = function (id, fields) {
                 };
                 
                 if (html) {
-                    var width = '100vw';
-                    var height = '100vh';
-                    var x = '0vw';
-                    var y = '0vw';
+                    var offset_top = 0;
+                    var offset_left = 0;
+
+                    if (s.presentations_position_vertical == 'top') {
+                        var container_vertical = 'top: 0';
+                    } else if (s.presentations_position_vertical == 'center') {
+                        var container_vertical = 'top: 50%';
+                        var offset_top = '-50%';
+                    } else if (s.presentations_position_vertical == 'bottom') {
+                        var container_vertical = 'bottom: 0';
+                    }
+                    
+                    if (s.presentations_position_horizontal == 'left') {
+                        var container_horizontal = 'left: 0';
+                    } else if (s.presentations_position_horizontal == 'center') {
+                        var container_horizontal = 'left: 50%';
+                        var offset_left = '-50%';
+                    } else if (s.presentations_position_horizontal == 'right') {
+                        var container_horizontal = 'right: 0';
+                    }
+                                    
+                    var content_width = '100%';
+                    var content_height = '100%';
+                    var content_x = '0%';
+                    var content_y = '0%';
 
                     if (images.length > 0) {
                          if (s.presentations_image_side == 'left') {
-                            var width = '50vw';
-                            var x = '50vw';
-                        } if (s.presentations_image_side == 'right') {
-                            var width = '50vw';
-                        } if (s.presentations_image_side == 'top') {
-                            var height = '50vh';
-                            var y = '50vh';
-                        } if (s.presentations_image_side == 'bottom') {
-                            var height = '50vh';
+                            var content_width = '50%';
+                            var content_x = '50%';
+                        } else if (s.presentations_image_side == 'right') {
+                            var content_width = '50%';
+                        } else if (s.presentations_image_side == 'top') {
+                            var content_height = '50%';
+                            var content_y = '50%';
+                        } else if (s.presentations_image_side == 'bottom') {
+                            var content_height = '50%';
                         }
                     }
                                         
-                    // TODO fix vertical alignment!
                     var style = `
-                        #container {width: 100vw; height: 100vh;}
-                        #content {
+                        #container {
                             position: absolute;
-                            left: ${x};
-                            top: ${y};
-                            width: ${width};
-                            height: ${height};
+                            width: ${s.presentations_width}vw;
+                            height: ${s.presentations_height}vh;
+                            ${container_vertical};
+                            ${container_horizontal};
+                        }
+                        
+                        #offset {
+                            position: relative;
+                            width: 100%;
+                            height: 100%;
+                            left: ${offset_left};
+                            top: ${offset_top};
+                        }
+                        
+                        #content {
+                            position: relative;
+                            left: ${content_x};
+                            top: ${content_y};
+                            max-width: ${content_width};
+                            max-height: ${content_height};
                             
                             font-family: ${s.presentations_font};
                             font-size: ${s.presentations_font_size}px;
                             font-weight: ${s.presentations_font_weight};
                             color: ${s.presentations_font_color};
                             text-shadow: 0 0 ${s.presentations_font_shadow}px ${s.presentations_font_shadow_color};
-                            text-align: ${s.presentations_text_align};
                         }
                         
                         s {
@@ -546,7 +592,7 @@ var changed = function (id, fields) {
                         
                         ${s.presentations_custom_css}
                     `;
-
+                    
                     var dom = new DOMParser().parseFromString(html, 'text/html');
                     
                     $('s', dom).each(function (i) {
@@ -561,7 +607,9 @@ var changed = function (id, fields) {
                                 <div xmlns="http://www.w3.org/1999/xhtml">
                                     <style>${style}</style>
                                     <div id="container">
-                                        <div id="content">${play.content}</div>
+                                        <div id="offset">
+                                            <div id="content">${play.content}</div>
+                                        </div>
                                     </div>
                                 </div>
                             </foreignObject>
