@@ -24,4 +24,8 @@
             {{> presentationDisplay}}
         {{/with}}
     {{/if}}
+    
+    {{#if actionType 'clear-layer'}}
+        {{> specialClearLayer}}
+    {{/if}}
 </template>

@@ -1,0 +1,26 @@
+<template name="streamingMenu">
+    <div class="container">
+        <h3>Streaming</h3>
+        
+        <p><a href="/streaming/sources">Sources</a></p>
+        <p><a href="/streaming/mixes">Mixes</a></p>
+        
+        <br>
+        
+        <div class="well">
+            <p>
+                Kurento Status:
+                {{#if connected}}
+                    <span class="label label-success">Connected</span>
+                {{else}}
+                    <span class="label label-danger">Not Connected</span>
+                {{/if}}
+            </p>
+        
+            <label>Kurento Server URL:</label>
+            <input id="server" class="form-control" value={{server}}>
+            
+            <button id="connect" class="btn btn-primary">Connect</button>
+        </div>
+    </div>
+</template>

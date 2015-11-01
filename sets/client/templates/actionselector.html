@@ -24,6 +24,10 @@
                             <li role="presentation">
                                 <a href="#scenes" role="tab" data-toggle="tab">Scenes</a>
                             </li>
+                            
+                            <li role="presentatino">
+                                <a href="#special" role="tab" data-toggle="tab">Special</a>
+                            </li>
                         </ul>
                     
                         <div class="tab-content">
@@ -41,6 +45,10 @@
                             
                             <div role="tabpanel" class="tab-pane fade" id="scenes">
                                 {{> collectionSelector sceneSelector}}
+                            </div>
+                            
+                            <div role="tabpanel" class="tab-pane fade" id="special">
+                                {{> specialActions}}
                             </div>
                         </div>
                     </div>

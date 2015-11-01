@@ -32,3 +32,5 @@ spacebars
 check
 ecmascript
 trever:quill
+cglace:kurento-client
+cosmos:browserify

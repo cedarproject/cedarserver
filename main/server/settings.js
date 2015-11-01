@@ -4,15 +4,11 @@ var defaults = [
         value: process.env.PWD + '/.uploads',
         description: 'Directory to store uploaded media files.'
     },
+        
     {
-        key: 'mediainternalserver',
-        value: true,
-        description: 'Whether Cedar serves media files itself or uses an external server'
-    },
-    {
-        key: 'mediaurl',
-        value: '/media/static/',
-        description: 'URL prefix of media server'
+        key: 'streamingserver',
+        value: null,
+        description: 'URL of Kurento server'
     }
 ];
 
@@ -22,4 +18,10 @@ Meteor.startup(function () {
             settings.insert(setting);
         }
     });
+});
+
+Meteor.methods({
+    setSetting: function (key, value) {
+        settings.update({key: key}, {$set: {value: value}});
+    }
 });

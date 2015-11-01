@@ -2,6 +2,7 @@ Template.actionDisplay.helpers({
     actionType: function (type) {
         return this.type == type
     },
+    
     getMedia: function () {
         return media.findOne(this.media);
     },

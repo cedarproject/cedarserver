@@ -2,7 +2,8 @@
 
 Meteor.startup(function () {
     // make sure song arrangements have triggers array
-    songarrangements.find().forEach(function (arr) {
-        if (!arr.triggers) songarrangements.update(arr, {$set: {triggers: []}});
-    });
+    songarrangements.update({triggers: {$exists: false}}, {$set: {triggers: []}}, {multi: true});
+    
+    // make sure actions have triggers setting set
+    actions.update({'settings.triggers': {$exists: false}}, {$set: {'settings.triggers': true}}, {multi: true});
 });

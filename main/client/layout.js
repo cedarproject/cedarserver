@@ -1,7 +1,7 @@
 Template.layout.helpers({
     notFullscreen: function () {
         var curr = Router.current().lookupTemplate();
-        if (curr == 'Webminionmedia') return false;
+        if (curr == 'Webminionmedia' || curr == 'StreamingSourceStream') return false;
         else return true;
     },
 

@@ -101,10 +101,9 @@ Template.set.events({
         if ($(event.target).hasClass('btn')) return;
         var set = Template.parentData();
         if (this._id != set.active) {
-            Meteor.call('actionArgs', this._id, {}); // Reset Song/Presentation active slide index.
+            Meteor.call('actionArgs', this._id, {});
             Meteor.call('setActivate', set._id, this._id);
         };
-//        return false;
     },
     
     'click .song-content': function (event, template) {
@@ -116,7 +115,7 @@ Template.set.events({
         };
         
         Meteor.call('actionArgs', this.action, args);
-        Meteor.call('setActivate', template.data._id, this.action);        
+        Meteor.call('setActivate', template.data._id, this.action);
     },
     
     'click .presentation-content': function (event, template) {
@@ -190,6 +189,15 @@ Template.set.events({
             action.layer = 'foreground'; // TODO fix this to default to the topmost layer, or something.
         }
         
+        else if (col == 'special') {
+            var special = $(event.target).data('id');
+            
+            if (special == 'clear-layer') {
+                action.type = 'clear-layer';
+                action.layer = 'foreground'; // TODO fix this to default to the topmost layer, or something.
+            }
+        }
+        
         if (Session.get('add-to')['type'] == 'set') {
             var a = actions.findOne({set: template.data._id}, {sort: {order: -1}, fields: {order: 1}});
             if (a) action.order = a.order + 1;
@@ -226,7 +234,7 @@ Template.set.events({
     'change .set-stage': function (event, template) {
         Meteor.call('setStage', template.data._id, $(event.target).val());
     },
-        // TODO fix set delete modal!
+
     'click #set-delete': function (event, template) {
         template.$('#delete-confirm-modal').modal('show');
     },

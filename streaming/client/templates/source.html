@@ -1,0 +1,28 @@
+<template name="streamingSource">
+    <div class="container">
+        <h3>
+            {{title}}
+            {{#if connected}}
+                <small><span class="label label-success">Connected</span></small>
+            {{else}}
+                <small><span class="label label-default">Disconnected</span></small>
+            {{/if}}
+        </h3>
+        
+        {{!TODO if source active, show live view}}
+        
+        <label>Title</label>
+        <input id="title" class="form-control" value={{title}}>
+        
+        <div class="well well-sm">
+            <p><a href={{pathFor 'streamingSourceStream' _id}}>Start Streaming</a></p>
+            <p>Direct link: <pre>{{urlFor 'streamingSourceStream' _id}}</pre></p>
+        </div>
+        
+        <hr>
+        
+        <button id="delete" class="btn btn-danger">
+            Delete
+        </button>
+    </div>
+</template>

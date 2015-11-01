@@ -80,16 +80,20 @@ Meteor.methods({
     setActivate: function (setid, actionid) {
         var set = checkSet(setid);
         var action = actions.findOne(actionid);
-        var triggers = actions.find({actionid: action._id}).fetch();
-
-        var set_actions = [action].concat(triggers);
+        
+        if (action.settings.triggers) {
+            var triggers = actions.find({actionid: action._id}).fetch();
+            var set_actions = [action].concat(triggers);
+        }
+        
+        else var set_actions = [action];
         
         sets.update(set, {$set: {active: actionid}});
 
         for (var i in set_actions) {
             var action = set_actions[i];
             action.set = setid;
-            if (action.type == 'media') {
+            if (action.type == 'media' || action.type == 'clear-layer') {
                 Meteor.call('mediaActionActivate', action);
             }
             

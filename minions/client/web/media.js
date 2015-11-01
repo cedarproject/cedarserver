@@ -164,7 +164,7 @@ var changed = function (id, fields) {
             }
         }
         
-        // Remove the layer's previous action, if any.    
+        // Remove the layer's previous action, if any.
         if (this.layers[i]) {
             var play = this.layers[i];
 
