@@ -15,15 +15,36 @@ var fragShaderSource = `
     uniform sampler2D uSampler;
     uniform float brightness;
     uniform float opacity;
-    void main(void)  {
-        gl_FragColor = texture2D(uSampler, vUv);
+    uniform vec4 borders;
+    void main (void) {
+        if (vUv[0] <= borders[0] || vUv[0] >= borders[2] || vUv[1] <= borders[1] || vUv[1] >= borders[3]) {
+            gl_FragColor = vec4(0, 0, 0, 1);
+        }
+        
+        else {
+            vec2 corrected;
+            corrected[0] = (vUv[0] - borders[0]) / (borders[2] - borders[0]);
+            corrected[1] = (vUv[1] - borders[1]) / (borders[3] - borders[1]);
+                
+            gl_FragColor = texture2D(uSampler, corrected);
+        }
+
         gl_FragColor *= vec4(brightness, brightness, brightness, opacity);
     }
 `;
 
-var getImageScale = function (image, maxwidth, maxheight) {
-    var ratio = Math.min(maxwidth / image.width, maxheight / image.height);
-    return [image.width * ratio, image.height * ratio];
+var getScale = function (width, height, maxwidth, maxheight) {
+    var ratio = Math.min(maxwidth / width, maxheight / height);
+    return [width * ratio, height * ratio];
+};
+
+var getBorders = function (width, height) {
+    var scale = getScale(width, height, window.innerWidth, window.innerHeight);
+    
+    scale[0] /= window.innerWidth;
+    scale[1] /= window.innerHeight;
+
+    return [(1 - scale[0]) / 2, (1 - scale[1]) / 2, 1 - ((1 - scale[0]) / 2), 1 - ((1 - scale[1]) / 2)];
 };
     
 var render = function () {
@@ -95,7 +116,15 @@ var create_blocks = function (play) {
                0,    0,   1,    0,
             m[2], m[5],   0,    1
         );
-
+        
+        if ((play.type == 'video' || play.type == 'image')
+            && combineSettings(play.settings).media_preserve_aspect == 'yes') {
+                if (play.video) var borders = getBorders(play.video.videoWidth, play.video.videoHeight);
+                else if (play.image) var borders = getBorders(play.image.width, play.image.height);
+        } else var borders = [0, 0, 1, 1];
+        
+        console.log(borders);
+        
         var material = new THREE.ShaderMaterial({
             vertexShader: vertShaderSource,
             fragmentShader: fragShaderSource,
@@ -104,7 +133,9 @@ var create_blocks = function (play) {
                 brightness: {type: 'f', value: block.brightness || 1.0},
                 opacity: {type: 'f', value: play.opacity},
                 uTransformMatrix: {type: 'm4', value: matrix},
-                uSampler: {type: 't', value: play.texture}
+                uSampler: {type: 't', value: play.texture},
+                borders: {type: 'v4', value: new THREE.Vector4(borders[0], borders[1],
+                                                               borders[2], borders[3])}
             }
         });
         
@@ -258,7 +289,12 @@ var changed = function (id, fields) {
             if (action.type == 'media') {
                 var m = media.findOne(action.media);
                 
-                if (m.type == 'video' || m.type == 'image') {
+                if (m.type == 'video' || m.type == 'image') {                    
+                    play.materials = [];
+                    play.meshes = [];
+                    play.opacity = 0;
+                    play.z = 0;
+
                     if (m.type == 'video') {
                         play.type = 'video';
                         play.video = document.createElement('video');
@@ -271,24 +307,30 @@ var changed = function (id, fields) {
                             this.play();
                         }.bind(play.video));
                         
-                        play.texture = new THREE.VideoTexture(play.video);
-                        play.texture.minFilter = THREE.LinearFilter;
-                        play.texture.magFilter = THREE.LinearFilter;
+                        play.video.onloadedmetadata = () => {                        
+                            play.texture = new THREE.VideoTexture(play.video);
+                            play.texture.minFilter = THREE.LinearFilter;
+                            play.texture.magFilter = THREE.LinearFilter;
+                            
+                            this.create_blocks(play);
+                        }
                     }
                     
                     else if (m.type == 'image') {
                         play.type = 'image';
-                        play.texture = THREE.ImageUtils.loadTexture(settings.findOne({key: 'mediaurl'}).value + m.location);
-                        play.texture.minFilter = THREE.LinearFilter;
-                        play.texture.magFilter = THREE.LinearFilter;
+                        
+                        play.image = new Image();
+                        play.image.src = settings.findOne({key: 'mediaurl'}).value + m.location;
+                        
+                        play.image.onload = () => {                        
+                            play.texture = new THREE.Texture(play.image);
+                            play.texture.minFilter = THREE.LinearFilter;
+                            play.texture.magFilter = THREE.LinearFilter;
+                            play.texture.needsUpdate = true;
+                            
+                            this.create_blocks(play);
+                        }
                     }
-                    
-                    play.materials = [];
-                    play.meshes = [];
-                    play.opacity = 0; //TODO this whole mess is ugly, fix it! 
-                    play.z = 0;
-
-                    this.create_blocks(play);
 
                     this.fades.push({
                         start: 0, end: 1,
@@ -465,7 +507,7 @@ var changed = function (id, fields) {
                             var row = n % rows;
                             var col = Math.floor(n / rows);
                             
-                            var size = getImageScale(img, gridx, gridy);
+                            var size = getScale(img.width, img.height, gridx, gridy);
                             
                             var offx = (gridx - size[0]) / 2;
                             var offy = (gridy - size[1]) / 2;

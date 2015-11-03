@@ -15,6 +15,14 @@
             </select>
         {{/if}}
         
+        {{#if typeIs 'media'}}
+            <label>Preserve Aspect Ratio:</label>
+            <select class="setting form-control" data-setting="media_preserve_aspect">
+                <option value="yes" {{isSelected 'media_preserve_aspect' 'yes'}}>Yes (scale to fit)</option>
+                <option value="no" {{isSelected 'media_preserve_aspect' 'no'}}>No (stretch to fit)</option>
+            </select>
+        {{/if}}
+        
         {{#if typeIs 'song'}}
             <label>Arrangement:</label>
             <select class="song-arrangement form-control">

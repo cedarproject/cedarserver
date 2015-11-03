@@ -1,4 +1,12 @@
 Template.actionSettings.helpers({
+    getSetting: function (setting) {
+        return combineSettings(this.settings)[setting];
+    },
+    
+    isSelected: function (setting, value) {
+        if (combineSettings(this.settings)[setting] == value) return 'selected';
+    },
+    
     typeIs: function () {
         for (var i in arguments) {
             if (arguments[i] == this.type) return true;
@@ -47,6 +55,12 @@ Template.actionSettings.events({
     'change .action-layer': function (event, template) {
         event.stopImmediatePropagation();
         Meteor.call('actionLayer', template.data._id, $(event.target).val());
+    },
+
+    'change .setting': function (event, template) {
+        var setting = $(event.target).data('setting');
+        var value = $(event.target).val();
+        Meteor.call('actionSetting', template.data._id, setting, value);
     },
     
     'change .song-arrangement': function (event, template) {

@@ -1,6 +1,8 @@
 defaults = {
-    fade: 1,
+    media_fade: 1,
+    media_preserve_aspect: 'yes',
 
+    songs_fade: 0.25,
     songs_font: 'sans-serif',
     songs_font_size: '72',
     songs_font_weight: 'bold', // (normal, bold)
@@ -11,6 +13,7 @@ defaults = {
     songs_text_align: 'center', // Horizontal alignment (left, center, right)
     songs_text_vertical_align: 'center', // Vertical alignment (top, center, bottom)
     
+    presentations_fade: 0.25,
     presentations_font: 'sans-serif',
     presentations_font_size: '48',
     presentations_font_weight: 'bold',
