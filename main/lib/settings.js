@@ -1,6 +1,7 @@
-defaults = {
+defaults = JSON.stringify({
     media_fade: 1,
     media_preserve_aspect: 'yes',
+    media_loop: 'no',
 
     songs_fade: 0.25,
     songs_font: 'sans-serif',
@@ -29,10 +30,10 @@ defaults = {
     presentations_image_side: 'right', // (left, right, top, bottom)
     
     presentations_custom_css: '#content {}'
-};
+});
 
 combineSettings = function () {
-    var out = Object.create(defaults);
+    var out = JSON.parse(defaults); // Hacky way of copying the defaults object.
     
     for (var i in arguments) {
         for (var p in arguments[i]) {

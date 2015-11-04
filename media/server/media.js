@@ -43,7 +43,7 @@ Meteor.methods({
         var targets = minions.find({type: 'media', stage: set.stage}).fetch();                   
         var actMedia = media.findOne(action.media);
                 
-        action.time = (Date.now() * 0.001) + 0.1; // Get current time as float, add 100ms
+        action.time = Date.now() + 100;
         
         var s = {}; s['layers.' + action.layer] = action;
         targets.forEach(function (minion) {

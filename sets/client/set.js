@@ -158,7 +158,9 @@ Template.set.events({
     'click .collection-add': function (event, template) {    
         var action = {
             args: {},
-            settings: {}
+            settings: {
+                triggers: true
+            }
         };
                 
         var col = $(event.target).data('collection');

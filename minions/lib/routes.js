@@ -13,8 +13,11 @@ Router.route('/minions/settings/:_id', {
 Router.route('/minions/web/media/:_id', {
     name: 'webminionmedia',
     waitOn: function () {
-        return [Meteor.subscribe('media'),
-                Meteor.subscribe('songs')];
+        return [Meteor.subscribe('minions'),
+                Meteor.subscribe('stages'),
+                Meteor.subscribe('media'),
+                Meteor.subscribe('songs'),
+                Meteor.subscribe('presentations')];
     },
-    data: function () {return this.params._id;}
+    data: function () {return minions.findOne(this.params._id);}
 });
