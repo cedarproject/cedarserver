@@ -42,9 +42,9 @@ Meteor.methods({
     },
     
     actionRemove: function (actionid) {
-        var index = actions.findOne(actionid).order;
+        var action = actions.findOne(actionid);
         actions.remove(actionid);
-        if (index !== null) actions.update({order: {$gte: index}}, {$inc: {order: -1}}, {multi: true});
+        if (action.order !== null) actions.update({set: action.set, order: {$gte: action.order}}, {$inc: {order: -1}}, {multi: true});
     },
     
     actionTitle: function (actionid, title) {
