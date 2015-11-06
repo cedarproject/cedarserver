@@ -45,7 +45,7 @@ Template.mediaPlaylistSettings.events({
     
     'click .item-down': function (event, template) {
         var contents = template.data.contents;
-        if (this.index < contents.length-1) { // TODO figure out why this shoves stuff to the bottom of the list!
+        if (this.index < contents.length-1) {
             contents.splice(this.index+1, 0, contents.splice(this.index, 1)[0]);
             Meteor.call('playlistContents', template.data._id, contents);
         }
@@ -63,5 +63,5 @@ Template.mediaPlaylistSettings.events({
         var contents = template.data.contents;
         contents.splice(this.index, 1);
         Meteor.call('playlistContents', template.data._id, contents);
-    },
+    }
 });

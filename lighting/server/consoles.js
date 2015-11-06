@@ -1,22 +1,28 @@
 function checkConsole (consoleid) {
     var console = lightconsoles.findOne(consoleid);
     if (console) return console;
-    else throw new Meteor.Error('console-not-found', "Couldn't find console with id: " + consoleid);
+    else throw new Meteor.Error('console-not-found', `Couldn't find console with id: ${consoleid}`);
+}
+
+function checkPanel (panelid) {
+    var panel = lightconsolepanels.findOne(panelid);
+    if (panel) return panel;
+    else throw new Meteor.Error('panel-not-found', `Couldn't find panel with id: ${panelid}`);
 }
 
 Meteor.methods({
     lightConsoleNew: function () {
-        lightconsoles.insert({
+        return lightconsoles.insert({
             title: 'New Console',
             stage: null,
             settings: {fade: 0},
-            controls: []
         });
     },
     
     lightConsoleDel: function (consoleid) {
         var console = checkConsole(consoleid);
-        lightconsoles.remove(console);
+        lightconsoles.remove(consoleid);
+        lightconsolepanels.remove({console: consoleid});
     },
     
     lightConsoleTitle: function (consoleid, title) {
@@ -35,23 +41,31 @@ Meteor.methods({
         lightconsoles.update(console, {$set: s});
     },
     
-    lightConsoleAddLight: function (consoleid, lightid) {
+    lightConsoleAddPanel: function (consoleid) {
         var console = checkConsole(consoleid);
-        lightconsoles.update(console, {$push: {controls: {light: lightid}}});
+        var o = lightconsolepanels.find({console: consoleid}).count();
+        return lightconsolepanels.insert({
+            console: consoleid,
+            title: 'New Panel',
+            order: o,
+            settings: {},
+            controls: []
+        });
     },
     
-    lightConsoleAddGroup: function (consoleid, groupid) {
-        var console = checkConsole(consoleid);
-        lightconsoles.update(console, {$push: {controls: {group: groupid}}});
+    lightConsoleDelPanel: function (panelid) {
+        var panel = checkPanel(panelid);
+        lightconsolepanels.remove(panelid);
+        lightconsolepanels.update({console: panelid, order: {$gt: panel.order}}, {$inc: {order: -1}}, {multi: true});
     },
     
-    lightConsoleAddScene: function (consoleid, sceneid) {
-        var console = checkConsole(consoleid);
-        lightconsoles.update(console, {$push: {controls: {scene: sceneid}}});
+    lightConsolePanelTitle: function (panelid, title) {
+        var panel = checkPanel(panelid);
+        lightconsolepanels.update(panel, {$set: {title: title}});
     },
     
-    lightConsoleRemoveLight: function (consoleid, index) {
-        var console = checkConsole(consoleid);
-        lightconsoles.update(console, {$pull: {controls: console.controls[index]}});
-    }
+    lightConsolePanelControls: function (panelid, controls) {
+        var panel = checkPanel(panelid);
+        lightconsolepanels.update(panel, {$set: {controls: controls}});
+    },
 });

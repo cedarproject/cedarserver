@@ -14,3 +14,7 @@ Meteor.publish('lightscenes', function () {
 Meteor.publish('lightconsoles', function () {
     return lightconsoles.find();
 });
+
+Meteor.publish('lightconsolepanels', function () {
+    return lightconsolepanels.find();
+});

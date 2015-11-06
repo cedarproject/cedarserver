@@ -9,18 +9,10 @@ Template.lightConsole.helpers({
         else {return 'Unassigned';}
     },
 
-    getLight: function (lightid) {
-        return lights.findOne(lightid);
-    },
+    panels: function () {
+        return lightconsolepanels.find({console: this._id}, {sort: [['order', 'asc']]});
+    },    
 
-    getGroup: function (groupid) {
-        return lightgroups.findOne(groupid);
-    },
-
-    getScene: function (sceneid) {
-        return lightscenes.findOne(sceneid);
-    },
-    
     lightSelector: {
         collection: lights,
         displayTemplate: 'light',
@@ -64,35 +56,39 @@ Template.lightConsole.events({
         if (!isNaN(fade)) Meteor.call('lightConsoleSetting', template.data._id, 'fade', fade);
     },
     
-    'click #add-light': function (event) {
+    'click #add-panel': function (event, template) {
+        Meteor.call('lightConsoleAddPanel', template.data._id);
+    },
+    
+    'click .add-light': function (event) {
         $('#add-light-modal').modal('show');
     },
     
-    'click #add-group': function (event) {
+    'click .add-group': function (event) {
         $('#add-group-modal').modal('show');
     },
 
-    'click #add-scene': function (event) {
+    'click .add-scene': function (event) {
         $('#add-scene-modal').modal('show');
     },
     
     'click .collection-add': function (event, template) {
+        var panel = Session.get('add-to');
+        var controls = lightconsolepanels.findOne(panel).controls;
+
         if ($(event.target).data('collection') == 'lights') {
-            Meteor.call('lightConsoleAddLight', template.data._id, $(event.target).data('id'));
+            controls.push({light: $(event.target).data('id')});
         }
         
         else if ($(event.target).data('collection') == 'lightgroups') {
-            Meteor.call('lightConsoleAddGroup', template.data._id, $(event.target).data('id'));
+            controls.push({group: $(event.target).data('id')});
         }
 
         else if ($(event.target).data('collection') == 'lightscenes') {
-            Meteor.call('lightConsoleAddScene', template.data._id, $(event.target).data('id'));
+            controls.push({scene: $(event.target).data('id')});
         }
-    },
-    
-    'click .delete-control': function (event, template) {
-        var index = template.data.controls.indexOf(this);
-        Meteor.call('lightConsoleRemoveLight', template.data._id, index);
+        
+        Meteor.call('lightConsolePanelControls', panel, controls);
     },
     
     'click #delete-console': function (event, template) {
