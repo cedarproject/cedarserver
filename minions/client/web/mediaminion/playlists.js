@@ -25,12 +25,14 @@ MediaMinionPlaylist = class MediaMinionPlaylist {
             this.order = this.playlist.contents;
         }
         
-        else if (this.setting.playlist_order == 'random') {
+        else if (this.settings.playlist_order == 'random') {
             this.order = [];
+            var contents = this.playlist.contents.slice(0);
             
             for (var i = 0; i < this.playlist.contents.length; i++) {
-                var r = Math.round(random(this.action.time + i) * this.playlist.contents.length)
-                this.order.push(this.playlist.contents[r]);
+                var r = Math.floor(random(this.action.time + i) * contents.length)
+                this.order.push(contents.splice(r, 1)[0]);
+                console.log(contents, this.order, r);
             }
             
             console.log(this.order);

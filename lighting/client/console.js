@@ -47,15 +47,12 @@ Template.lightConsole.helpers({
 });
 
 Template.lightConsole.events({
-    'click #title': function (event, template) {
-        $('#title').addClass('hidden');
-        $('#titleedit').removeClass('hidden');
+    'click #settings-toggle': function (event, template) {
+        template.$('#settings-pane').collapse('toggle');
     },
     
-    'blur #titleedit': function (event, template) {
-        Meteor.call('lightConsoleTitle', this._id, $('#titleedit').val());
-        $('#titleedit').addClass('hidden');
-        $('#title').removeClass('hidden');
+    'blur #title': function (event, template) {
+        Meteor.call('lightConsoleTitle', this._id, $(event.target).val());
     },
     
     'change #console-stage': function (event, template) {

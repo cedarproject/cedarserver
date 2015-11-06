@@ -33,6 +33,12 @@
         {{/if}}
         
         {{#if typeIs 'playlist'}}
+            <label>Playlist Order</label>
+            <select class="setting form-control" data-setting="playlist_order">
+                <option value="normal" {{isSelected 'playlist_order' 'normal'}}>Normal</option>
+                <option value="random" {{isSelected 'playlist_order' 'random'}}>Random</option>
+            </select>
+            
             <label>Image Display Length</label>
             <input type="number" class="setting form-control" data-setting="playlist_image_length"
                 min=0 max=60 step=1 value={{getSetting 'playlist_image_length'}}>
