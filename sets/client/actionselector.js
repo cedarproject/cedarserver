@@ -7,6 +7,14 @@ Template.actionSelector.helpers({
         addbutton: true
     },
     
+    playlistSelector: {
+        collection: mediaplaylists,
+        displayTemplate: 'mediaPlaylist',
+        fields: [{field: 'title', type: String}, {field: 'tags', type: Array}],
+        sort: [['title', 'asc']],
+        addbutton: true
+    },
+    
     sceneSelector: {
         collection: lightscenes,
         displayTemplate: 'lightScene',

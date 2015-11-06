@@ -4,7 +4,7 @@ Template.songArrangement.helpers({
         for (var i in this.order) {
             out.push({
                 title: songsections.findOne(this.order[i]).title,
-                index: i
+                index: parseInt(i)
             });
         }
 

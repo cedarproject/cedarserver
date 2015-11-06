@@ -190,23 +190,23 @@ var changed = function (id, fields) {
                 else continue;
             }
         }
-        
-        // Remove the layer's previous action, if any.
-        if (this.layers[i]) {
-            this.layers[i].hide();
-            this.layers[i].remove();
-        }
-        
+                
         // Set up the new action
         if (action) {
-            if (action.type == 'media') this.layers[i] = new MediaMinionMedia(action, this);       
+            var old = this.layers[i];
+            if (action.type == 'media') this.layers[i] = new MediaMinionMedia(action, this);
+            else if (action.type == 'playlist') this.layers[i] = new MediaMinionPlaylist(action, this);
             else if (action.type == 'song') this.layers[i] = new MediaMinionSong(action, this);
             else if (action.type == 'presentation') this.layers[i] = new MediaMinionPresentation(action, this);
             
-            this.layers[i].show();
+            this.layers[i].show(old);
         }
         
-        else this.layers[i] = null;
+        else if (this.layers[i]) {
+            this.layers[i].hide();
+            this.layers[i].remove();
+            this.layers[i] = null;
+        }
     }
 };
 

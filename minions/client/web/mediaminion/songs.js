@@ -1,6 +1,7 @@
 MediaMinionSong = class MediaMinionSong {
     constructor (action, minion) {
         this.canremove = true;
+        this.removed = false;
     
         this.action = action;
         this.settings = action.settings;
@@ -64,9 +65,14 @@ MediaMinionSong = class MediaMinionSong {
         this.opacity = 0;
     }
     
-    show () {
+    show (old) {
         this.canremove = false;
         
+        if (old) {
+            old.hide();
+            old.remove();
+        }
+                
         this.minion.create_blocks(this);            
 
         this.minion.fades.push({
@@ -107,6 +113,7 @@ MediaMinionSong = class MediaMinionSong {
     remove () {
         if (this.canremove) {
             $(this.canvas).remove();
+            this.removed = true;
         }
         
         else Meteor.setTimeout(this.remove.bind(this), 100);

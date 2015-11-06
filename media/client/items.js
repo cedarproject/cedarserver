@@ -1,4 +1,4 @@
-Template.mediaMenu.helpers({
+Template.mediaItems.helpers({
     mediaFormData: {
         type: 'uploadmedia'
     },
@@ -7,7 +7,7 @@ Template.mediaMenu.helpers({
         collection: media,
         displayTemplate: 'media',
         fields: [{field: 'title', type: String}, {field: 'tags', type: Array}],
-        sort: [['new', -1], ['title', 1]],
+        sort: [['new', 'desc'], ['title', 'asc']],
         addbutton: false
     }
 });

@@ -7,6 +7,14 @@
         {{/with}}
     {{/if}}
     
+    {{#if actionType 'playlist'}}
+        {{#with getPlaylist}}
+            <div class="media">
+                {{> mediaPlaylist}}
+            </div>
+        {{/with}}
+    {{/if}}
+    
     {{#if actionType 'lightscene'}}
         {{#with getLightScene}}
             {{> lightScene}}

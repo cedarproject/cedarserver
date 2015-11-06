@@ -2,6 +2,9 @@ defaults = JSON.stringify({
     media_fade: 1,
     media_preserve_aspect: 'yes',
     media_loop: 'no',
+    
+    playlist_image_length: 5,
+    playlist_order: 'normal', // (normal, random)
 
     songs_fade: 0.25,
     songs_font: 'sans-serif',

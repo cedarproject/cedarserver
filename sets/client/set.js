@@ -164,12 +164,21 @@ Template.set.events({
         };
                 
         var col = $(event.target).data('collection');
+
         if (col == 'media') {
             action.type = 'media';
             action.media = $(event.target).data('id');
             var m = media.findOne(action.media);
             action.mediatype = m.type;
             action.layer = m.layer;
+        }
+        
+        if (col == 'mediaplaylists') {
+            action.type = 'playlist';
+            action.playlist = $(event.target).data('id');
+            var p = mediaplaylists.findOne(action.playlist);
+            if (p.contents.length > 0) action.layer = media.findOne(p.contents[0]).layer;
+            else action.layer = 'background'; // TODO figure out a more sensible default!
         }
         
         else if (col == 'lightscenes') {

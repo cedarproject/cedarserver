@@ -1,7 +1,8 @@
 MediaMinionMedia = class MediaMinionMedia {
     constructor (action, minion) {
         this.ready = false;
-        this.shown = true;
+        this.shown = false;
+        this.removed = false;
     
         this.action = action;
         this.minion = minion;
@@ -96,9 +97,14 @@ MediaMinionMedia = class MediaMinionMedia {
         if (this.shown) Meteor.setTimeout(this.sync.bind(this), 500);
     }
     
-    show () {
+    show (old) {
         if (this.ready) {
             this.shown = true;
+            
+            if (old) {
+                old.hide();
+                old.remove();
+            }
             
             if (this.type == 'video' || this.type == 'audio') {
                 this.sync();
@@ -130,7 +136,7 @@ MediaMinionMedia = class MediaMinionMedia {
             }
         }
         
-        else Meteor.setTimeout(this.show.bind(this), 100);
+        else Meteor.setTimeout(this.show.bind(this, old), 100);
     }
     
     hide () {
@@ -179,6 +185,8 @@ MediaMinionMedia = class MediaMinionMedia {
                 this.audio.pause();
                 $(this.audio).remove();
             }
+            
+            this.removed = true;
         }
         
         else Meteor.setTimeout(this.remove.bind(this), 100);

@@ -1,23 +1,31 @@
 Router.route('/media', {name: 'mediaMenu'});
 
-Router.route('/media/:_id', {
+Router.route('/media/items', {name: 'mediaItems'});
+Router.route('/media/item/:_id', {
     name: 'mediaSettings',
     data: function () {return media.findOne(this.params._id);}
+});
+
+Router.route('/media/playlists', {name: 'mediaPlaylists'});
+Router.route('/media/playlist/:_id', {
+    name: 'mediaPlaylistSettings',
+    data: function () {return mediaplaylists.findOne(this.params._id);}
 });
 
 Router.route('/media/static/:filepath*', function () {
     if (settings.findOne({key: 'mediainternalserver'}).value) {
         var fs = Npm.require('fs');
-
         var filepath = settings.findOne({key: 'mediadir'}).value + '/' + this.params.filepath;
 
         try {
             var stats = fs.statSync(filepath);
         }
+
         catch (e) {
             this.next();
             return;
         }
+
         if (!stats.isFile()) {
             this.next();
             return;

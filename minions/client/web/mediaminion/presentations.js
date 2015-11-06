@@ -244,10 +244,15 @@ MediaMinionPresentation = class MediaMinionPresentation {
         }
     }
     
-    show () {
+    show (old) {
         if (this.ready) {
             this.canremove = false;
-            
+                        
+            if (old) {
+                old.hide();
+                old.remove();
+            }
+                        
             this.minion.create_blocks(this);
 
             this.minion.fades.push({
@@ -263,7 +268,7 @@ MediaMinionPresentation = class MediaMinionPresentation {
             });
         }
         
-        else Meteor.setTimeout(this.show.bind(this), 100);
+        else Meteor.setTimeout(this.show.bind(this, old), 100);
     }
     
     hide () {
@@ -294,6 +299,7 @@ MediaMinionPresentation = class MediaMinionPresentation {
             $(this.domimg).remove();
             this.images.forEach((img) => {$(img).remove()});
             window.URL.revokeObjectURL(this.url);
+            this.removed = true;
         }
         
         else Meteor.setTimeout(this.remove.bind(this), 100);

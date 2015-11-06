@@ -93,7 +93,7 @@ Meteor.methods({
         for (var i in set_actions) {
             var action = set_actions[i];
             action.set = setid;
-            if (action.type == 'media' || action.type == 'clear-layer') {
+            if (action.type == 'media' || action.type == 'playlist' || action.type == 'clear-layer') {
                 Meteor.call('mediaActionActivate', action);
             }
             

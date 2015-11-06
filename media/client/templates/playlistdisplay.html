@@ -1,0 +1,8 @@
+<template name="mediaPlaylistDisplay">
+    <div class="media">
+        <a class="btn btn-default pull-right" href={{pathFor 'mediaPlaylistSettings' _id}}>
+            <span class="glyphicon glyphicon-cog"></span>
+        </a>        
+        {{> mediaPlaylist}}
+    </div>
+</template>

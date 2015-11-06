@@ -7,6 +7,10 @@ Template.actionDisplay.helpers({
         return media.findOne(this.media);
     },
     
+    getPlaylist: function () {
+        return mediaplaylists.findOne(this.playlist);
+    },
+    
     getLightScene: function () {
         return lightscenes.findOne(this.lightscene);
     },
