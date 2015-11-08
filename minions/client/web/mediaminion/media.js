@@ -75,26 +75,31 @@ MediaMinionMedia = class MediaMinionMedia {
     }
     
     sync () {
-        if (this.settings.media_loop == 'yes')
-            var t = time.since(this.action.time) % (this.tosync.duration * 1000);
-        else var t = time.since(this.action.time);
+        if (this.shown) {
+            if (this.settings.media_loop == 'yes')
+                var t = time.since(this.action.time) % (this.tosync.duration * 1000);
+            else var t = time.since(this.action.time);
 
-        if (this.tosync.paused) {
-            this.tosync.currentTime = t * 0.001;
-            this.tosync.play();
-        }
-        
-        else {
-            var o = t * 0.001 - this.tosync.currentTime;
-
-            if (o > 0.25) {
+            if (this.tosync.paused) {
                 this.tosync.currentTime = t * 0.001;
-            } else {
-                this.tosync.playbackRate = 1 + o;
+                this.tosync.play();
             }
-        }
+            
+            else {
+                var o = t * 0.001 - this.tosync.currentTime;
+
+                if (o > 1) {
+                    this.tosync.currentTime = t * 0.001;
+                } else if (o > 0.1) {
+                    if (o > 0) this.tosync.playbackRate = 1.025;
+                    else this.tosync.playbackRate = 0.975;
+                } else {
+                    this.tosync.playbackRate = 1;
+                }
+            }
         
-        if (this.shown) Meteor.setTimeout(this.sync.bind(this), 500);
+            Meteor.setTimeout(this.sync.bind(this), 500);
+        }
     }
     
     show (old) {
@@ -115,7 +120,7 @@ MediaMinionMedia = class MediaMinionMedia {
                 
                 this.minion.fades.push({
                     start: 0, end: 1,
-                    length: this.settings.media_fade * 1000,
+                    length: parseFloat(this.settings.media_fade) * 1000,
                     time: this.action.time,
                     callback: (v) => {
                         this.opacity = v;
@@ -129,7 +134,7 @@ MediaMinionMedia = class MediaMinionMedia {
             else if (this.type == 'audio') {
                 this.minion.fades.push({
                     start: 0, end: 1,
-                    length: this.settings.media_fade * 1000,
+                    length: parseFloat(this.settings.media_fade) * 1000,
                     time: this.action.time,
                     callback: (v) => {this.audio.volume = v;}
                 });
@@ -143,16 +148,19 @@ MediaMinionMedia = class MediaMinionMedia {
         if (this.type == 'video' || this.type == 'image') {
             this.minion.fades.push({
                 start: 1, end: 0,
-                length: this.settings.media_fade * 1000,
+                length: parseFloat(this.settings.media_fade) * 1000,
                 time: time.now(),
                 callback: (v) => {
                     for (var n in this.materials) {
                         this.opacity = v;
                         this.materials[n].uniforms.opacity.value = v;
                     }
+                    
+                    if (this.type == 'video') this.video.volume = v;
 
                     if (v == 0) {
                         this.shown = false;
+                        if (this.type == 'video') this.video.pause();
                         for (var i in this.meshes) {
                             this.minion.scene.remove(this.meshes[i]);
                         }
@@ -164,11 +172,14 @@ MediaMinionMedia = class MediaMinionMedia {
         else if (this.type == 'audio') {
             this.minion.fades.push({
                 start: 1, end: 0,
-                length: this.settings.media_fade * 1000,
+                length: parseFloat(this.settings.media_fade) * 1000,
                 time: time.now(),
                 callback: (v) => {
                     this.audio.volume = v;
-                    if (v == 0) this.shown = false;
+                    if (v == 0) {
+                        this.shown = false;
+                        this.audio.pause();
+                    }
                 }
             });
         }

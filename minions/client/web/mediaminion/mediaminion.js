@@ -198,6 +198,7 @@ var changed = function (id, fields) {
             else if (action.type == 'playlist') this.layers[i] = new MediaMinionPlaylist(action, this);
             else if (action.type == 'song') this.layers[i] = new MediaMinionSong(action, this);
             else if (action.type == 'presentation') this.layers[i] = new MediaMinionPresentation(action, this);
+            else if (action.type == 'clear-layer') this.layers[i] = new MediaMinionClearLayer(action, this);
             
             this.layers[i].show(old);
         }
@@ -262,7 +263,7 @@ Template.webminionmedia.onRendered(function () {
     this.create_blocks = create_blocks;
     this.getScale = getScale;
     
-    this.settings = this.data.settings;
+    this.settings = combineSettings(this.data.settings);
     this.stage = stages.findOne(this.data.stage);
 
     this.layers = {};
@@ -288,6 +289,9 @@ Template.webminionmedia.onRendered(function () {
     this.renderer = new THREE.WebGLRenderer({antialias: true});
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
+
+    this.renderer.setClearColor(new THREE.Color(parseInt(this.settings.mediaminion_background_color)), 1);
+
     $('.media-container').append(this.renderer.domElement);
         
     this.continue = true;    

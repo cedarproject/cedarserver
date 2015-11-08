@@ -32,10 +32,8 @@ MediaMinionPlaylist = class MediaMinionPlaylist {
             for (var i = 0; i < this.playlist.contents.length; i++) {
                 var r = Math.floor(random(this.action.time + i) * contents.length)
                 this.order.push(contents.splice(r, 1)[0]);
-                console.log(contents, this.order, r);
             }
             
-            console.log(this.order);
         }
         
         this.index = 0;
@@ -67,7 +65,7 @@ MediaMinionPlaylist = class MediaMinionPlaylist {
             var a = {
                 media: this.order[this.index],
                 settings: this.settings,
-                layer: this.layer,
+                layer: this.action.layer,
                 time: this.time,
             }
             
@@ -96,7 +94,7 @@ MediaMinionPlaylist = class MediaMinionPlaylist {
     hide () {
         this.shown = false;
         
-        if (this.current.shown) {
+        if (this.current) {
             this.current.hide();
             this.current.remove();
             this.current = null;

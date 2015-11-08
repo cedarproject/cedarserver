@@ -1,4 +1,6 @@
 defaults = JSON.stringify({
+    mediaminion_background_color: '0x000000',
+
     media_fade: 1,
     media_preserve_aspect: 'yes',
     media_loop: 'no',

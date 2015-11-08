@@ -4,6 +4,7 @@ MediaMinionPresentation = class MediaMinionPresentation {
     constructor (action, minion) {
         this.canremove = true;
         this.ready = false;
+        this.blank = false;
     
         this.action = action;
         this.minion = minion;
@@ -11,14 +12,19 @@ MediaMinionPresentation = class MediaMinionPresentation {
         this.type = 'presentation';
         this.time = action.time;
         
-        if (action.args.order === undefined) return;
-
         this.pres = presentations.findOne(this.action.presentation);
+        
+        this.settings = combineSettings(this.action.settings, this.pres.settings, this.minion.settings);
+
+        if (action.args.order === undefined) {
+            this.blank = true;
+            return;
+        }
+
         this.slide = presentationslides.findOne({presentation: this.action.presentation, order: this.action.args.order});
         this.html = this.slide.content;
         this.imageids = this.slide.images;
-        
-        this.settings = combineSettings(this.action.settings, this.slide.settings, this.pres.settings, this.minion.settings);
+        this.images = [];
         
         this.loaded = 0;
         this.toload = 0;
@@ -245,9 +251,18 @@ MediaMinionPresentation = class MediaMinionPresentation {
     }
     
     show (old) {
+        if (this.blank) {
+            if (old) {
+                old.hide();
+                old.remove();
+            }
+            
+            return;
+        }
+    
         if (this.ready) {
             this.canremove = false;
-                        
+            
             if (old) {
                 old.hide();
                 old.remove();
@@ -257,7 +272,7 @@ MediaMinionPresentation = class MediaMinionPresentation {
 
             this.minion.fades.push({
                 start: 0, end: 1,
-                length: this.settings.presentations_fade * 1000,
+                length: parseFloat(this.settings.presentations_fade) * 1000,
                 time: this.time,
                 callback: (v) => {
                     this.opacity = v;
@@ -272,9 +287,11 @@ MediaMinionPresentation = class MediaMinionPresentation {
     }
     
     hide () {
+        if (this.blank) return;
+        
         this.minion.fades.push({
             start: 1, end: 0,
-            length: this.settings.presentations_fade * 1000,
+            length: parseFloat(this.settings.presentations_fade) * 1000,
             time: time.now(),
             callback: (v) => {
                 for (var n in this.materials) {
@@ -294,6 +311,11 @@ MediaMinionPresentation = class MediaMinionPresentation {
     }
     
     remove () {
+        if (this.blank) {
+            this.removed = true;
+            return;
+        }
+
         if (this.canremove) {
             $(this.canvas).remove();
             $(this.domimg).remove();
