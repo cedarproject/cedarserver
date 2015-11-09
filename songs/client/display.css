@@ -17,6 +17,6 @@
     margin: 2px;
 }
 
-.song-content.active {
-    box-shadow: 0px 0px 16px 8px #FFFFFF;
+.list-group-item.active .song-content.active {
+    box-shadow: 0px 0px 16px 8px #FFFF88;
 }

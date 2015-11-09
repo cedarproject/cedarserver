@@ -5,8 +5,10 @@ MediaMinionClearLayer = class MediaMinionClearLayer {
     }
 
     show (old) {
-        old.hide();
-        old.remove();
+        if (old) {
+            old.hide();
+            old.remove();
+        }
     }
     
     hide () {}
