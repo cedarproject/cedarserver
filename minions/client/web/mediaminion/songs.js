@@ -2,6 +2,7 @@ MediaMinionSong = class MediaMinionSong {
     constructor (action, minion) {
         this.canremove = true;
         this.removed = false;
+        this.blank = false;
     
         this.action = action;
         this.settings = action.settings;
@@ -13,9 +14,14 @@ MediaMinionSong = class MediaMinionSong {
     
         this.type = 'song';
         this.song = songs.findOne(this.action.song);
+        this.arrangement = songarrangements.findOne(this.settings.arrangement);
 
-        if (!(this.args.section && this.args.index)) return;
-        this.section = songsections.findOne(this.args.section);
+        if (typeof this.args.section === 'undefined') {
+            this.blank = true;
+            return;
+        }
+
+        this.section = songsections.findOne(this.arrangement.order[this.args.section]);
         this.contents = this.section.contents[this.args.index];
         this.text = songTextToCanvas(this.contents.text).split('\n');
         
@@ -71,42 +77,46 @@ MediaMinionSong = class MediaMinionSong {
             old.hide();
             old.remove();
         }
-                
-        this.minion.create_blocks(this);            
+         
+        if (!this.blank) {       
+            this.minion.create_blocks(this);            
 
-        this.minion.fades.push({
-            start: 0, end: 1,
-            length: parseFloat(this.settings.songs_fade) * 1000,
-            time: this.action.time,
-            callback: (v) => {
-                this.opacity = v;
-                for (var n in this.materials) {
-                    this.materials[n].uniforms.opacity.value = v;
+            this.minion.fades.push({
+                start: 0, end: 1,
+                length: parseFloat(this.settings.songs_fade) * 1000,
+                time: this.action.time,
+                callback: (v) => {
+                    this.opacity = v;
+                    for (var n in this.materials) {
+                        this.materials[n].uniforms.opacity.value = v;
+                    }
                 }
-            }
-        });
+            });
+        }
     }
     
     hide () {
-        this.minion.fades.push({
-            start: 1, end: 0,
-            length: parseFloat(this.settings.songs_fade) * 1000,
-            time: time.now(),
-            callback: (v) => {
-                for (var n in this.materials) {
-                    this.opacity = v;
-                    this.materials[n].uniforms.opacity.value = v;
-                }
-                
-                if (v == 0) {
-                    for (var i in this.meshes) {
-                        this.minion.scene.remove(this.meshes[i]);
+        if (!this.blank) {
+            this.minion.fades.push({
+                start: 1, end: 0,
+                length: parseFloat(this.settings.songs_fade) * 1000,
+                time: time.now(),
+                callback: (v) => {
+                    for (var n in this.materials) {
+                        this.opacity = v;
+                        this.materials[n].uniforms.opacity.value = v;
                     }
                     
-                    this.canremove = true;
+                    if (v == 0) {
+                        for (var i in this.meshes) {
+                            this.minion.scene.remove(this.meshes[i]);
+                        }
+                        
+                        this.canremove = true;
+                    }
                 }
-            }
-        });    
+            });
+        } else this.canremove = true;
     }
     
     remove () {

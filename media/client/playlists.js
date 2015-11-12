@@ -11,7 +11,6 @@ Template.mediaPlaylists.helpers({
 Template.mediaPlaylists.events({
     'click #new-playlist': function (event, template) {
         Meteor.call('playlistNew', (err, playlistid) => {
-            console.log(err, playlistid);
             Router.go('/media/playlist/' + playlistid);
         });
     }

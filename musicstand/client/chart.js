@@ -3,10 +3,7 @@ Template.musicstandchart.helpers({
         var sections = [];
         for (var i in this.arrangement.order) {
             var section = songsections.findOne(this.arrangement.order[i]);
-            if (sections.length > 0) section.number = 
-                sections[sections.length-1].number +
-                sections[sections.length-1].contents.length;
-            else section.number = 0;
+            section.section = i;
             sections.push(section);
         }
         return sections;
@@ -39,15 +36,16 @@ Template.musicstandchart.helpers({
     isHeaderActive: function () {
         var action = Template.parentData();
         if (action._id == Template.parentData(2).active) {
-            if (action.args['number'] === undefined) return 'musicstand-active';
+            if (action.args['index'] === undefined) return 'musicstand-active';
         }
     },
 
     isActive: function () {
         var action = Template.parentData(3);
         if (action._id == Template.parentData(4).active) {
-            var n = Template.parentData().number + Template.parentData().contents.indexOf(this);
-            if (n == action.args.number) return 'musicstand-active';
+            var n = Template.parentData().contents.indexOf(this);
+            if (Template.parentData().section == action.args.section &&
+                n == action.args.index) return 'musicstand-active';
         }
     }
 });

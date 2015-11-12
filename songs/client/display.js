@@ -1,17 +1,17 @@
 Template.songDisplay.helpers({
     content: function () {
         var contents = [];
-        for (var _id in this.arrangement.order) {
-            var section = songsections.findOne(this.arrangement.order[_id]);
+        this.arrangement.order.forEach((_id, i) => {
+            var section = songsections.findOne(_id);
             for (var c in section.contents) {
                 var content = section.contents[c];
-                content.section = section._id;
+                content.section = i;
                 content.index = c;
-                content.number = contents.length;
                 content.action = this.action;
                 contents.push(content);
             }
-        }
+        });
+
         return contents;
     },
     
@@ -22,7 +22,7 @@ Template.songDisplay.helpers({
     isActive: function () {
         var action = Template.parentData(2);
         if (action['args']) {
-            if (this.number == action.args.number) return 'active';
+            if (this.section == action.args.section && this.index == action.args.index) return 'active';
         }
     }
 });

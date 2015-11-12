@@ -176,7 +176,7 @@ var changed = function (id, fields) {
                 if (action.type == 'song') {
                     if (action.args && this.layers[i].args && 
                         action.args.section == this.layers[i].args.section &&
-                        action.args.index == this.layers[i].args.index)
+                        action.args.index == this.layers[i].args.index) 
                             continue;
                 }
                 

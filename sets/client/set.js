@@ -26,50 +26,6 @@ Template.set.helpers({
     }
 });
 
-/* Still needs more work
-Template.set.onRendered(function () {
-    $(window).keypress(function (event, setid) {
-        var set = sets.findOne(setid);
-        if (this.active) {
-            var action = actions.findOne(this.active);
-            var num = actions.findOne({}, {sort: {order: -1}}).order;
-
-            if (event.key == 'ArrowRight' && action.order < num) {
-                if (action.type == 'song') {
-                    var args = action.args;
-                    var arrangement = songarrangements.findOne(action.settings.arrangement);
-                    
-                    if (!args['section'] || !args['index'] || !args['number']) {
-                        args = {section: arrangement.order[0], index: 0, number: 0};
-                        Meteor.call('actionArgs', action._id, args);
-                        return;
-                    }
-                        
-                    else {
-                        var section = songsections.findOne(args.section);
-                        if (section.length < args.index + 1) {
-                            var i = arrangement.order.indexOf(args.section)
-                            if (arrangement.order.length > i + 1) {
-                                args = {section: arrangement.order[i + 1], index: 0, number: args.number + 1};
-                                Meteor.call('actionArgs', action._id, args);
-                                return;
-                            }
-                        }
-                        
-                        else {
-                            args = {section: args.section, index: args.index + 1, number: args.number + 1};
-                            Meteor.call('actionArgs', action._id, args);
-                            return;
-                        }
-                    }
-                }
-                
-                Meteor.call('setActivate', this._id, actions.findOne({set: this._id, order: action.order + 1})._id);
-            }
-        }
-    }.bind(this, Template.currentData()._id));
-}); */
-
 Template.set.events({
     'click .moving': function (event) {
         $('.set-action').removeClass('moving').removeClass('movetarget').removeClass('disabled');
@@ -111,7 +67,6 @@ Template.set.events({
         var args = {
             section: this.section,
             index: this.index,
-            number: this.number
         };
         
         Meteor.call('actionArgs', this.action, args);
