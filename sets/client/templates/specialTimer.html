@@ -1,0 +1,13 @@
+<template name="specialTimer">
+    {{#if typeIs 'countdown'}}
+        <h4>Timer - Countdown {{getTime}}</h4>
+    {{/if}}
+    
+    {{#if typeIs 'startAt'}}
+        <h4>Timer - Start At {{getTime}}</h4>
+    {{/if}}
+    
+    {{#if typeIs 'endAt'}}
+        <h4>Timer - End At {{getTime}}</h4>
+    {{/if}}
+</template>

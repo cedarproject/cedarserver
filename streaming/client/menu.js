@@ -10,7 +10,7 @@ Template.streamingMenu.helpers({
 
 Template.streamingMenu.events({
     'blur #server': function (event, template) {
-        Meteor.call('setSetting', 'streamingserver', $(event.target).val());
+        Meteor.call('mainSetting', 'streamingserver', $(event.target).val());
     },
     
     'click #connect': function (event, template) {

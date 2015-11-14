@@ -194,12 +194,18 @@ var changed = function (id, fields) {
         // Set up the new action
         if (action) {
             var old = this.layers[i];
-            if (action.type == 'media') this.layers[i] = new MediaMinionMedia(action, this);
-            else if (action.type == 'playlist') this.layers[i] = new MediaMinionPlaylist(action, this);
-            else if (action.type == 'song') this.layers[i] = new MediaMinionSong(action, this);
-            else if (action.type == 'presentation') this.layers[i] = new MediaMinionPresentation(action, this);
-            else if (action.type == 'clear-layer') this.layers[i] = new MediaMinionClearLayer(action, this);
-            
+
+            var actionmap = {
+                media: MediaMinionMedia,
+                playlist: MediaMinionPlaylist,
+                song: MediaMinionSong,
+                presentation: MediaMinionPresentation,
+                'clear-layer': MediaMinionClearLayer,
+                timer: MediaMinionTimer
+            };
+
+            this.layers[i] = new actionmap[action.type](action, this);
+            console.log(this.layers[i]);
             this.layers[i].show(old);
         }
         

@@ -6,4 +6,7 @@ Meteor.startup(function () {
     
     // make sure actions have triggers setting set
     actions.update({'settings.triggers': {$exists: false}}, {$set: {'settings.triggers': true}}, {multi: true});
+
+    // make sure sets have settings object
+    sets.update({settings: {$exists: false}}, {$set: {settings: {times: []}}}, {multi: true});
 });

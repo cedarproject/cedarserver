@@ -11,6 +11,9 @@ Meteor.methods({
     setNew: function () {
         return sets.insert({
             title: 'New Set',
+            settings: {
+                times: [],
+            },
             stage: null,
             active: null
         });
@@ -35,6 +38,12 @@ Meteor.methods({
     setStage: function (setid, stageid) {
         var set = checkSet(setid);
         sets.update(set, {$set: {stage: stageid}});
+    },
+    
+    setSetting: function (setid, key, value) {
+        var set = checkSet(setid);
+        var s = {}; s['settings.' + key] = value;
+        sets.update(set, {$set: s});
     },
     
     actionAdd: function (action) {
@@ -93,7 +102,7 @@ Meteor.methods({
         for (var i in set_actions) {
             var action = set_actions[i];
             action.set = setid;
-            if (action.type == 'media' || action.type == 'playlist' || action.type == 'clear-layer') {
+            if (action.type == 'media' || action.type == 'playlist' || action.type == 'clear-layer' || action.type == 'timer') {
                 Meteor.call('mediaActionActivate', action);
             }
             

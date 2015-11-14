@@ -13,6 +13,10 @@ Template.set.helpers({
         if (this.stage) return stages.findOne({_id: this.stage}).settings.layers;
     },
     
+    formatTime: function (time) {
+        return moment(time).format('YYYY-MM-DD h:mm:ss a');
+    },
+    
     actions: function () {
         return actions.find({set: this._id}, {sort: {order: 1}});
     },
@@ -162,6 +166,12 @@ Template.set.events({
                 action.type = 'clear-layer';
                 action.layer = 'foreground'; // TODO fix this to default to the topmost layer, or something.
             }
+            
+            if (special == 'timer') {
+                action.type = 'timer';
+                action.layer = 'foreground'; // TODO same as above!
+                action.settings.timer_time = {hours: 0, minutes: 0, seconds: 0};
+            }
         }
         
         if (Session.get('add-to')['type'] == 'set') {
@@ -199,6 +209,24 @@ Template.set.events({
     
     'change .set-stage': function (event, template) {
         Meteor.call('setStage', template.data._id, $(event.target).val());
+    },
+    
+    'click .set-time-add': function (event, template) {
+        var times = template.data.settings.times;
+        times.push(new Date());
+        Meteor.call('setSetting', template.data._id, 'times', times);
+    },
+    
+    'change .set-time': function (event, template) {
+        var times = template.data.settings.times;
+        times[times.indexOf(this)] = event.date.toDate();
+        Meteor.call('setSetting', template.data._id, 'times', times);
+    },
+    
+    'click .set-time-del': function (event, template) {
+        var times = template.data.settings.times;
+        times.splice(times.indexOf(this), 1);
+        Meteor.call('setSetting', template.data._id, 'times', times);
     },
 
     'click #set-delete': function (event, template) {

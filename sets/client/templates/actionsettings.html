@@ -5,7 +5,7 @@
             <input class="action-title form-control" value={{title}}>
         {{/if}}
         
-        {{#if typeIs 'media' 'playlist' 'song' 'presentation' 'clear-layer'}}
+        {{#if typeIs 'media' 'playlist' 'song' 'presentation' 'clear-layer' 'timer'}}
             <label>Layer:</label>
             
             <select class="action-layer form-control">
@@ -66,6 +66,22 @@
         {{#if typeIs 'presentation'}}
             <label>Fade Length</label>
             <input type="number" class="setting form-control" data-setting="presentations_fade" min=0 max=5 step=0.05 value={{getSetting 'presentations_fade'}}>
+        {{/if}}
+        
+        {{#if typeIs 'timer'}}
+            <label>Timer Type:</label>
+            <select class="setting form-control" data-setting="timer_type">
+                <option value="countdown" {{isSelected 'countdown'}}>Countdown</option>
+                <option value="startAt" {{isSelected 'startAt'}}>Start At</option>
+                <option value="endAt" {{isSelected 'endAt'}}>End At</option>
+            </select>
+            
+            <label>Time (hours:minutes:seconds):</label>
+            <div class="form-inline">
+                <input type="number" size=2 min=0 max=24 class="setting form-control" data-setting="timer_time.hours" value={{getSetting 'timer_time' 'hours'}}>:
+                <input type="number" size=2 min=0 max=60 class="setting form-control" data-setting="timer_time.minutes" value={{getSetting 'timer_time' 'minutes'}}>:
+                <input type="number" size=2 min=0 max=60 class="setting form-control" data-setting="timer_time.seconds" value={{getSetting 'timer_time' 'seconds'}}>
+            </div>
         {{/if}}
             
         {{#if set}}

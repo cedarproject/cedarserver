@@ -21,7 +21,7 @@ Meteor.startup(function () {
 });
 
 Meteor.methods({
-    setSetting: function (key, value) {
+    mainSetting: function (key, value) {
         settings.update({key: key}, {$set: {value: value}});
     }
 });

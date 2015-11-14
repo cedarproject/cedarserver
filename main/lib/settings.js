@@ -34,7 +34,9 @@ defaults = JSON.stringify({
     
     presentations_image_side: 'right', // (left, right, top, bottom)
     
-    presentations_custom_css: '#content {}'
+    presentations_custom_css: '#content {}',
+    
+    timer_type: 'countdown', // (countdown, startAt, endAt)
 });
 
 combineSettings = function () {
@@ -42,7 +44,7 @@ combineSettings = function () {
     
     for (var i in arguments) {
         for (var p in arguments[i]) {
-            if (arguments[i].hasOwnProperty(p) && arguments[i][p] !== null)
+            if (arguments[i].hasOwnProperty(p) && typeof arguments[i][p] !== 'null' && typeof arguments[i][p] !== 'undefined')
                 out[p] = arguments[i][p];
         }
     }

@@ -1,6 +1,8 @@
 Template.actionSettings.helpers({
-    getSetting: function (setting) {
-        return combineSettings(this.settings)[setting];
+    getSetting: function () {
+        var s = combineSettings(this.settings);
+        for (var i = 0; i < arguments.length - 1; i++) s = s[arguments[i]];
+        return s;
     },
     
     isSelected: function (setting, value) {
