@@ -1,5 +1,7 @@
 MediaMinionTimer = class MediaMinionTimer {
     constructor (action, minion) {
+        this.type = 'timer';
+    
         this.action = action;
         this.minion = minion;
         
@@ -25,16 +27,30 @@ MediaMinionTimer = class MediaMinionTimer {
 
         this.cx = this.canvas.getContext('2d');
 
-        // TODO make all this settings, hard-coding for now due to time contraints
-        this.cx.font = '32px sans-serif';
-        this.cx.fillStyle = '#ffffff';
-        this.cx.textBaseline = 'bottom';
+        this.cx.font = `${this.settings.timers_font_weight} ${this.settings.timers_font_size}px ${this.settings.timers_font}`;
+        this.cx.fillStyle = this.settings.timers_font_color;
+        this.cx.strokeStyle = `{this.settings.timers_font_shadow}px ${this.settings.timers_font_shadow_color}`;
         
+        this.cx.textAlign = this.settings.timers_text_align;
+        if (this.settings.timers_text_align == 'left') this.x = 0;
+        else if (this.settings.timers_text_align == 'center') this.x = window.innerWidth/2;
+        else if (this.settings.timers_text_align == 'right') this.x = window.innerWidth;
+        
+        if (this.settings.timers_text_vertical_align == 'top') {
+            this.cx.textBaseline = 'top';
+            this.y = 0;
+        } else if (this.settings.timers_text_vertical_align == 'center') {
+            this.cx.textBaseline = 'middle';
+            this.y = window.innerHeight / 2 - this.settings.timers_font_size / 2;
+        } else if (this.settings.timers_text_vertical_align == 'bottom') {
+            this.cx.textBaseline = 'bottom';
+            this.y = window.innerHeight - this.settings.timers_font_size;
+        }
         
         this.texture = null;
         this.materials = [];
         this.meshes = [];
-        this.opacity = 1;
+        this.opacity = 0;
     }
     
     update () {
@@ -61,7 +77,8 @@ MediaMinionTimer = class MediaMinionTimer {
             
             var text = `${sign}${hours}:${minutes}:${seconds}`;
             
-            this.cx.fillText(text, 10, window.innerHeight - 32);
+            this.cx.fillText(text, this.x, this.y);
+            this.cx.strokeText(text, this.x, this.y);
             if (this.texture) this.texture.needsUpdate = true;
         }
         
@@ -84,14 +101,42 @@ MediaMinionTimer = class MediaMinionTimer {
         this.texture.needsUpdate = true;
         
         this.minion.create_blocks(this);
+        
+        this.minion.fades.push({
+            start: 0, end: 1,
+            length: parseFloat(this.settings.timers_fade) * 1000,
+            time: this.action.time,
+            callback: (v) => {
+                this.opacity = v;
+                for (var n in this.materials) {
+                    this.materials[n].uniforms.opacity.value = v;
+                }
+            }
+        });
     }
     
     hide () {
         this.shown = false;
 
-        for (var i in this.meshes) {
-            this.minion.scene.remove(this.meshes[i]);
-        }        
+        this.minion.fades.push({
+            start: 1, end: 0,
+            length: parseFloat(this.settings.timers_fade) * 1000,
+            time: time.now(),
+            callback: (v) => {
+                for (var n in this.materials) {
+                    this.opacity = v;
+                    this.materials[n].uniforms.opacity.value = v;
+                }
+                
+                if (v == 0) {
+                    for (var i in this.meshes) {
+                        this.minion.scene.remove(this.meshes[i]);
+                    }
+                    
+                    this.canremove = true;
+                }
+            }
+        });    
     }
 
     remove () {

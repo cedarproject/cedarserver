@@ -36,7 +36,18 @@ defaults = JSON.stringify({
     
     presentations_custom_css: '#content {}',
     
+    timers_fade: 0.25,
+    
     timer_type: 'countdown', // (countdown, startAt, endAt)
+    timers_font: 'monospace',
+    timers_font_size: '32',
+    timers_font_weight: 'bold',
+    timers_font_color: 'white',
+    timers_font_shadow: '1', 
+    timers_font_shadow_color: 'black',
+    
+    timers_text_align: 'left', // Horizontal alignment (left, center, right)
+    timers_text_vertical_align: 'bottom', // Vertical alignment (top, center, bottom)
 });
 
 combineSettings = function () {

@@ -1,0 +1,37 @@
+<template name="minionSettingsTimers">
+    <label>Font:</label>
+    <input data-setting="timers_font" class="setting form-control" value={{getSetting 'timers_font'}}>
+    
+    <label>Font Size:</label>
+    <input type="number" min=0 max=200 step=1 data-setting="timers_font_size"
+        class="setting form-control" value={{getSetting 'timers_font_size'}}>
+        
+    <label>Font Weight:</label>
+    <select data-setting="timers_font_weight" class="setting form-control">
+        <option value="normal" {{isSelected 'timers_font_weight' 'normal'}}>Normal</option>
+        <option value="bold" {{isSelected 'timers_font_weight' 'bold'}}>Bold</option>
+    </select>
+        
+    <label>Font Color:</label>
+    <input type="text" data-setting="timers_font_color" class="setting form-control" value={{getSetting 'timers_font_color'}}>
+    
+    <label>Font Shadow:</label>
+    <input type="number" min=0 max=10 step=1 data-setting="timers_font_shadow" class="setting form-control" value={{getSetting 'timers_font_shadow'}}>
+    
+    <label>Font Shadow Color:</label>
+    <input type="text" data-setting="timers_font_shadow_color" class="setting form-control" value={{getSetting 'timers_font_shadow_color'}}>
+    
+    <label>Align:</label>
+    <select data-setting="timers_text_align" class="setting form-control">
+        <option value="left" {{isSelected 'timers_text_align' 'left'}}>Left</option>
+        <option value="center" {{isSelected 'timers_text_align' 'center'}}>Center</option>
+        <option value="right" {{isSelected 'timers_text_align' 'right'}}>Right</option>
+    </select>
+    
+    <label>Vertical Align</label>
+    <select data-setting="timers_text_vertical_align" class="setting form-control">
+        <option value="top" {{isSelected 'timers_text_vertical_align' 'top'}}>Top</option>
+        <option value="center" {{isSelected 'timers_text_vertical_align' 'center'}}>Center</option>
+        <option value="bottom" {{isSelected 'timers_text_vertical_align' 'bottom'}}>Bottom</option>
+    </select>    
+</template>

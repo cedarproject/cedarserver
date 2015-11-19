@@ -1,23 +1,23 @@
 time = {
-    latency: 0,
-    last: 0,
-    last_time: 0,
-    now: function () {return this.last + (performance.now() - this.last_time)},
-    since: function (t) {return this.now() - t}
-}
+    offsets: [],
+    now: function () {return performance.now() + _.reduce(this.offsets, (m,n) => m+n) / this.offsets.length},
+    since: function (t) {return this.now() - t},
+    calc: function () {
+        var start = performance.now();
 
-function calc_time () {
-    var start = performance.now();
-    Meteor.call('getTime', (err, server_now) => {
-        var now = performance.now();
-        time.latency = now - start;
-        
-        time.last = server_now - time.latency / 2;
-        time.last_time = now;
-    });
+        Meteor.call('getTime', (err, server_now) => {
+            var now = performance.now();
+            var latency = now - start;
+                        
+            if (this.offsets.length >= 100) this.offsets.shift();
+            this.offsets.push(offset);
+        })
+    }
 }
 
 Meteor.startup(function () {
-    calc_time();
-    Meteor.setInterval(calc_time, 1000);
+    time.calc.bind(time)();
+    Meteor.setInterval(time.calc.bind(time), 1000);
 });
+
+//test = {l: 0, l_t: 0, a: [], r: function () {var t = time.now(); var n = performance.now(); var d = (t - test.l) - (n - test.l_t); test.a.push(Math.abs(d)); console.log(d, _.reduce(test.a, (m,n) => m+n)/test.a.length, t - test.l, n - test.l_t); test.l = t; test.l_t = n;}}; test.r(); test.a.pop(); Meteor.setInterval(test.r, 1000);

@@ -33,9 +33,9 @@ MediaMinionSong = class MediaMinionSong {
 
         this.cx = this.canvas.getContext('2d');
 
-        this.cx.font = [this.settings.songs_font_weight, this.settings.songs_font_size + 'px', this.settings.songs_font].join(' ');
+        this.cx.font = `${this.settings.songs_font_weight} ${this.settings.songs_font_size}px ${this.settings.songs_font}`;
         this.cx.fillStyle = this.settings.songs_font_color;
-        this.cx.strokeStyle = this.settings.songs_font_shadow + 'px ' + this.settings.songs_font_shadow_color;
+        this.cx.strokeStyle = `${this.settings.songs_font_shadow}px ${this.settings.songs_font_shadow_color}`;
         
         this.cx.textAlign = this.settings.songs_text_align;
         if (this.settings.songs_text_align == 'left') var x = 0;

@@ -205,7 +205,6 @@ var changed = function (id, fields) {
             };
 
             this.layers[i] = new actionmap[action.type](action, this);
-            console.log(this.layers[i]);
             this.layers[i].show(old);
         }
         

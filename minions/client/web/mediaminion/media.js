@@ -88,14 +88,16 @@ MediaMinionMedia = class MediaMinionMedia {
             else {
                 var o = t * 0.001 - this.tosync.currentTime;
 
-                if (o > 1) {
+                if (o > 0.5 || o < -0.5) {
                     this.tosync.currentTime = t * 0.001;
-                } else if (o > 0.1) {
-                    if (o > 0) this.tosync.playbackRate = 1.025;
-                    else this.tosync.playbackRate = 0.975;
+                } else if (o > 0.1 || o < -0.1) {
+                    if (o > 0) this.tosync.playbackRate = 1 + o;
+                    else this.tosync.playbackRate = 1 - o;
                 } else {
                     this.tosync.playbackRate = 1;
                 }
+                console.log(o, this.tosync.playbackRate);                
+                
             }
         
             Meteor.setTimeout(this.sync.bind(this), 500);

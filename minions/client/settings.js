@@ -32,6 +32,14 @@ Template.minionsettings.helpers({
 });
 
 Template.minionsettings.events({
+    'blur .minion-name': function (event, template) {
+        Meteor.call('minionName', this._id, $(event.target).val());
+    },
+    
+    'change .minion-stage': function (event, template) {
+        Meteor.call('minionStage', this._id, $(event.target).val());
+    },
+
     'click .display-layer-checkbox': function (event, template) {
         if (event.target.checked) {
             if (!template.data.layers.hasOwnProperty(this.toString())) 
@@ -48,19 +56,6 @@ Template.minionsettings.events({
         var setting = $(event.target).data('setting');
         var value = $(event.target).val();
         Meteor.call('minionSetting', template.data._id, setting, value);
-    },
-
-    'click .minion-settings-cancel': function (event) {
-        Router.go('/minions');
-    },
-    
-    'click .minion-settings-save': function (event) {
-        var newname = $('.minion-name').val();
-        Meteor.call('minionName', this._id, newname);
-
-        var stageid = $('.minion-stage').val();
-        if (stageid) Meteor.call('minionStage', this._id, stageid);
-        Router.go('/minions');
     },
     
     'click .minion-settings-delete': function (event) {

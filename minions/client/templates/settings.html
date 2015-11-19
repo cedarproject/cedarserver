@@ -4,14 +4,19 @@
         
         <div role="tabpanel">
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#{{_id}}-main" role="tab" data-toggle="tab">Main</a></li>
+                <li role="presentation" class="active"><a href="#main" role="tab" data-toggle="tab">Main</a></li>
                 {{#if typeIs 'media'}}
-                    <li role="presentation"><a href="#{{_id}}-display" role="tab" data-toggle="tab">Display</a></li>
+                    <li role="presentation"><a href="#songs" role="tab" data-toggle="tab">Songs</a></li>
+                    <li role="presentation"><a href="#presentations" role="tab" data-toggle="tab">Presentations</a></li>
+                    <li role="presentation"><a href="#timers" role="tab" data-toggle="tab">Timers</a></li>
+                    <li role="presentation"><a href="#display" role="tab" data-toggle="tab">Display</a></li>
                 {{/if}}
             </ul>
         
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="{{_id}}-main">
+                <div role="tabpanel" class="tab-pane active" id="main">
+                    <p><b>Type:</b> {{type}}</p>
+                
                     <label>Name:</label>
                     <input class="minion-name form-control" type="text" value={{name}}>
 
@@ -38,103 +43,6 @@
                             <br>
                         {{/if}}
                         
-                        <h4>Songs:</h4>
-                        
-                        <label>Font:</label>
-                        <input data-setting="songs_font" class="setting form-control" value={{getSetting 'songs_font'}}>
-                        
-                        <label>Font Size:</label>
-                        <input type="number" min=0 max=200 step=1 data-setting="songs_font_size"
-                            class="setting form-control" value={{getSetting 'songs_font_size'}}>
-                            
-                        <label>Font Weight:</label>
-                        <select data-setting="songs_font_weight" class="setting form-control">
-                            <option value="normal" {{isSelected 'songs_font_weight' 'normal'}}>Normal</option>
-                            <option value="bold" {{isSelected 'songs_font_weight' 'bold'}}>Bold</option>
-                        </select>
-                            
-                        <label>Font Color:</label>
-                        <input type="text" data-setting="songs_font_color" class="setting form-control" value={{getSetting 'songs_font_color'}}>
-                        
-                        <label>Font Shadow:</label>
-                        <input type="number" min=0 max=10 step=1 data-setting="songs_font_shadow" class="setting form-control" value={{getSetting 'songs_font_shadow'}}>
-                        
-                        <label>Font Shadow Color:</label>
-                        <input type="text" data-setting="songs_font_shadow_color" class="setting form-control" value={{getSetting 'songs_font_shadow_color'}}>
-                        
-                        <label>Align:</label>
-                        <select data-setting="songs_text_align" class="setting form-control">
-                            <option value="left" {{isSelected 'songs_text_align' 'left'}}>Left</option>
-                            <option value="center" {{isSelected 'songs_text_align' 'center'}}>Center</option>
-                            <option value="right" {{isSelected 'songs_text_align' 'right'}}>Right</option>
-                        </select>
-                        
-                        <label>Vertical Align</label>
-                        <select data-setting="songs_text_vertical_align" class="setting form-control">
-                            <option value="top" {{isSelected 'songs_text_vertical_align' 'top'}}>Top</option>
-                            <option value="center" {{isSelected 'songs_text_vertical_align' 'center'}}>Center</option>
-                            <option value="bottom" {{isSelected 'songs_text_vertical_align' 'bottom'}}>Bottom</option>
-                        </select>
-                        
-                        <br>
-                        
-                        <h4>Presentations:</h4>
-
-                        <label>Font:</label>
-                        <input data-setting="presentations_font" class="setting form-control" value={{getSetting 'presentations_font'}}>
-                        
-                        <label>Font Size:</label>
-                        <input type="number" min=0 max=200 step=1 data-setting="presentations_font_size"
-                            class="setting form-control" value={{getSetting 'presentations_font_size'}}>
-
-                        <label>Font Weight:</label>
-                        <select data-setting="presentations_font_weight" class="setting form-control">
-                            <option value="normal" {{isSelected 'presentations_font_weight' 'normal'}}>Normal</option>
-                            <option value="bold" {{isSelected 'presentations_font_weight' 'bold'}}>Bold</option>
-                        </select>
-
-                        <label>Font Color:</label>
-                        <input type="text" data-setting="presentations_font_color" class="setting form-control" value={{getSetting 'presentations_font_color'}}>
-
-                        <label>Font Shadow:</label>
-                        <input type="number" min=0 max=10 step=1 data-setting="presentations_font_shadow" class="setting form-control" value={{getSetting 'presentations_font_shadow'}}>
-                        
-                        <label>Font Shadow Color:</label>
-                        <input type="text" data-setting="presentations_font_shadow_color" class="setting form-control" value={{getSetting 'presentations_font_shadow_color'}}>
-                                                
-                        <label>Horizontal Position</label>
-                        <select data-setting="presentations_position_horizontal" class="setting form-control">
-                            <option value="left" {{isSelected 'presentations_position_horizontal' 'left'}}>Left</option>
-                            <option value="center" {{isSelected 'presentations_position_horizontal' 'center'}}>Center</option>
-                            <option value="right" {{isSelected 'presentations_position_horizontal' 'right'}}>Right</option>
-                        </select>
-                        
-                        <label>Vertical Position</label>
-                        <select data-setting="presentations_position_vertical" class="setting form-control">
-                            <option value="top" {{isSelected 'presentations_position_vertical' 'top'}}>Top</option>
-                            <option value="center" {{isSelected 'presentations_position_vertical' 'center'}}>Center</option>
-                            <option value="bottom" {{isSelected 'presentations_position_vertical' 'bottom'}}>Bottom</option>
-                        </select>
-                        
-                        <label>Width</label>
-                        <div class="input-group">
-                            <input type="number" data-setting="presentations_width" class="setting form-control"
-                                value={{getSetting 'presentations_width'}} min=0 max=100 step=1>
-                            <div class="input-group-addon">%</div>
-                        </div>
-
-                        <label>Height</label>
-                        <div class="input-group">
-                            <input type="number" data-setting="presentations_height" class="setting form-control"
-                                value={{getSetting 'presentations_height'}} min=0 max=100 step=1>
-                            <div class="input-group-addon">%</div>
-                        </div>
-                        
-                        <label>Custom CSS</label>
-                        <textarea data-setting="presentations_custom_css" class="setting form-control">{{getSetting 'presentations_custom_css'}}</textarea>
-                        
-                        <br>
-                        
                         <label>Minion Background Color:</label>
                         <input class="setting form-control" data-setting="mediaminion_background_color" value={{getSetting 'mediaminion_background_color'}}>
                         
@@ -146,13 +54,15 @@
                 </div>
                 
                 {{#if typeIs 'media'}}
-                    <div role="tabpanel" class="tab-pane" id="{{_id}}-display">{{> minionsettingsdisplay}}</div>
+                    <div role="tabpanel" class="tab-pane" id="songs">{{> minionSettingsSongs}}</div>
+                    <div role="tabpanel" class="tab-pane" id="presentations">{{> minionSettingsPresentations}}</div>
+                    <div role="tabpanel" class="tab-pane" id="timers">{{> minionSettingsTimers}}</div>
+                    <div role="tabpanel" class="tab-pane" id="display">{{> minionsettingsdisplay}}</div>
                 {{/if}}
             </div>
         
             <button class="minion-settings-delete btn btn-danger">Delete</button>
-            <button class="minion-settings-save btn btn-primary pull-right">Save</button>
-            <button class="minion-settings-cancel btn pull-right">Cancel</button>                       
+            <a href={{pathFor 'minionsMenu'}} class="btn btn-default pull-right">Close</a>
         </div>
     </div>
 

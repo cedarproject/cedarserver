@@ -1,0 +1,54 @@
+<template name="minionSettingsPresentations">
+    <label>Font:</label>
+    <input data-setting="presentations_font" class="setting form-control" value={{getSetting 'presentations_font'}}>
+    
+    <label>Font Size:</label>
+    <input type="number" min=0 max=200 step=1 data-setting="presentations_font_size"
+        class="setting form-control" value={{getSetting 'presentations_font_size'}}>
+
+    <label>Font Weight:</label>
+    <select data-setting="presentations_font_weight" class="setting form-control">
+        <option value="normal" {{isSelected 'presentations_font_weight' 'normal'}}>Normal</option>
+        <option value="bold" {{isSelected 'presentations_font_weight' 'bold'}}>Bold</option>
+    </select>
+
+    <label>Font Color:</label>
+    <input type="text" data-setting="presentations_font_color" class="setting form-control" value={{getSetting 'presentations_font_color'}}>
+
+    <label>Font Shadow:</label>
+    <input type="number" min=0 max=10 step=1 data-setting="presentations_font_shadow" class="setting form-control" value={{getSetting 'presentations_font_shadow'}}>
+    
+    <label>Font Shadow Color:</label>
+    <input type="text" data-setting="presentations_font_shadow_color" class="setting form-control" value={{getSetting 'presentations_font_shadow_color'}}>
+                            
+    <label>Horizontal Position</label>
+    <select data-setting="presentations_position_horizontal" class="setting form-control">
+        <option value="left" {{isSelected 'presentations_position_horizontal' 'left'}}>Left</option>
+        <option value="center" {{isSelected 'presentations_position_horizontal' 'center'}}>Center</option>
+        <option value="right" {{isSelected 'presentations_position_horizontal' 'right'}}>Right</option>
+    </select>
+    
+    <label>Vertical Position</label>
+    <select data-setting="presentations_position_vertical" class="setting form-control">
+        <option value="top" {{isSelected 'presentations_position_vertical' 'top'}}>Top</option>
+        <option value="center" {{isSelected 'presentations_position_vertical' 'center'}}>Center</option>
+        <option value="bottom" {{isSelected 'presentations_position_vertical' 'bottom'}}>Bottom</option>
+    </select>
+    
+    <label>Width</label>
+    <div class="input-group">
+        <input type="number" data-setting="presentations_width" class="setting form-control"
+            value={{getSetting 'presentations_width'}} min=0 max=100 step=1>
+        <div class="input-group-addon">%</div>
+    </div>
+
+    <label>Height</label>
+    <div class="input-group">
+        <input type="number" data-setting="presentations_height" class="setting form-control"
+            value={{getSetting 'presentations_height'}} min=0 max=100 step=1>
+        <div class="input-group-addon">%</div>
+    </div>
+    
+    <label>Custom CSS</label>
+    <textarea data-setting="presentations_custom_css" class="setting form-control">{{getSetting 'presentations_custom_css'}}</textarea>
+</template>
