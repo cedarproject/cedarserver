@@ -80,8 +80,6 @@ Meteor.methods({
         var set = sets.findOne(action.set);
         var targets = minions.find({type: 'media', stage: set.stage});
         
-        action.time = Date.now() + 100;
-        
         if (!action.settings['layer']) action.settings.layer = 'foreground';
 
         var s = {}; s['layers.' + action.settings.layer] = action;        

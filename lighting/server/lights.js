@@ -68,7 +68,7 @@ Meteor.methods({
             if (light.channels[c].type == 'fixed') values[c] = light.channels[c].value;
         }
         
-        settings.time = (Date.now() * 0.001) + 0.01; // Get current time as float, add 10ms
+        if (!settings['time']) settings.time = Date.now();
 
         if (!light.disabled) lights.update(light, {$set: {values: values, settings: settings}});
     }

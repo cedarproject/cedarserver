@@ -43,8 +43,6 @@ Meteor.methods({
         var targets = minions.find({type: 'media', stage: set.stage}).fetch();                   
         var actMedia = media.findOne(action.media);
                 
-        action.time = Date.now() + 100;
-        
         var s = {}; s['layers.' + action.layer] = action;
         targets.forEach(function (minion) {
             if (minion.layers.hasOwnProperty(action.layer))
