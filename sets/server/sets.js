@@ -98,11 +98,13 @@ Meteor.methods({
         else var set_actions = [action];
         
         sets.update(set, {$set: {active: actionid}});
+        
+        var time = Date.now() + 100;
 
         for (var i in set_actions) {
             var action = set_actions[i];
             action.set = setid;
-            action.time = Date.now() + 100;
+            action.time = time;
             
             if (action.type == 'media' || action.type == 'playlist' || action.type == 'clear-layer' || action.type == 'timer') {
                 Meteor.call('mediaActionActivate', action);

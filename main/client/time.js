@@ -8,6 +8,8 @@ time = {
         Meteor.call('getTime', (err, server_now) => {
             var now = performance.now();
             var latency = now - start;
+            
+            var offset = (server_now - latency / 2) - now;
                         
             if (this.offsets.length >= 100) this.offsets.shift();
             this.offsets.push(offset);
