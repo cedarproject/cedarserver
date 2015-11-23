@@ -1,4 +1,4 @@
-transpose_scale = ['C','C#','D','Eb','E','F','F#','G','Ab','A','Bb','B','C', 'Db','D','D#','E','F','Gb','G','G#','A','A#','C'];
+transpose_scale = ['C','C#','D','Eb','E','F','F#','G','Ab','A','Bb','B','C', 'Db','D','D#','E','F','Gb','G','G#','A','A#', 'Bb', 'B', 'C'];
 
 key2num = {'A': 0, 'Bb': 1, 'B': 2, 'C': 3, 'C#': 4, 'Db': 4, 'D': 5, 'D#': 6, 'Eb': 6, 'E': 7, 'F': 8, 'F#': 9, 'Gb': 9, 'G': 10, 'G#': 11, 'Ab': 11};
 num2key = {};
@@ -20,7 +20,7 @@ songTextToChordChart = function (text, transpose) {
         tag = tag.substring(1, tag.length-1);
         tag = tag.replace(/[CDEFGAB][#b]?/g, function (chord) {
             var n = (transpose_scale.indexOf(chord) + transpose) % transpose_scale.length;
-            return transpose_scale[n < 0 ? n + transpose_scale.length : n];
+            return transpose_scale[n < 0 ? n + transpose_scale.length - 1 : n];
         });
         
         return '<span class="musicstand-chord"><span>' + tag + '</span></span>';
