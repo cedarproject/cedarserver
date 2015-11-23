@@ -8,7 +8,7 @@ function checkScene(sceneid) {
 }
 
 Meteor.methods({
-    'sceneAdd': function () {
+    sceneAdd: function () {
         var sceneid = lightscenes.insert({
             title: 'New Scene',
             stage: null,
@@ -19,7 +19,7 @@ Meteor.methods({
         return sceneid;
     },
     
-    'sceneClone': function (sceneid) {
+    sceneClone: function (sceneid) {
         var scene = checkScene(sceneid);
         delete scene._id;
 
@@ -32,12 +32,12 @@ Meteor.methods({
         return lightscenes.insert(scene);
     },
     
-    'sceneDel': function (sceneid) {
+    sceneDel: function (sceneid) {
         var scene = checkScene(sceneid);
         lightscenes.remove(scene);
     },
     
-    'sceneTitle': function (sceneid, title) {
+    sceneTitle: function (sceneid, title) {
         var scene = checkScene(sceneid);
         lightscenes.update(scene, {$set: {title: title}});
     },
@@ -47,13 +47,13 @@ Meteor.methods({
         lightscenes.update(scene, {$set: {stage: stage}});
     },
     
-    'sceneSetting': function (sceneid, setting, value) {
+    sceneSetting: function (sceneid, setting, value) {
         var scene = checkScene(sceneid);
         var s = {}; s['settings.' + setting] = value;
         lightscenes.update(scene, {$set: s});
     },
     
-    'sceneAddLight': function (sceneid, lightid) {
+    sceneAddLight: function (sceneid, lightid) {
         var scene = checkScene(sceneid);
         var values = [];
         lights.findOne(lightid).channels.forEach(function () {values.push(0)});
@@ -62,7 +62,7 @@ Meteor.methods({
         lightscenes.update(scene, {$push: {lights: light}});
     },
     
-    'sceneAddGroup': function (sceneid, groupid) {
+    sceneAddGroup: function (sceneid, groupid) {
         var scene = checkScene(sceneid);
         var values = [];     
         lightgroups.findOne(groupid).channels.forEach(function () {values.push(0)});
@@ -71,30 +71,58 @@ Meteor.methods({
         lightscenes.update(scene, {$push: {lights: group}});
     },
 
-    'sceneDelLight': function (sceneid, index) {
+    sceneDelLight: function (sceneid, index) {
         var scene = checkScene(sceneid);
         lightscenes.update(scene, {$pull: {lights: scene.lights[index]}});
     },
     
-    'sceneSetValue': function (sceneid, index, values) {
+    sceneSetValue: function (sceneid, index, values) {
         var scene = checkScene(sceneid);
         var selector = {}; selector['lights.' + index + '.values'] = values;
         lightscenes.update(scene, {$set: selector});
     },
     
-    'sceneActivate': function (sceneid, action) {
+    sceneActivate: function (sceneid, action) {
         var scene = checkScene(sceneid);
         if (action) scene.settings.time = action.time;
         else scene.settings.time = Date.now() + 100;
         
-        for (var i in scene.lights) {
-            var l = scene.lights[i];
-            if (l['light']) Meteor.call('lightValues', l.light, l.values, scene.settings);
-            else if (l['group']) Meteor.call('lightGroupValues', l.group, l.values, scene.settings);
-        }
+        var scenelights = {};
+        
+        scene.lights.forEach((m) => {
+            if (m['light']) scenelights[m.light] = m.values;
+
+            else if (m['group']) {
+                var group = lightgroups.findOne(m.group);
+                group.members.forEach((gm) => {
+                    var light = lights.findOne(gm);
+                    if (!light) return;
+                    
+                    var lightValues = [];
+                    
+                    for (var n in light.channels) {
+                        var channel = light.channels[n];
+                        
+                        for (var c in group.channels) {
+                            if (channel.type == group.channels[c].type) {
+                                lightValues[n] = m.values[c];
+                            }
+                        }
+                        
+                        if (typeof lightValues[n] === 'undefined') lightValues[n] = light.values[n];
+                    }
+                    
+                    scenelights[gm] = lightValues;
+                });
+            }
+        });
+        
+        for (var l in scenelights)
+            if (scenelights.hasOwnProperty(l)) 
+                Meteor.call('lightValues', l, scenelights[l], scene.settings);
     },
     
-    'sceneActionActivate': function (action) {
+    sceneActionActivate: function (action) {
         // TODO this will eventually set fade time, etc.
         Meteor.call('sceneActivate', action.lightscene, action);
     }
