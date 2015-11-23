@@ -46,6 +46,12 @@ Template.actionSettings.helpers({
     
     isSongKeySelected: function (key) {
         if (Template.parentData().settings.key == key) return 'selected';
+    },
+    
+    getLightSceneFade: function () {
+        if (typeof this.settings['lights_fade'] === 'undefined')
+            return lightscenes.findOne(this.lightscene).settings.fade;
+        else return this.settings.lights_fade;
     }
 });
 

@@ -84,7 +84,12 @@ Meteor.methods({
     
     sceneActivate: function (sceneid, action) {
         var scene = checkScene(sceneid);
-        if (action) scene.settings.time = action.time;
+        
+        if (action) {
+            scene.settings.time = action.time;
+            scene.settings.fade = parseFloat(action.settings.lights_fade);
+        }
+        
         else scene.settings.time = Date.now() + 100;
         
         var scenelights = {};
@@ -123,7 +128,6 @@ Meteor.methods({
     },
     
     sceneActionActivate: function (action) {
-        // TODO this will eventually set fade time, etc.
         Meteor.call('sceneActivate', action.lightscene, action);
     }
         

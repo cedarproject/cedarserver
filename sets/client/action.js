@@ -1,6 +1,7 @@
 Template.setAction.helpers({
     triggersActive: function () {
-        if (this.settings.triggers) return 'active';
+        if (this.settings.triggers) return 'btn-default active';
+        else return 'btn-danger';
     }
 });
 

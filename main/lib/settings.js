@@ -48,6 +48,8 @@ defaults = JSON.stringify({
     
     timers_text_align: 'left', // Horizontal alignment (left, center, right)
     timers_text_vertical_align: 'bottom', // Vertical alignment (top, center, bottom)
+    
+    lights_fade: 1,
 });
 
 combineSettings = function () {

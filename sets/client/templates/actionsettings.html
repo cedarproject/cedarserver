@@ -83,6 +83,11 @@
                 <input type="number" size=2 min=0 max=60 class="setting form-control" data-setting="timer_time.seconds" value={{getSetting 'timer_time' 'seconds'}}>
             </div>
         {{/if}}
+        
+        {{#if typeIs 'lightscene'}}
+            <label>Fade Length</label>
+            <input type="number" class="setting form-control" data-setting="lights_fade" min=0 max=60 step=0.1 value={{getLightSceneFade}}>
+        {{/if}}
             
         {{#if set}}
             <h4>Triggers</h4>
