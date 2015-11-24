@@ -1,9 +1,11 @@
 defaults = JSON.stringify({
     mediaminion_background_color: '0x000000',
+    mediaminion_volume: 1, // Per-minion upper limit
 
     media_fade: 1,
     media_preserve_aspect: 'yes',
     media_loop: 'no',
+    media_volume: 1, // Per-item volume, limited by minion's limit
     
     playlist_image_length: 5,
     playlist_order: 'normal', // (normal, random)

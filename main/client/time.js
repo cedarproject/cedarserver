@@ -11,7 +11,7 @@ time = {
             
             var offset = (server_now - latency / 2) - now;
                         
-            if (this.offsets.length >= 100) this.offsets.shift();
+            if (this.offsets.length >= 10) this.offsets.shift();
             this.offsets.push(offset);
         })
     }
@@ -19,7 +19,7 @@ time = {
 
 Meteor.startup(function () {
     time.calc.bind(time)();
-    Meteor.setInterval(time.calc.bind(time), 1000);
+    Meteor.setInterval(time.calc.bind(time), 100);
 });
 
-//test = {l: 0, l_t: 0, a: [], r: function () {var t = time.now(); var n = performance.now(); var d = (t - test.l) - (n - test.l_t); test.a.push(Math.abs(d)); console.log(d, _.reduce(test.a, (m,n) => m+n)/test.a.length, t - test.l, n - test.l_t); test.l = t; test.l_t = n;}}; test.r(); test.a.pop(); Meteor.setInterval(test.r, 1000);
+//test = {l: 0, l_t: 0, a: [], r: function () {var t = time.now(); var n = performance.now(); var d = (t - test.l) - (n - test.l_t); test.a.push(Math.abs(d)); console.log(`o:${d}, a:${_.reduce(test.a, (m,n) => m+n)/test.a.length}, m:${_.max(test.a)}`); test.l = t; test.l_t = n;}}; test.r(); test.a.pop(); Meteor.setInterval(test.r, 1000);

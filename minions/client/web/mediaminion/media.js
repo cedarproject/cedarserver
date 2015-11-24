@@ -3,12 +3,16 @@ MediaMinionMedia = class MediaMinionMedia {
         this.ready = false;
         this.shown = false;
         this.removed = false;
+        
+        this.syncing = false;
     
         this.action = action;
         this.minion = minion;
         
         this.media = media.findOne(this.action.media);
         this.settings = combineSettings(action.settings, this.media.settings, this.minion.settings);
+        
+        this.volume = parseFloat(this.settings.media_volume) * parseFloat(this.settings.mediaminion_volume);
                         
         if (this.media.type == 'video' || this.media.type == 'image') {                    
             this.materials = [];
@@ -89,14 +93,20 @@ MediaMinionMedia = class MediaMinionMedia {
                 var o = t * 0.001 - this.tosync.currentTime;
 
                 if (o > 0.5 || o < -0.5) {
-                    this.tosync.currentTime = t * 0.001;
-                } else if (o > 0.1 || o < -0.1) {
-                    if (o > 0) this.tosync.playbackRate = 1 + o;
-                    else this.tosync.playbackRate = 1 - o;
-                } else {
                     this.tosync.playbackRate = 1;
+                    this.tosync.currentTime = t * 0.001;
+                    this.syncing = false;
+                    console.log(`o:${o}, jumping to ${t * 0.001}`);
+                } else if ((o > 0.2 || o < -0.2) && !this.syncing) {
+                    if (o > 0) this.tosync.playbackRate = 1.02;
+                    else this.tosync.playbackRate = 0.98;
+                    this.syncing = true;
+                    console.log(`o:${o}, setting rate to ${this.tosync.playbackRate}`);
+                } else if ((o < 0.05 && o > -0.05) && this.syncing) {
+                    console.log(`o:${o}, resetting rate`);
+                    this.tosync.playbackRate = 1;
+                    this.syncing = false;
                 }
-                console.log(o, this.tosync.playbackRate);                
                 
             }
         
@@ -129,6 +139,8 @@ MediaMinionMedia = class MediaMinionMedia {
                         for (var n in this.materials) {
                             this.materials[n].uniforms.opacity.value = v;
                         }
+                        
+                        if (this.type == 'video') this.video.volume = v * this.volume;
                     }
                 });
             }
@@ -138,7 +150,7 @@ MediaMinionMedia = class MediaMinionMedia {
                     start: 0, end: 1,
                     length: parseFloat(this.settings.media_fade) * 1000,
                     time: this.action.time,
-                    callback: (v) => {this.audio.volume = v;}
+                    callback: (v) => {this.audio.volume = v * this.volume;}
                 });
             }
         }
@@ -158,7 +170,7 @@ MediaMinionMedia = class MediaMinionMedia {
                         this.materials[n].uniforms.opacity.value = v;
                     }
                     
-                    if (this.type == 'video') this.video.volume = v;
+                    if (this.type == 'video') this.video.volume = v * this.volume;
 
                     if (v == 0) {
                         this.shown = false;
@@ -177,7 +189,7 @@ MediaMinionMedia = class MediaMinionMedia {
                 length: parseFloat(this.settings.media_fade) * 1000,
                 time: time.now(),
                 callback: (v) => {
-                    this.audio.volume = v;
+                    this.audio.volume = v * this.volume;
                     if (v == 0) {
                         this.shown = false;
                         this.audio.pause();

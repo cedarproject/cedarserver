@@ -16,7 +16,7 @@
         {{/if}}
         
         {{#if typeIs 'media' 'playlist'}}
-            <label>Fade Length</label>
+            <label>Fade Length:</label>
             <input type="number" class="setting form-control" data-setting="media_fade" min=0 max=5 step=0.05 value={{getSetting 'media_fade'}}>
 
             <label>Preserve Aspect Ratio:</label>
@@ -25,27 +25,30 @@
                 <option value="no" {{isSelected 'media_preserve_aspect' 'no'}}>No (stretch to fit)</option>
             </select>
             
-            <label>Loop</label>
+            <label>Loop:</label>
             <select class="setting form-control" data-setting="media_loop">
                 <option value="yes" {{isSelected 'media_loop' 'yes'}}>Yes</option>
                 <option value="no" {{isSelected 'media_loop' 'no'}}>No</option>
             </select>
+            
+            <label>Volume:</label>
+            <input type="number" class="setting form-control" data-setting="media_volume" min=0 max=1 step=0.05 value={{getSetting 'media_volume'}}>
         {{/if}}
         
         {{#if typeIs 'playlist'}}
-            <label>Playlist Order</label>
+            <label>Playlist Order:</label>
             <select class="setting form-control" data-setting="playlist_order">
                 <option value="normal" {{isSelected 'playlist_order' 'normal'}}>Normal</option>
                 <option value="random" {{isSelected 'playlist_order' 'random'}}>Random</option>
             </select>
             
-            <label>Image Display Length</label>
+            <label>Image Display Length:</label>
             <input type="number" class="setting form-control" data-setting="playlist_image_length"
                 min=0 max=60 step=1 value={{getSetting 'playlist_image_length'}}>
         {{/if}}
         
         {{#if typeIs 'song'}}
-            <label>Fade Length</label>
+            <label>Fade Length:</label>
             <input type="number" class="setting form-control" data-setting="songs_fade" min=0 max=5 step=0.05 value={{getSetting 'songs_fade'}}>
 
             <label>Arrangement:</label>
@@ -64,7 +67,7 @@
         {{/if}}
         
         {{#if typeIs 'presentation'}}
-            <label>Fade Length</label>
+            <label>Fade Length:</label>
             <input type="number" class="setting form-control" data-setting="presentations_fade" min=0 max=5 step=0.05 value={{getSetting 'presentations_fade'}}>
         {{/if}}
         
@@ -85,7 +88,7 @@
         {{/if}}
         
         {{#if typeIs 'lightscene'}}
-            <label>Fade Length</label>
+            <label>Fade Length:</label>
             <input type="number" class="setting form-control" data-setting="lights_fade" min=0 max=60 step=0.1 value={{getLightSceneFade}}>
         {{/if}}
             
