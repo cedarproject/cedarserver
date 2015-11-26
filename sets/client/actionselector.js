@@ -38,6 +38,14 @@ Template.actionSelector.helpers({
         sort: [['title', 1]],
         addbutton: true
     },
+    
+    sourceSelector: {
+        collection: streamingsources,
+        displayTemplate: 'streamingSourceDisplay',
+        fields: [{field: 'title', type: String}],
+        sort: [['title', 'asc']],
+        addbutton: true
+    }
 });
 
 Template.actionSelector.events({    

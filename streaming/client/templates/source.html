@@ -9,7 +9,9 @@
             {{/if}}
         </h3>
         
-        {{!TODO if source active, show live view}}
+        {{#if connected}}
+            <video id="video" autoplay class="img-responsive"></video>
+        {{/if}}
         
         <label>Title</label>
         <input id="title" class="form-control" value={{title}}>

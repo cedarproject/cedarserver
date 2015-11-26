@@ -8,6 +8,10 @@ Template.streamingSource.helpers({
     }
 });
 
+Template.streamingSource.onRendered(function () {
+    if (this.data.connected) receiveStream(this.data._id, this.$('#video')[0]);
+});
+
 Template.streamingSource.events({
     'blur #title': function (event, template) {
         Meteor.call('streamingSourceTitle', template.data._id, $(event.target).val());
@@ -17,5 +21,10 @@ Template.streamingSource.events({
         var setting = $(event.target).data('setting');
         var value = $(event.target).val();
         Meteor.call('streamingSourceSetting', template.data._id, setting, value);
+    },
+    
+    'click #delete': function (event, template) {
+        Meteor.call('streamingSourceDel', template.data._id);
+        Router.go('/streaming/sources');
     }
 });

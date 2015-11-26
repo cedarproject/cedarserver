@@ -45,6 +45,7 @@ iron:router@1.0.12
 iron:url@1.0.11
 jquery@1.11.4
 kidovate:bootstrap-slider@0.0.5
+lablancas:webrtc-adapter@0.0.1
 launch-screen@1.0.4
 livedata@1.0.15
 logging@1.0.8

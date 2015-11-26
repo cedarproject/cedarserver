@@ -7,6 +7,12 @@
         {{/with}}
     {{/if}}
     
+    {{#if actionType 'streamingsource'}}
+        {{#with getSource}}
+            <h4>{{title}}</h4>
+        {{/with}}
+    {{/if}}
+    
     {{#if actionType 'playlist'}}
         {{#with getPlaylist}}
             <div class="media">

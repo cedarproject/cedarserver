@@ -106,8 +106,10 @@ Meteor.methods({
             action.set = setid;
             action.time = time;
             
-            if (action.type == 'media' || action.type == 'playlist' || action.type == 'clear-layer' || action.type == 'timer') {
-                Meteor.call('mediaActionActivate', action);
+            if (action.type == 'media' || action.type == 'playlist' ||
+                action.type == 'streamingsource' ||
+                action.type == 'clear-layer' || action.type == 'timer') {
+                    Meteor.call('mediaActionActivate', action);
             }
             
             else if (action.type == 'lightscene') {

@@ -1,8 +1,17 @@
 kurento = null;
 pipeline = null;
+create = null;
 sources = {};
+viewers = {};
 
-create = () => {};
+// There are three hard things in computer science: naming stuff, and off-by-one errors.
+class StreamingStuff {
+    constructor () {
+        this.element = null;
+        this.candidates = [];
+    }
+};
+        
 
 Meteor.methods({
     streamingConnected: function () {
@@ -14,23 +23,29 @@ Meteor.methods({
         var url = settings.findOne({key: 'streamingserver'}).value;
         if (!url) return false;
         
-        kurento = KurentoClient.KurentoClient(url, function (kurento) {
-            pipeline = Meteor.wrapAsync(KurentoClient.create, KurentoClient)('MediaPipeline');
-            create = Meteor.wrapAsync(pipeline.create, pipeline);
-        }, function (err) {
-            console.log('error', err);
-            kurento = null;
+        kurento = new KurentoClient.KurentoClient(url, (err, kurento) => {
+            if (err) {console.log('error connecting to kurento server:', err); return;}
+            kurento.create('MediaPipeline', (err, _pipeline) => {
+                if (err) {console.log('error creating kurento pipeline:', err); return;}
+                console.log('connected to kurento server');
+                pipeline = _pipeline;
+                create = Meteor.wrapAsync(pipeline.create, this);
+            });
         });
     },
     
 
     streamingSourceAdd: function (type) {
-        return streamingsources.insert({
+        var sourceid = streamingsources.insert({
             title: 'New Source',
             type: type,
-            settings: {},
+            servercandidates: [],
+            serveranswer: null,
+            settings: {},            
             connected: false
         });
+        
+        return sourceid;
     },
     
     streamingSourceDel: function (sourceid) {
@@ -39,12 +54,114 @@ Meteor.methods({
     },
 
     streamingSourceTitle: function (sourceid, title) {
-        streamingsource.update(sourceid, {$set: {title: title}});
+        streamingsources.update(sourceid, {$set: {title: title}});
     },
     
     streamingSourceSetting: function (sourceid, setting, value) {
         var s = {}; s['settings.'+setting] = value;
-        streamingsource.update(sourceid, {$set: s});
-    }
+        streamingsources.update(sourceid, {$set: s});
+    },
     
+    streamingSourceOffer: function (sourceid, offer) {
+        if (!kurento) throw new Meteor.Error('not-connected', "Cedar isn't connected to the Kurento server!");
+
+        var source = sources[sourceid];
+        if (!source) {
+            source = new StreamingStuff();
+            sources[sourceid] = source;
+        }
+
+        source.element = create('WebRtcEndpoint');
+        source.element.on('OnIceCandidate', Meteor.bindEnvironment(function (event) {
+            streamingsources.update(sourceid, {$push: {servercandidates: event.candidate}});
+        }.bind(this)));
+        
+        while (source.candidates.length > 0) source.element.addIceCandidate(source.candidates.pop());
+        
+        source.element.connect(source.element, (err) => {if (err) console.log(err)});
+        
+        source.element.processOffer(offer, Meteor.bindEnvironment(function (err, answer) {
+            streamingsources.update(sourceid, {$set: {serveranswer: answer}});
+        }.bind(this)));
+
+        source.element.gatherCandidates((err) => {console.log('error gathering candidates', err)});
+    },
+    
+    streamingSourceClearServerAnswer: function (sourceid) {
+        streamingsources.update(sourceid, {$set: {serveranswer: null, connected: true}});
+    },
+    
+    streamingSourceIceCandidate: function (sourceid, _candidate) {
+        var candidate = KurentoClient.register.complexTypes.IceCandidate(JSON.parse(_candidate));
+        var source = sources[sourceid];
+        if (!source) source = new StreamingStuff();
+        
+        if (source.element) source.element.addIceCandidate(candidate);
+        else source.candidates.push(candidate);
+    },
+    
+    streamingSourceClearServerCandidates: function (sourceid) {
+        streamingsources.update(sourceid, {$set: {servercandidates: []}});
+    },
+    
+    
+    streamingViewerAdd: function (sourceid) {
+        var viewid = streamingviewers.insert({
+            source: sourceid,
+            servercandidates: [],
+            serveranswer: null,
+            connected: false
+        });
+        
+        return viewid;
+    },
+    
+    streamingViewerOffer: function (viewid, offer) {
+        if (!kurento) throw new Meteor.Error('not-connected', "Cedar isn't connected to the Kurento server!");
+        
+        var sourceid = streamingviewers.findOne(viewid).source;
+        
+        if (!streamingsources.findOne(sourceid).connected)
+            throw new Meteor.Error('source-not-connected', "Streaming source isn't connected!");
+                    
+        var source = sources[sourceid];
+
+        var viewer = viewers[viewid];
+        if (!viewer) {
+            viewer = new StreamingStuff();
+            viewers[viewid] = viewer;
+        }
+
+        viewer.element = create('WebRtcEndpoint');
+        viewer.element.on('OnIceCandidate', Meteor.bindEnvironment(function (event) {
+            streamingviewers.update(viewid, {$push: {servercandidates: event.candidate}});
+        }.bind(this)));
+        
+        while (viewer.candidates.length > 0) viewer.element.addIceCandidate(viewer.candidates.pop());
+        
+        source.element.connect(viewer.element, (err) => {if (err) console.log(err)});
+        
+        viewer.element.processOffer(offer, Meteor.bindEnvironment(function (err, answer) {
+            streamingviewers.update(viewid, {$set: {serveranswer: answer, connected: true}});
+        }.bind(this)));
+
+        viewer.element.gatherCandidates((err) => {if (err) console.log('error gathering candidates', err)});
+    },
+    
+    streamingViewerClearServerAnswer: function (viewid) {
+        streamingsources.update(viewid, {$set: {serveranswer: null}});
+    },
+    
+    streamingViewerIceCandidate: function (viewid, _candidate) {
+        var candidate = KurentoClient.register.complexTypes.IceCandidate(JSON.parse(_candidate));
+        var viewer = viewers[viewid];
+        if (!viewer) viewer = new StreamingStuff();
+        
+        if (viewer.element) viewer.element.addIceCandidate(candidate);
+        else viewer.candidates.push(candidate);
+    },
+    
+    streamingViewerClearServerCandidates: function (viewid) {
+        streamingviewers.update(viewid, {$set: {servercandidates: []}});
+    }
 });
