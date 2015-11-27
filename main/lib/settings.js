@@ -51,6 +51,10 @@ defaults = JSON.stringify({
     timers_text_align: 'left', // Horizontal alignment (left, center, right)
     timers_text_vertical_align: 'bottom', // Vertical alignment (top, center, bottom)
     
+    streamingsource_width: 0,
+    streamingsource_height: 0,
+    streanubgsourec_url: '',
+    
     lights_fade: 1,
 });
 

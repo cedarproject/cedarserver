@@ -34,6 +34,17 @@ Meteor.methods({
         });
     },
     
+    streamingDebug: function () {
+        if (!pipeline) throw new Meteor.Error('no-pipeline', 'No pipeline to debug!');
+        var fs = Npm.require('fs');
+        var child_process = Npm.require('child_process');
+
+        pipeline.getGstreamerDot('SHOW_ALL', (err, res) => {
+            fs.writeFileSync('/tmp/cedar-kurento-debug.dot', res);
+            child_process.exec('dot -Tsvg -O /tmp/cedar-kurento-debug.dot');
+        });        
+    },
+    
 
     streamingSourceAdd: function (type) {
         var sourceid = streamingsources.insert({
@@ -84,7 +95,7 @@ Meteor.methods({
             streamingsources.update(sourceid, {$set: {serveranswer: answer}});
         }.bind(this)));
 
-        source.element.gatherCandidates((err) => {console.log('error gathering candidates', err)});
+        source.element.gatherCandidates((err) => {if (err) console.log('error gathering candidates', err)});
     },
     
     streamingSourceClearServerAnswer: function (sourceid) {
@@ -94,7 +105,10 @@ Meteor.methods({
     streamingSourceIceCandidate: function (sourceid, _candidate) {
         var candidate = KurentoClient.register.complexTypes.IceCandidate(JSON.parse(_candidate));
         var source = sources[sourceid];
-        if (!source) source = new StreamingStuff();
+        if (!source) {
+            source = new StreamingStuff();
+            sources[sourceid] = source;
+        }
         
         if (source.element) source.element.addIceCandidate(candidate);
         else source.candidates.push(candidate);
@@ -104,6 +118,27 @@ Meteor.methods({
         streamingsources.update(sourceid, {$set: {servercandidates: []}});
     },
     
+    streamingSourceConnect: function (sourceid) {
+        if (!kurento) throw new Meteor.Error('not-connected', "Cedar isn't connected to the Kurento server!");
+        var source = sources[sourceid];
+        if (!source) {
+            source = new StreamingStuff();
+            sources[sourceid] = source;
+        }
+        
+        var url = streamingsources.findOne(sourceid).settings['streamingsource_url'];
+        if (!url) throw new Meteor.Error('no-url', `No URL for source ${sourceid}`);
+        
+        pipeline.create('PlayerEndpoint', {uri: url}, Meteor.bindEnvironment((err, endpoint) => {
+            if (err) throw new Meteor.Error('rtsp-error', err);
+            source.element = endpoint;
+
+            endpoint.play();
+
+            streamingsources.update(sourceid, {$set: {connected: true}});
+        }));
+        
+    },
     
     streamingViewerAdd: function (sourceid) {
         var viewid = streamingviewers.insert({

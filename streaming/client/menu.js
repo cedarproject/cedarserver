@@ -15,5 +15,10 @@ Template.streamingMenu.events({
     
     'click #connect': function (event, template) {
         Meteor.call('streamingConnect');
+    },
+    
+    'click #debug': function (event, template) {
+        Meteor.call('streamingDebug');
+        Meteor.setTimeout(() => {Router.go('/streaming/debugresult')}, 1000);
     }
 });

@@ -5,6 +5,18 @@ Router.route('/streaming', {
     }
 });
 
+Router.route('/streaming/debugresult', function () {
+    var fs = Npm.require('fs');
+
+    var headers = {
+        'Cache-Control': 'max-age=0'
+    };
+    
+    this.response.writeHead(200, headers);
+    var stream = fs.createReadStream('/tmp/cedar-kurento-debug.dot.svg');
+    return stream.pipe(this.response);
+}, {where: 'server'});
+
 Router.route('/streaming/sources', {name: 'streamingSources'});
 Router.route('/streaming/source/:_id', {
     name: 'streamingSource',

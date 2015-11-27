@@ -5,7 +5,15 @@ Template.streamingSource.helpers({
     
     isSelected: function (setting, value) {
         if (combineSettings(this.settings)[setting] == value) return 'selected';
-    }
+    },
+    
+    typeIs: function (type) {
+        return type == this.type;
+    },
+
+    getSetting: function (setting) {
+        return combineSettings(this.settings)[setting];
+    },
 });
 
 Template.streamingSource.onRendered(function () {
@@ -21,6 +29,10 @@ Template.streamingSource.events({
         var setting = $(event.target).data('setting');
         var value = $(event.target).val();
         Meteor.call('streamingSourceSetting', template.data._id, setting, value);
+    },
+    
+    'click #rtsp-connect': function (event, template) {
+        Meteor.call('streamingSourceConnect', template.data._id);
     },
     
     'click #delete': function (event, template) {

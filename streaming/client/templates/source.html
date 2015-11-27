@@ -16,10 +16,31 @@
         <label>Title</label>
         <input id="title" class="form-control" value={{title}}>
         
-        <div class="well well-sm">
-            <p><a href={{pathFor 'streamingSourceStream' _id}}>Start Streaming</a></p>
-            <p>Direct link: <pre>{{urlFor 'streamingSourceStream' _id}}</pre></p>
-        </div>
+        {{#if typeIs 'webrtc'}}
+            <label>Preferred Resolution:</label>
+            <p><small>0 = automatic</small></p>
+            <div class="form-inline">
+                <input type="number" size=4 min=0 max=4096 step=1 class="setting form-control"
+                    data-setting="streamingsource_width" value={{getSetting 'streamingsource_width'}}>
+                x
+                <input type="number" size=4 min=0 max=4096 step=1 class="setting form-control"
+                    data-setting="streamingsource_height" value={{getSetting 'streamingsource_height'}}>
+            </div>
+        
+            <div class="well well-sm">
+                <p><a href={{pathFor 'streamingSourceStream' _id}}>Start Streaming</a></p>
+                <p>Direct link: <pre>{{urlFor 'streamingSourceStream' _id}}</pre></p>
+            </div>
+        {{/if}}
+        
+        {{#if typeIs 'rtsp'}}
+            <label>Source URL:</label>
+            <input class="setting form-control" data-setting="streamingsource_url" value={{getSetting 'streamingsource_url'}}>
+            
+            <button id="rtsp-connect" class="btn btn-primary">
+                Connect
+            </button>
+        {{/if}}
         
         <hr>
         
