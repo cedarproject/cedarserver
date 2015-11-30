@@ -87,7 +87,8 @@ Meteor.methods({
         
         if (action) {
             scene.settings.time = action.time;
-            scene.settings.fade = parseFloat(action.settings.lights_fade) || scene.settings.fade;
+            if (!isNaN(parseFloat(action.settings.lights_fade)))
+                scene.settings.fade = parseFloat(action.settings.lights_fade);
         }
         
         else scene.settings.time = Date.now() + 100;
