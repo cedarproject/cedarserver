@@ -1,5 +1,5 @@
 Template.set.onRendered(function () {
-    $(window).keypress(function (setid, event) {
+    $(window).keydown(function (setid, event) {
         // This is pretty ugly.
         
         if (event.key != 'ArrowLeft' && event.key != 'ArrowRight') return;

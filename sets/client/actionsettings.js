@@ -66,16 +66,19 @@ Template.actionSettings.events({
     },
 
     'change .setting': function (event, template) {
+        event.stopImmediatePropagation();
         var setting = $(event.target).data('setting');
         var value = $(event.target).val();
         Meteor.call('actionSetting', template.data._id, setting, value);
     },
     
     'change .song-arrangement': function (event, template) {
+        event.stopImmediatePropagation();
         Meteor.call('actionSetting', template.data._id, 'arrangement', $(event.target).val());
     },
     
     'change .song-key': function (event, template) {
+        event.stopImmediatePropagation();
         Meteor.call('actionSetting', template.data._id, 'key', $(event.target).val());
     },
     

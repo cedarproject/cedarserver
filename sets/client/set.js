@@ -31,6 +31,11 @@ Template.set.helpers({
 });
 
 Template.set.events({
+    'keydown input': function (event, template) {
+        // Prevent shortcut keys from triggering when in an inputbox.
+        event.stopImmediatePropagation();
+    },
+
     'click .moving': function (event) {
         $('.set-action').removeClass('moving').removeClass('movetarget').removeClass('disabled');
         event.stopImmediatePropagation();
@@ -247,5 +252,5 @@ Template.set.events({
         template.$('#delete-confirm-modal').removeClass('fade').modal('hide');
         Meteor.call('setDelete', template.data._id);
         Router.go('/sets');
-    }
+    },
 });
