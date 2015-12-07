@@ -7,6 +7,7 @@ Template.setAction.helpers({
 
 Template.setAction.events({
     'click .settings-button': function (event, template) {
+        event.stopImmediatePropagation();
         template.$('.settings').first().collapse('toggle');
     },
     
