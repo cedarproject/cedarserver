@@ -1,32 +1,54 @@
 <template name="presentationSlide">
-    <div class="editor-toolbar">
+    <div class="editor-toolbar form-inline">
         <div class="btn-group">
             <button class="ql-bold btn btn-default"><b>B</b></button>
             <button class="ql-italic btn btn-default"><b><i>I</i></b></button>
             <button class="ql-underline btn btn-default"><b><u>U</u></b></button>
             <button class="ql-unformat btn btn-default"><b>X</b></button>
         </div>
+
+        <select class="ql-size form-control">
+            <option value=".5em">50%</option>
+            <option value=".75em">75%</option>
+            <option value="1em" selected>100%</option>
+            <option value="1.25em">125%</option>
+            <option value="1.5em">150%</option>
+            <option value="2em">200%</option>
+        </select>
         
         <div class="btn-group">
-            <button class="size btn btn-default" data-value="1em">Normal</button>
-            <button class="size btn btn-default" data-value="1.5em">Large</button>
-            <button class="size btn btn-default" data-value="2em">Huge</button>
+            <button class="ql-bullet btn btn-default">
+                <span class="glyphicon glyphicon-list"></span>
+            </button>
+            <button class="ql-list btn btn-default">
+                <span class="glyphicon glyphicon-th-list"></span>
+            </button>
         </div>
         
-        <button class="fillin btn btn-default">
+        <div class="btn-group">
+            <button class="align btn btn-default" data-value="left">
+                <span class="glyphicon glyphicon-align-left"></span>
+            </button>
+            <button class="align btn btn-default" data-value="center">
+                <span class="glyphicon glyphicon-align-center"></span>
+            </button>
+            <button class="align btn btn-default" data-value="right">
+                <span class="glyphicon glyphicon-align-right"></span>
+            </button>
+        </div>
+        
+        <button class="color btn btn-default">
             <span class="glyphicon glyphicon-text-color"></span>
+        </button>
+                        
+        <button class="fillin btn btn-default">
+            {{! Not the best icon for the job, but the only vaugely-related one in the set}}
+            <span class="glyphicon glyphicon-sunglasses"></span>
         </button>
         
         <button class="image-add btn btn-default">
             <span class="glyphicon glyphicon-picture"></span>
         </button>
-
-        {{! Because Quill wants select instead of buttons and I'm too lazy to rewrite the size-changing code.}}
-        <select class="ql-size" hidden>
-            <option value="1em" selected></option>
-            <option value="1.5em"></option>
-            <option value="2em"></option>
-        </select>
 
         <div class="btn-group pull-right">
             <button class="slide-settings-toggle btn btn-default">

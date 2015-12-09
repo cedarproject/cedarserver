@@ -21,6 +21,14 @@ Template.presentationSlide.onRendered(function () {
     this.quill = new Quill(this.$('.slide-editor')[0]);
     this.quill.addFormat('fillin', {tag: 'mark', prepare: 'fillin'});
     this.quill.addModule('toolbar', {container: this.$('.editor-toolbar')[0]});
+
+    this.$('.color').colorpicker({format: 'rgb'}).on('changeColor.colorpicker', (event) => {
+        this.quill.focus(); 
+        var range = this.quill.getSelection();
+        if (range) {
+            this.quill.formatText(range.start, range.end, 'color', event.color.toHex());
+        }
+    });
     
     this.autorun(function () {
         var slide = presentationslides.findOne(this.data._id);
@@ -34,16 +42,6 @@ Template.presentationSlide.events({
         Meteor.call('presentationSlideSetting', template.data._id, setting, $(event.target).val());
     },
 
-    'click .size': function (event, template) {
-        var select = template.$('.ql-size').val($(event.target).data('value'))[0];
-
-        // Can't use jQuery events because Quill uses native events.
-        var event = document.createEvent("HTMLEvents");
-        event.initEvent("change", true, true);
-        event.eventName = 'change';
-        select.dispatchEvent(event);
-    },
-    
     'click .fillin': function (event, template) {
         template.quill.focus(); 
         var range = template.quill.getSelection();
@@ -53,6 +51,14 @@ Template.presentationSlide.events({
         }
     },
     
+    'click .align': function (event, template) {
+        template.quill.focus();
+        var range = template.quill.getSelection();
+        if (range) {
+            template.quill.formatLine(range.start, range.end, 'align', $(event.target).data('value'));
+        }
+    },
+        
     'click .image-add': function (event, template) {
         template.$('.image-modal').modal('show');
     },
