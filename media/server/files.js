@@ -70,22 +70,34 @@ process_media = function (fileInfo, formFields) {
             
             media.update(m._id, {$set: {type: 'video', duration: metadata.format.duration}});
             
+            var thumbname = m.location + '.png';
+            
             ffmpeg(metadata.format.filename).on('end', Meteor.bindEnvironment(function () {
-                media.update(m._id, {$set: {thumbnail: 'thumbs/' + m.location + '.png'}});
+                media.update(m._id, {$set: {thumbnail: 'thumbs/' + thumbname}});
             }.bind(this))).on('error', function (err) {
                 console.log(err);
             }).screenshots({
                 count: 1,
                 timestamps: [1],
                 folder: prefix + '/thumbs/',
-                filename: m.location + '.png',
+                filename: thumbname,
                 size: '64x64'
             });
             
             if (metadata.format['format_name'] == 'mov,mp4,m4a,3gp,3g2,mj2') {
                 /* This is an mp4 or mov container, which sometimes needs to be
                    rewritten to allow the video to start playing before it's fully downloaded.
-                   See http://multimedia.cx/eggs/improving-qt-faststart/ for more info */
+                   See http://multimedia.cx/eggs/improving-qt-faststart/ for more info 
+                   
+                   Firefox on Windows has trouble with MOV, so this forces the video to MP4. */
+                   
+                var f = m.location;
+                var a = f.split('.');
+                if (a.length > 1) a[a.length-1] = 'mp4';
+                else a.push('mp4');
+                
+                m.location = a.join('.');
+                media.update(m._id, {$set: {location: m.location}});
                 
                 ffmpeg(metadata.format.filename).videoCodec('copy').audioCodec('copy').outputOptions(
                     ['-movflags', 'faststart']
