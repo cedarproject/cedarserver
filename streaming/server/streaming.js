@@ -83,6 +83,9 @@ Meteor.methods({
         }
 
         source.element = create('WebRtcEndpoint');
+        source.element.setMaxVideoRecvBandwidth(0);
+        source.element.setMaxVideoSendBandwidth(0);
+
         source.element.on('OnIceCandidate', Meteor.bindEnvironment(function (event) {
             streamingsources.update(sourceid, {$push: {servercandidates: event.candidate}});
         }.bind(this)));
@@ -168,6 +171,9 @@ Meteor.methods({
         }
 
         viewer.element = create('WebRtcEndpoint');
+        viewer.element.setMaxVideoRecvBandwidth(0);
+        viewer.element.setMaxVideoSendBandwidth(0);
+        
         viewer.element.on('OnIceCandidate', Meteor.bindEnvironment(function (event) {
             streamingviewers.update(viewid, {$push: {servercandidates: event.candidate}});
         }.bind(this)));

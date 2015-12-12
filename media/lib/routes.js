@@ -16,6 +16,7 @@ Router.route('/media/static/:filepath*', function () {
     if (settings.findOne({key: 'mediainternalserver'}).value) {
         var fs = Npm.require('fs');
         var filepath = settings.findOne({key: 'mediadir'}).value + '/' + this.params.filepath;
+        var mimetype = MIME.lookup(filepath);
 
         try {
             var stats = fs.statSync(filepath);
@@ -33,7 +34,8 @@ Router.route('/media/static/:filepath*', function () {
 
         var headers = {
             'Cache-Control': 'max-age=2592000', // Cache for 30 days.
-            'Content-Length': stats.size
+            'Content-Length': stats.size,
+            'Content-Type': mimetype
         };
         
         this.response.writeHead(200, headers);
