@@ -76,6 +76,11 @@
                 <option value="top" {{isSelected 'presentations_image_side' 'top'}}>Top</option>
                 <option value="bottom" {{isSelected 'presentations_image_side' 'bottom'}}>Bottom</option>
             </select>
+            
+            <label>Edit HTML</label>
+            <textarea class="slide-html-editor form-control">
+                {{content}}
+            </textarea>
         </div>
     </div>
 

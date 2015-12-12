@@ -80,6 +80,10 @@ Template.presentationSlide.events({
         Meteor.call('presentationSlideContent', template.data._id, template.quill.getHTML());
     },
     
+    'blur .slide-html-editor': function (event, template) {
+        Meteor.call('presentationSlideContent', template.data._id, $(event.target).val());
+    },
+    
     'click .slide-settings-toggle': function (event, template) {
         template.$('.slide-settings').first().collapse('toggle');
     },
