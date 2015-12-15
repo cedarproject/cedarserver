@@ -1,12 +1,8 @@
 <template name="setsMenu">
     <div class="container">
-        <ul class="list-group">
-        {{#each sets}}
-            <li class="list-group-item">
-                <h4><a href="{{pathFor 'set' _id}}">{{title}}</a></h4>
-            </li>
-        {{/each}}
-        </ul>
+        <h3>Sets</h3>
+
+        {{> collectionSelector setsSelector}}
         
         <button class="sets-new btn btn-primary">
             <span class="glyphicon glyphicon-plus"></span> New Set

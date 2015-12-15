@@ -1,7 +1,11 @@
 Template.presentationsMenu.helpers({
-    presentations: function () {
-        return presentations.find();
-    }
+    presentationSelector: {
+        collection: presentations,
+        displayTemplate: 'presentationMenuItem',
+        fields: [{field: 'title', type: String}],
+        sort: [['title', 'asc']],
+        addbutton: false
+    },
 });
 
 Template.presentationsMenu.events({

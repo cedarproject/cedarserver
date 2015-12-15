@@ -1,4 +1,10 @@
-Router.route('/sets', {name: 'setsMenu'});
+Router.route('/sets', {
+    name: 'setsMenu',
+    waitOn: function () {
+        return Meteor.subscribe('sets');
+    }
+});
+
 Router.route('/set/:_id', {
     name: 'set',
     waitOn: function () {
@@ -7,6 +13,7 @@ Router.route('/set/:_id', {
             Meteor.subscribe('actions'),
             Meteor.subscribe('media'),
             Meteor.subscribe('songs'),
+            Meteor.subscribe('presentations'),
             Meteor.subscribe('lightscenes')
         ];
     },

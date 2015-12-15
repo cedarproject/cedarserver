@@ -1,12 +1,7 @@
 <template name="musicstandmenu">
     <div class="container">
         <h3>Music Stand</h3>
-        <ul class="list-group">
-        {{#each sets}}
-            <li class="list-group-item">
-                <h4><a href="{{pathFor 'musicstand' _id}}">{{title}}</a></h4>
-            </li>
-        {{/each}}
-        </ul>
+
+        {{> collectionSelector setsSelector}}
     </div>
 </template>

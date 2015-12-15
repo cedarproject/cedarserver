@@ -39,6 +39,6 @@ Template.mediaSettings.events({
 
     'click .media-del': function (event, template) {
         Meteor.call('mediaDel', this._id);
-        Router.go('/media');
+        Router.go('/media/items');
     }
 });

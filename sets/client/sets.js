@@ -1,7 +1,11 @@
 Template.setsMenu.helpers({
-    sets: function () {
-        return sets.find();
-    },
+    setsSelector: {
+        collection: sets,
+        displayTemplate: 'setDisplay',
+        fields: [{field: 'title', type: String}],
+        sort: [['title', 'asc']],
+        addbutton: false
+    }
 });
 
 Template.setsMenu.events({
