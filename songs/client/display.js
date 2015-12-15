@@ -6,7 +6,7 @@ Template.songDisplay.helpers({
             for (var c in section.contents) {
                 var content = section.contents[c];
                 content.section = i;
-                content.index = c;
+                content.index = parseInt(c);
                 content.action = this.action;
                 contents.push(content);
             }
