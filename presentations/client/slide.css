@@ -10,3 +10,8 @@ s {
     text-shadow: 0 0 8px #337AB7;
     border: 1px dotted #AAA;
 }
+
+.slide-editor {
+    background-color: black;
+    color: white;
+}

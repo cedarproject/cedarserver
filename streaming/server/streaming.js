@@ -83,8 +83,11 @@ Meteor.methods({
         }
 
         source.element = create('WebRtcEndpoint');
-        source.element.setMaxVideoRecvBandwidth(0);
-        source.element.setMaxVideoSendBandwidth(0);
+        source.element.setMaxVideoRecvBandwidth(1000000000);
+        source.element.setMaxVideoSendBandwidth(1000000000);
+        source.element.setMinVideoRecvBandwidth(1000);
+        source.element.setMinVideoSendBandwidth(1000);
+        source.element.setMaxOuputBitrate(1000000);
 
         source.element.on('OnIceCandidate', Meteor.bindEnvironment(function (event) {
             streamingsources.update(sourceid, {$push: {servercandidates: event.candidate}});
@@ -135,6 +138,7 @@ Meteor.methods({
         pipeline.create('PlayerEndpoint', {uri: url}, Meteor.bindEnvironment((err, endpoint) => {
             if (err) throw new Meteor.Error('rtsp-error', err);
             source.element = endpoint;
+            source.element.setMaxOuputBitrate(1000000);
 
             endpoint.play();
 
@@ -171,8 +175,10 @@ Meteor.methods({
         }
 
         viewer.element = create('WebRtcEndpoint');
-        viewer.element.setMaxVideoRecvBandwidth(0);
-        viewer.element.setMaxVideoSendBandwidth(0);
+        viewer.element.setMaxVideoRecvBandwidth(1000000000);
+        viewer.element.setMaxVideoSendBandwidth(1000000000);
+        viewer.element.setMinVideoRecvBandwidth(1000);
+        viewer.element.setMinVideoSendBandwidth(1000);
         
         viewer.element.on('OnIceCandidate', Meteor.bindEnvironment(function (event) {
             streamingviewers.update(viewid, {$push: {servercandidates: event.candidate}});
