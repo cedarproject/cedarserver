@@ -16,14 +16,22 @@ songTextToHTML = function (text) {
 
 songTextToChordChart = function (text, transpose) {
     text = text.replace(/(\r\n|\n|\r)/gm, '<br>');
-    text = text.replace(/\[[^\[]*\]/g, function (tag) {        
-        tag = tag.substring(1, tag.length-1);
+    text = text.replace(/\[[^\[]*\]/g, function (tag) {
+        if (tag[tag.length-2] == '_') {
+            var full = true;
+            tag = tag.substring(1, tag.length-2);
+        } else {
+            var full = false;
+            tag = tag.substring(1, tag.length-1);
+        }
+
         tag = tag.replace(/[CDEFGAB][#b]?/g, function (chord) {
             var n = transpose_scale.indexOf(chord) + transpose;
             return transpose_scale[n < 0 ? n + transpose_scale.length - 1 : n];
         });
         
-        return '<span class="musicstand-chord"><span>' + tag + '</span></span>';
+        if (full) return `<span class="musicstand-chord-full"><span>${tag}</span></span>`;
+        else return `<span class="musicstand-chord"><span>${tag}</span></span>`;
     });
     
     return text;

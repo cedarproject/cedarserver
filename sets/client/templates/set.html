@@ -1,5 +1,5 @@
 <template name="set">
-    <div class="container">        
+    <div class="container-fluid">
         <h3>
             {{title}}
             <button id="settings-toggle" class="btn btn-default pull-right">
@@ -46,29 +46,26 @@
             </div>
         </div>
 
-        <ul class="list-group">
-            {{#each actions}}
-                <li class="set-action list-group-item {{isActive}}" data-actionid={{_id}}>
-                    {{> setAction}}
-                </li>
-            {{/each}}
-        </ul>
-        
-        <button type="button" class="set-add-item btn btn-primary">
-            <span class="glyphicon glyphicon-plus"></span> Add Item
-        </button>
-
-        <div id="control-fixed">
-            {{#each getLayers}}
-                <button type="button" class="set-clear-layer btn btn-default btn-sm">
-                    <span class="glyphicon glyphicon-remove"></span>
-                    {{this}}
-                </button>
-            {{/each}}
-            <button type="button" class="set-deactivate btn btn-default btn-sm pull-right">
-                <span class="glyphicon glyphicon-remove"></span>
-                All
-            </button>
+        <div class="row row-equal">
+            <div class="col-md-2 hidden-xs hidden-sm">
+                {{> setSidebar}}
+            </div>
+            
+            <div class="col-xs-12 col-md-10">
+                <div>
+                    <ul class="list-group">
+                        {{#each actions}}
+                            <li id="act-{{_id}}" class="set-action list-group-item {{isActive}}" data-actionid={{_id}}>
+                                {{> setAction}}
+                            </li>
+                        {{/each}}
+                    </ul>
+                    
+                    <button type="button" class="set-add-item btn btn-primary">
+                        <span class="glyphicon glyphicon-plus"></span> Add Item
+                    </button>
+                </div>
+            </div>
         </div>
         
         {{> actionSelector}}

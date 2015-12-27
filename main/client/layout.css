@@ -5,4 +5,5 @@
 body {
     background: url('/YoungCedarTreeGrey.svg') bottom left no-repeat fixed;
     background-size: auto 75%;
+    position: relative; /* Required for scrollspy to work */
 }

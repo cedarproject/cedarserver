@@ -1,0 +1,25 @@
+#sidebar {
+    position: sticky;
+    top: 10px;
+    width: 100%;
+    height: 90vh;
+    background-color: #F8F8F8;
+}
+
+#sidebar-nav {
+    overflow-y: scroll;
+    height: 45%;
+}
+
+#sidebar-layers {
+    height: 45%;
+    overflow-y: scroll;
+}
+
+#sidebar-layers > h4 {
+    overflow: hidden;
+}
+
+#sidebar-controls {
+    margin-top: auto;
+}

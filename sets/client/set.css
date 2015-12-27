@@ -34,16 +34,15 @@
     background-color: blue;
 }
 
-#control-fixed {
-    position: fixed;
-    z-index: 100;
-    bottom: 0;
-    right: 0;
-    padding: 1px;
-    font-size: 1em;
-    border: 1px solid gray;
-    border-radius: 5px;
-}
+@media screen and (min-width: 768px) {
+  .row-equal, .row-equal > div[class*='col-'] {  
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      flex: 1 0 auto;
+}}
 
 .well {
     color: black;

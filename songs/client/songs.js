@@ -14,6 +14,8 @@ Template.songs.helpers({
 
 Template.songs.events({
     'click #song-new': function () {
-        Meteor.call('songNew');
+        Meteor.call('songNew', (err, _id) => {
+            if (!err) Router.go('/songs/song/' + _id);
+        });
     }
 });

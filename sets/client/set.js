@@ -9,10 +9,6 @@ Template.set.helpers({
         return stages.find({_id: {$ne: this.stage}});
     },
     
-    getLayers: function () {
-        if (this.stage) return stages.findOne({_id: this.stage}).settings.layers;
-    },
-    
     formatTime: function (time) {
         return moment(time).format('YYYY-MM-DD h:mm:ss a');
     },
@@ -30,10 +26,19 @@ Template.set.helpers({
     }
 });
 
+Template.set.onCreated(function () {
+    Session.set('set-control-locked', false);
+});
+
 Template.set.events({
     'keydown input': function (event, template) {
         // Prevent shortcut keys from triggering when in an inputbox.
         event.stopImmediatePropagation();
+    },
+
+    'click .action-nav': function (event, template) {
+        scrollTo(event.target.hash);
+        event.preventDefault();
     },
 
     'click .moving': function (event) {
@@ -63,6 +68,8 @@ Template.set.events({
     },
         
     'click .set-action': function (event) {
+        if (Session.get('set-control-locked')) return;
+    
         if ($(event.target).hasClass('btn')) return;
         var set = Template.parentData();
         if (this._id != set.active) {
@@ -73,6 +80,8 @@ Template.set.events({
     
     'click .song-content': function (event, template) {
         event.stopImmediatePropagation();
+        if (Session.get('set-control-locked')) return;
+
         var args = {
             section: this.section,
             index: this.index,
@@ -84,6 +93,7 @@ Template.set.events({
     
     'click .presentation-content': function (event, template) {
         event.stopImmediatePropagation();
+        if (Session.get('set-control-locked')) return;
         
         var fillin = 0;
         if (template.data.active == this.action) {
@@ -105,6 +115,7 @@ Template.set.events({
 
     'click .presentation-fillin': function (event, template) {
         event.stopImmediatePropagation();
+        if (Session.get('set-control-locked')) return;
         var args = {
             order: this.order,
             fillin: this.fillin
@@ -133,6 +144,7 @@ Template.set.events({
             action.type = 'media';
             action.media = $(event.target).data('id');
             var m = media.findOne(action.media);
+            action.title = m.title;
             action.mediatype = m.type;
             action.layer = m.layer;
         }
@@ -141,6 +153,7 @@ Template.set.events({
             action.type = 'playlist';
             action.playlist = $(event.target).data('id');
             var p = mediaplaylists.findOne(action.playlist);
+            action.title = p.title;
             if (p.contents.length > 0) action.layer = media.findOne(p.contents[0]).layer;
             else action.layer = 'background'; // TODO figure out a more sensible default!
         }
@@ -148,25 +161,30 @@ Template.set.events({
         else if (col == 'lightscenes') {
             action.type = 'lightscene';
             action.lightscene = $(event.target).data('id');
+            action.title = lightscenes.findOne(action.lightscene).title;
         }
         
         else if (col == 'songs') {
             action.type = 'song';
             action.song = $(event.target).data('id');
+            var s = songs.findOne(action.song)
+            action.settings.key = s.key;
+            action.title = s.title;
             action.settings.arrangement = songarrangements.findOne({song: action.song})._id;
-            action.settings.key = songs.findOne(action.song).key;
             action.layer = 'foreground'; // TODO fix this to default to the topmost layer, or something.
         }
         
         else if (col == 'presentations') {
             action.type = 'presentation';
             action.presentation = $(event.target).data('id');
+            action.title = presentations.findOne(action.presentation).title;
             action.layer = 'foreground'; // TODO fix this to default to the topmost layer, or something.
         }
         
         else if (col == 'streamingsources') {
             action.type = 'streamingsource';
             action.source = $(event.target).data('id');
+            action.title = streamingsources.findOne(action.source).title;
             action.layer = 'foreground'; // TODO blah
         }
         
@@ -175,11 +193,13 @@ Template.set.events({
             
             if (special == 'clear-layer') {
                 action.type = 'clear-layer';
+                action.title = 'Clear Layer';
                 action.layer = 'foreground'; // TODO fix this to default to the topmost layer, or something.
             }
             
             if (special == 'timer') {
                 action.type = 'timer';
+                action.title = 'Timer';
                 action.layer = 'foreground'; // TODO same as above!
                 action.settings.timer_time = {hours: 0, minutes: 0, seconds: 0};
             }
@@ -202,10 +222,12 @@ Template.set.events({
     },
 
     'click .set-clear-layer': function (event, template) {
-        Meteor.call('setClearLayer', template.data._id, this.toString());
+        if (Session.get('set-control-locked')) return;
+        Meteor.call('setClearLayer', template.data._id, $(event.target).data('layer'));
     },
 
     'click .set-deactivate': function (event) {
+        if (Session.get('set-control-locked')) return;
         Meteor.call('setDeactivate', this._id);
         $('.song-content').removeClass('active');
     },

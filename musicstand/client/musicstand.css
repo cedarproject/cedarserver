@@ -35,6 +35,12 @@
     font-weight: bold;
 }
 
+.musicstand-chord-full {
+    position: relative;
+    top: -1.5em;
+    font-weight: bold;
+}
+
 #scroll-lock {
     position: fixed;
     right: 0;

@@ -1,0 +1,34 @@
+<template name="setSidebar">
+    <div id="sidebar">
+        <ul id="sidebar-nav" class="nav nav-sidebar">
+            {{#each actions}}
+                <li><a href="#act-{{_id}}" class="action-nav">{{title}}</a></li>
+            {{/each}}
+        </ul>
+        
+        <hr>
+        
+        <div id="sidebar-layers">
+            {{#each getLayers}}
+                <h4>
+                    <button class="set-clear-layer btn btn-default btn-sm pull-right" data-layer={{this}}>
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    {{this}}
+                </h4>
+            {{/each}}
+        </div>
+        
+        <div id="sidebar-controls">
+            <button id="set-lock" class="btn btn-default">
+                <span class="glyphicon glyphicon-lock"></span>
+                Lock
+            </button>
+            
+            <button class="set-deactivate btn btn-default">
+                <span class="glyphicon glyphicon-remove"></span>
+                Clear All
+            </button>
+        </div>
+    </div>
+</template>

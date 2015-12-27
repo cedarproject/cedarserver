@@ -65,7 +65,7 @@ Template.collectionSelector.onCreated(function () {
             p.push(n);
         }
         
-        if (t.page.get() > p.length) t.page.set(p.length);
+        if (t.page.get() > p.length) t.page.set(p.length || 1);
         
         t.query.set(values);
         t.pages.set(p);
