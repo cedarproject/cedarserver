@@ -1,12 +1,4 @@
 Template.presentationSlide.helpers({
-    imageSelector: {
-        collection: media,
-        displayTemplate: 'mediaItem',
-        fields: [{field: 'title', type: String}, {field: 'tags', type: Array}, {field: 'type', type: String, fixed: 'image'}],
-        sort: [['title', 1]],
-        addbutton: true
-    },
-    
     getImage: function () {
         return media.findOne(this.toString());
     },
@@ -60,12 +52,8 @@ Template.presentationSlide.events({
     },
         
     'click .image-add': function (event, template) {
-        template.$('.image-modal').modal('show');
-    },
-    
-    'click .collection-add': function (event, template) {
-        Meteor.call('presentationSlideImageAdd', template.data._id, $(event.target).data('id'));
-        template.$('.image-modal').modal('hide');
+        Session.set('add-to', template.data._id);
+        $('.image-modal').modal('show');
     },
     
     'click .image-del': function (event, template) {

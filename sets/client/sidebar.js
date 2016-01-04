@@ -9,6 +9,10 @@ Template.setSidebar.helpers({
 });
 
 Template.setSidebar.events({
+    'click #sidebar-toggle': function (event, template) {
+        template.$('#sidebar').toggleClass('sidebar-open');
+    },
+    
     'click #set-lock': function (event, template) {
         if (Session.get('set-control-locked')) {
             Session.set('set-control-locked', false);

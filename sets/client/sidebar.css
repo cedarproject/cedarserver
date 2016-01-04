@@ -1,3 +1,8 @@
+#sidebar-container {
+    padding-left: 0;
+    padding-right: 0;
+}
+
 #sidebar {
     position: sticky;
     top: 10px;
@@ -6,13 +11,43 @@
     background-color: #F8F8F8;
 }
 
+@media (min-width: 992px) {
+    #sidebar-toggle {
+        display: none;
+    }
+}
+
+@media (max-width: 992px) {
+    #sidebar-toggle {
+        position: fixed;
+        left: 5px;
+        top: 5px;
+        z-index: 10;
+        opacity: 0.75;
+    }
+    
+    #sidebar {
+        position: fixed;
+        height: 100vh;
+        left: 0;
+        top: 0;
+        transform: translateX(-100vw);
+        transition: transform 0.5s;
+        z-index: 9;
+    }
+    
+    #sidebar.sidebar-open {
+        transform: translateX(0);
+    }
+}
+
 #sidebar-nav {
     overflow-y: scroll;
     height: 45%;
 }
 
 #sidebar-layers {
-    height: 45%;
+    height: 40%;
     overflow-y: scroll;
 }
 
