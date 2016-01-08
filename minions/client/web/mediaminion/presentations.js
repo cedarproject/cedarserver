@@ -186,12 +186,6 @@ MediaMinionPresentation = class MediaMinionPresentation {
                 
                 s {
                     text-decoration-line: none;
-                    text-decoration-color: ${this.settings.presentations_font_color} !important;
-                }
-                
-                s > u {
-                    text-decoration-line: underline !important;
-                    text-decoration-color: ${this.settings.presentations_font_color} !important;
                 }
                 
                 .hidden {
@@ -205,7 +199,12 @@ MediaMinionPresentation = class MediaMinionPresentation {
             var dom = new DOMParser().parseFromString(this.html, 'text/html');
             
             $('s', dom).each((i, e) => {
-                if (i >= this.action.args.fillin) $(e).addClass('hidden');
+                if (i >= this.action.args.fillin) {
+                    $(e).addClass('hidden');
+                    var p = $(e).parent();
+                    if (p.is('li') && p.contents().length == 1)
+                        p.addClass('hidden');
+                }
             });
 
             this.content = new XMLSerializer().serializeToString(dom);
