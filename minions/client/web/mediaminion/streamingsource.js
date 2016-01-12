@@ -1,6 +1,5 @@
 MediaMinionStreamingSource = class MediaMinionStreamingSource {
     constructor (action, minion) {
-        console.log('streamingsource!');
         this.type = 'streamingsource';
         this.ready = false;
         this.shown = false;
@@ -28,6 +27,7 @@ MediaMinionStreamingSource = class MediaMinionStreamingSource {
         receiveStream(this.source._id, this.video);
         
         this.video.onloadedmetadata = () => {
+            console.log(this.video, this.video.videoWidth, this.video.videoHeight);
             this.texture = new THREE.VideoTexture(this.video);
             this.texture.minFilter = THREE.LinearFilter;
             this.texture.magFilter = THREE.LinearFilter;

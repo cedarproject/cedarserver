@@ -210,7 +210,7 @@ MediaMinionPresentation = class MediaMinionPresentation {
             this.content = new XMLSerializer().serializeToString(dom);
             
             this.blob = new Blob([`
-                <svg xmlns="http://www.w3.org/2000/svg" width="${window.innerWidth}" height="${window.innerHeight}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="${window.innerWidth}px" height="${window.innerHeight}px">
                     <foreignObject width="100%" height="100%">
                         <div xmlns="http://www.w3.org/1999/xhtml">
                             <style>${style}</style>

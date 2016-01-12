@@ -56,7 +56,8 @@ defaults = JSON.stringify({
     streamingsource_width: 0,
     streamingsource_height: 0,
     streamingsource_framerate: 30,
-    streanubgsource_url: '',
+    streamingsource_url: '',
+    streamingsource_bitrate: 3, // Megabits
     
     lights_fade: 1,
 });

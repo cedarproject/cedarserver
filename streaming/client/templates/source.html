@@ -15,6 +15,10 @@
         
         <label>Title</label>
         <input id="title" class="form-control" value={{title}}>
+
+        <label>Output Bitrate (megabits/sec):</label>
+        <input class="setting form-control" data-setting="streamingsource_bitrate"
+            value={{getSetting 'streamingsource_bitrate'}} min=0 max=100 step=0.5>
         
         {{#if typeIs 'webrtc'}}
             <label>Preferred Resolution:</label>
@@ -41,7 +45,7 @@
                 Connect
             </button>
         {{/if}}
-        
+                
         <hr>
         
         <button id="delete" class="btn btn-danger">

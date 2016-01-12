@@ -91,13 +91,16 @@ MediaMinionMedia = class MediaMinionMedia {
             
             else {
                 var o = t * 0.001 - this.tosync.currentTime;
-
+                
+                /* WIP - aggressive media sync, currently a bit buggy
                 if (o > 0.5 || o < -0.5) {
                     this.tosync.playbackRate = 1;
                     this.tosync.currentTime = t * 0.001;
                     this.syncing = false;
                     console.log(`o:${o}, jumping to ${t * 0.001}`);
-                } else if ((o > 0.2 || o < -0.2) && !this.syncing) {
+                } */
+                
+                if ((o > 0.2 || o < -0.2) && !this.syncing) {
                     if (o > 0) this.tosync.playbackRate = 1.02;
                     else this.tosync.playbackRate = 0.98;
                     this.syncing = true;
