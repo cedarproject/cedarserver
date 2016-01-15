@@ -43,6 +43,10 @@ Template.mediaPlaylistSettings.events({
         Meteor.call('playlistContents', template.data._id, contents);
     },
     
+    'click .modal-close': function (event, template) {
+        template.$('#media-modal').modal('hide');
+    },
+    
     'click .item-down': function (event, template) {
         var contents = template.data.contents;
         if (this.index < contents.length-1) {

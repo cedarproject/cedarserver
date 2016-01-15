@@ -45,6 +45,14 @@ Template.actionSelector.helpers({
         fields: [{field: 'title', type: String}],
         sort: [['title', 'asc']],
         addbutton: true
+    },
+    
+    mixSelector: {
+        collection: streamingmixes,
+        displayTemplate: 'streamingMixDisplay',
+        fields: [{field: 'title', type: String}],
+        sort: [['title', 'asc']],
+        addbutton: true
     }
 });
 

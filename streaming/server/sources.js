@@ -2,8 +2,14 @@
 StreamingStuff = class StreamingStuff {
     constructor () {
         this.element = null;
+        this.passthrough = create('PassThrough');
         this.candidates = [];
     }
+};
+
+streamingGetSourceStuff = function (sourceid) {
+    if (!sources[sourceid]) sources[sourceid] = new StreamingStuff();
+    return sources[sourceid];
 };
 
 Meteor.startup(function () {
@@ -25,7 +31,7 @@ Meteor.methods({
     },
     
     streamingSourceDel: function (sourceid) {
-        // TODO also remove from mixes!
+        streamingmixes.update({}, {$pull: {sources: sourceid}}, {multi: true});
         return streamingsources.remove(sourceid);
     },
 
@@ -41,11 +47,7 @@ Meteor.methods({
     streamingSourceOffer: function (sourceid, offer) {
         if (!kurento) throw new Meteor.Error('not-connected', "Cedar isn't connected to the Kurento server!");
 
-        var source = sources[sourceid];
-        if (!source) {
-            source = new StreamingStuff();
-            sources[sourceid] = source;
-        }
+        var source = streamingGetSourceStuff(sourceid);
         
         var settings = combineSettings(streamingsources.findOne(sourceid).settings);
 
@@ -64,6 +66,7 @@ Meteor.methods({
         while (source.candidates.length > 0) source.element.addIceCandidate(source.candidates.pop());
         
         source.element.connect(source.element, (err) => {if (err) console.log(err)});
+        source.element.connect(source.passthrough, (err) => {if (err) console.log(err)});
         
         source.element.processOffer(offer, Meteor.bindEnvironment(function (err, answer) {
             streamingsources.update(sourceid, {$set: {serveranswer: answer}});
@@ -78,11 +81,8 @@ Meteor.methods({
     
     streamingSourceIceCandidate: function (sourceid, _candidate) {
         var candidate = KurentoClient.register.complexTypes.IceCandidate(JSON.parse(_candidate));
-        var source = sources[sourceid];
-        if (!source) {
-            source = new StreamingStuff();
-            sources[sourceid] = source;
-        }
+        
+        var source = streamingGetSourceStuff(sourceid);
         
         if (source.element) source.element.addIceCandidate(candidate);
         else source.candidates.push(candidate);
@@ -94,11 +94,7 @@ Meteor.methods({
     
     streamingSourceConnect: function (sourceid) {
         if (!kurento) throw new Meteor.Error('not-connected', "Cedar isn't connected to the Kurento server!");
-        var source = sources[sourceid];
-        if (!source) {
-            source = new StreamingStuff();
-            sources[sourceid] = source;
-        }
+        var source = streamingGetSourceStuff(sourceid);
         
         var settings = combineSettings(streamingsources.findOne(sourceid).settings);
         if (settings.streamingsource_url.length == 0) throw new Meteor.Error('no-url', `No URL for source ${sourceid}`);
@@ -111,6 +107,8 @@ Meteor.methods({
             source.element.on('EndOfStream', Meteor.bindEnvironment((event) => {
                 streamingsources.update(sourceid, {$set: {connected: false}});
             }));
+            
+            source.element.connect(source.passthrough, (err) => {if (err) console.log(err)});
             
             endpoint.play();
 

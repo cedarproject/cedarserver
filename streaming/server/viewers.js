@@ -1,11 +1,19 @@
+Meteor.startup(function () {
+    streamingviewers.remove({});
+});
+
 Meteor.methods({
-    streamingViewerAdd: function (sourceid) {
-        var viewid = streamingviewers.insert({
-            source: sourceid,
+    streamingViewerAdd: function (type, _id) {
+        var v = {
             servercandidates: [],
             serveranswer: null,
             connected: false
-        });
+        }
+        
+        if (type == 'source') v.source = _id;
+        else if (type == 'mix') v.mix = _id;
+
+        var viewid = streamingviewers.insert(v);
         
         return viewid;
     },
@@ -13,34 +21,31 @@ Meteor.methods({
     streamingViewerOffer: function (viewid, offer) {
         if (!kurento) throw new Meteor.Error('not-connected', "Cedar isn't connected to the Kurento server!");
         
-        var sourceid = streamingviewers.findOne(viewid).source;
+        var viewer = streamingviewers.findOne(viewid);
         
-        if (!streamingsources.findOne(sourceid).connected)
-            throw new Meteor.Error('source-not-connected', "Streaming source isn't connected!");
-                    
-        var source = sources[sourceid];
+        if (viewer.source)
+            var sourcestuff = streamingGetSourceStuff(viewer.source);
+        else if (viewer.mix)
+            var sourcestuff = mixes[viewer.mix];
 
-        var viewer = viewers[viewid];
-        if (!viewer) {
-            viewer = new StreamingStuff();
-            viewers[viewid] = viewer;
-        }
+        var viewerstuff = viewers[viewid];
+        if (!viewerstuff) var viewerstuff = viewers[viewid] = new StreamingStuff();
 
-        viewer.element = create('WebRtcEndpoint');
+        viewerstuff.element = create('WebRtcEndpoint');
         
-        viewer.element.on('OnIceCandidate', Meteor.bindEnvironment(function (event) {
+        viewerstuff.element.on('OnIceCandidate', Meteor.bindEnvironment(function (event) {
             streamingviewers.update(viewid, {$push: {servercandidates: event.candidate}});
         }.bind(this)));
         
-        while (viewer.candidates.length > 0) viewer.element.addIceCandidate(viewer.candidates.pop());
+        while (viewerstuff.candidates.length > 0) viewerstuff.element.addIceCandidate(viewerstuff.candidates.pop());
         
-        source.element.connect(viewer.element, (err) => {if (err) console.log(err)});
+        sourcestuff.passthrough.connect(viewerstuff.element, (err) => {if (err) console.log(err)});
         
-        viewer.element.processOffer(offer, Meteor.bindEnvironment(function (err, answer) {
+        viewerstuff.element.processOffer(offer, Meteor.bindEnvironment(function (err, answer) {
             streamingviewers.update(viewid, {$set: {serveranswer: answer, connected: true}});
         }.bind(this)));
 
-        viewer.element.gatherCandidates((err) => {if (err) console.log('error gathering candidates', err)});
+        viewerstuff.element.gatherCandidates((err) => {if (err) console.log('error gathering candidates', err)});
     },
     
     streamingViewerClearServerAnswer: function (viewid) {
@@ -48,12 +53,14 @@ Meteor.methods({
     },
     
     streamingViewerIceCandidate: function (viewid, _candidate) {
+        if (!kurento) throw new Meteor.Error('not-connected', "Cedar isn't connected to the Kurento server!");
+
         var candidate = KurentoClient.register.complexTypes.IceCandidate(JSON.parse(_candidate));
-        var viewer = viewers[viewid];
-        if (!viewer) viewer = new StreamingStuff();
+        var viewerstuff = viewers[viewid];
+        if (!viewerstuff) var viewerstuff = viewers[viewid] = new StreamingStuff();
         
-        if (viewer.element) viewer.element.addIceCandidate(candidate);
-        else viewer.candidates.push(candidate);
+        if (viewerstuff.element) viewerstuff.element.addIceCandidate(candidate);
+        else viewerstuff.candidates.push(candidate);
     },
     
     streamingViewerClearServerCandidates: function (viewid) {

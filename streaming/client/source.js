@@ -17,7 +17,9 @@ Template.streamingSource.helpers({
 });
 
 Template.streamingSource.onRendered(function () {
-    if (this.data.connected) receiveStream(this.data._id, this.$('#video')[0]);
+    this.autorun(() => {
+        if (this.data.connected) receiveStream('source', this.data._id, this.$('#video')[0]);
+    });
 });
 
 Template.streamingSource.events({

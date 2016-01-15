@@ -1,0 +1,31 @@
+.mix-source-container {
+    position: relative;
+    width: auto;
+    height: 25vh;
+    border: 5px solid rgba(0,0,0,0);
+    background-color: black;
+}
+
+.mix-source-container.active {
+    border: 5px solid #FFFF88
+}
+
+.mix-source-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: white;
+    background-color: rgba(127, 127, 127, 0.5);
+}
+
+.mix-source-video {
+    width: 100%;
+    height: 100%;
+}
+
+.mix-source-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    opacity: 0.9;
+}

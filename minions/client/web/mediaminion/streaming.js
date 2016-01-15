@@ -1,6 +1,6 @@
-MediaMinionStreamingSource = class MediaMinionStreamingSource {
+MediaMinionStreaming = class MediaMinionStreaming {
     constructor (action, minion) {
-        this.type = 'streamingsource';
+        this.type = 'streaming';
         this.ready = false;
         this.shown = false;
         this.removed = false;
@@ -8,8 +8,16 @@ MediaMinionStreamingSource = class MediaMinionStreamingSource {
         this.action = action;
         this.minion = minion;
         
-        this.source = streamingsources.findOne(this.action.source);
-        this.settings = combineSettings(this.action.settings, this.source.settings, this.minion.settings);
+        this.type = this.action.streamingtype;
+        if (this.type == 'source') {
+            this.source = streamingsources.findOne(this.action.source);
+            this._id = this.source._id;
+        } else if (this.type == 'mix') {
+            this.mix = streamingmixes.findOne(this.action.mix);
+            this._id = this.mix._id;
+        }
+        
+        this.settings = combineSettings(this.action.settings, this.minion.settings);
         
         this.volume = parseFloat(this.settings.media_volume) * parseFloat(this.settings.mediaminion_volume);
 
@@ -24,7 +32,7 @@ MediaMinionStreamingSource = class MediaMinionStreamingSource {
         this.video.controls = false;
         this.video.volume = 0;
         
-        receiveStream(this.source._id, this.video);
+        receiveStream(this.type, this._id, this.video);
         
         this.video.onloadedmetadata = () => {
             console.log(this.video, this.video.videoWidth, this.video.videoHeight);

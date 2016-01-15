@@ -2,6 +2,7 @@ kurento = null;
 pipeline = null;
 create = null;
 sources = {};
+mixes = {};
 viewers = {};
 
 Meteor.methods({
@@ -14,15 +15,17 @@ Meteor.methods({
         var url = settings.findOne({key: 'streamingserver'}).value;
         if (!url) return false;
         
-        kurento = new KurentoClient.KurentoClient(url, (err, kurento) => {
+        kurento = new KurentoClient.KurentoClient(url, Meteor.bindEnvironment((err, kurento) => {
             if (err) {console.log('error connecting to kurento server:', err); return;}
-            kurento.create('MediaPipeline', (err, _pipeline) => {
+            kurento.create('MediaPipeline', Meteor.bindEnvironment((err, _pipeline) => {
                 if (err) {console.log('error creating kurento pipeline:', err); return;}
                 console.log('connected to kurento server');
                 pipeline = _pipeline;
                 create = Meteor.wrapAsync(pipeline.create, this);
-            });
-        });
+                
+                streamingMixStartAll();
+            }));
+        }));
     },
     
     streamingDebug: function () {

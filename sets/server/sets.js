@@ -107,8 +107,8 @@ Meteor.methods({
             action.time = time;
             
             if (action.type == 'media' || action.type == 'playlist' ||
-                action.type == 'streamingsource' ||
-                action.type == 'clear-layer' || action.type == 'timer') {
+                action.type == 'streaming' || action.type == 'clear-layer' ||
+                action.type == 'timer') {
                     Meteor.call('mediaActionActivate', action);
             }
             

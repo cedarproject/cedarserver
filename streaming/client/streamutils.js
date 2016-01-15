@@ -1,6 +1,6 @@
-receiveStream = function (sourceid, video) {
-    this.webRtcPeer = null;
-    this.viewid = null;
+receiveStream = function (type, _id, video) {
+    var viewid = null;
+    var webRtcPeer = null;
 
     var options = {
         remoteVideo: video,
@@ -14,31 +14,31 @@ receiveStream = function (sourceid, video) {
         if (webRtcPeer !== null) {
             if (viewer.servercandidates.length > 0) {
                 viewer.servercandidates.forEach((candidate) => {
-                    this.webRtcPeer.addIceCandidate(candidate);
+                    webRtcPeer.addIceCandidate(candidate);
                 });
                 
                 Meteor.call('streamingViewerClearServerCandidates', viewer._id);
             }
 
             if (viewer.serveranswer !== null) {
-                this.webRtcPeer.processAnswer(viewer.serveranswer);
+                webRtcPeer.processAnswer(viewer.serveranswer);
                 Meteor.call('streamingViewerClearServerAnswer', viewer._id);
             }
         }
     }
 
-    Meteor.call('streamingViewerAdd', sourceid, (err, viewid) => {
-        this.viewid = viewid;
-        streamingviewers.find({_id: this.viewid}).observe({changed: check});
+    Meteor.call('streamingViewerAdd', type, _id, (err, _viewid) => {
+        viewid = _viewid;
+        streamingviewers.find({_id: viewid}).observe({changed: check});
             
-        this.webRtcPeer = WebRtcPeer.WebRtcPeerRecvonly(options, (err) => {
-	        if(err) {console.log('error sending video:', err); return};
+        webRtcPeer = WebRtcPeer.WebRtcPeerRecvonly(options, (err) => {
+	        if (err) {console.log('error sending video:', err); return};
 
-	        this.webRtcPeer.generateOffer((err, offer) => {
+	        webRtcPeer.generateOffer((err, offer) => {
 	            if (err) {console.log('error sending video:', err); return};
 	            
-	            Meteor.call('streamingViewerOffer', this.viewid, offer);
-	            check(streamingviewers.findOne(this.viewid));
+	            Meteor.call('streamingViewerOffer', viewid, offer);
+	            check(streamingviewers.findOne(viewid));
             });
         });
     });
