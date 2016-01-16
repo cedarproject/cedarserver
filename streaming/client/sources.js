@@ -6,14 +6,20 @@ Template.streamingSources.helpers({
 
 Template.streamingSources.events({
     'click #add-webrtc': function (event, template) {
-        Meteor.call('streamingSourceAdd', 'webrtc', (source) => {
-            Router.go('/streaming/source/' + source);
+        Meteor.call('streamingSourceAdd', 'webrtc', (err, source) => {
+            if (!err) Router.go('/streaming/source/' + source);
         });
     },
     
     'click #add-rtsp': function (event, template) {
-        var source = Meteor.call('streamingSourceAdd', 'rtsp', (source) => {
-            Router.go('/streaming/source/' + source);
+        var source = Meteor.call('streamingSourceAdd', 'rtsp', (err, source) => {
+            if (!err) Router.go('/streaming/source/' + source);
+        });
+    },
+    
+    'click #add-minion': function (event, template) {
+        var source = Meteor.call('streamingSourceAdd', 'minion', (err, source) => {
+            if (!err) Router.go('/streaming/source/' + source);
         });
     }
 });

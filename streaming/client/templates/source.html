@@ -45,7 +45,22 @@
                 Connect
             </button>
         {{/if}}
-                
+        
+        {{#if typeIs 'minion'}}
+            <label>Media Minion:</label>
+            <select class="setting form-control" data-setting="streamingsource_minion">
+                {{#each stages}}
+                    <optgroup label={{title}}>
+                        {{#each mediaMinions _id}}
+                            <option value={{_id}}>{{name}}</option>
+                        {{/each}}
+                    </optgroup>
+                {{/each}}
+            </select>
+            
+            <p><small>Streaming will start when the specified Media Minion begins is opened</small></p>
+        {{/if}}
+        
         <hr>
         
         <button id="delete" class="btn btn-danger">

@@ -36,6 +36,13 @@ Meteor.methods({
         viewerstuff.element.on('OnIceCandidate', Meteor.bindEnvironment(function (event) {
             streamingviewers.update(viewid, {$push: {servercandidates: event.candidate}});
         }.bind(this)));
+
+        viewerstuff.element.on('MediaStateChanged', (event) => {
+            if (event.newState == 'DISCONENCTED') {
+                viewerstuff.element.release();
+                streamingviewers.remove(viewid);
+            }
+        });
         
         while (viewerstuff.candidates.length > 0) viewerstuff.element.addIceCandidate(viewerstuff.candidates.pop());
         

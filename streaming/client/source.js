@@ -14,6 +14,14 @@ Template.streamingSource.helpers({
     getSetting: function (setting) {
         return combineSettings(this.settings)[setting];
     },
+    
+    stages: function () {
+        return stages.find({}, {sort: [['title', 'asc']]});
+    },
+    
+    mediaMinions: function (stageid) {
+        return minions.find({stage: stageid, type: 'media'}, {sort: [['title', 'asc']]});;
+    }
 });
 
 Template.streamingSource.onRendered(function () {

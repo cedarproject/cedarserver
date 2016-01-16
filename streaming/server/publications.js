@@ -9,3 +9,7 @@ Meteor.publish('streamingviewers', function () {
 Meteor.publish('streamingmixes', function () {
     return streamingmixes.find();
 });
+
+Meteor.publish('streamingrecorders', function () {
+    return streamingrecorders.find();
+});

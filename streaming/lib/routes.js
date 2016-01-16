@@ -48,3 +48,5 @@ Router.route('/streaming/mixes/:_id', {
         return streamingmixes.findOne({_id: this.params._id});
     }
 });
+
+Router.route('/streaming/recorders', {name: 'streamingRecorders'});

@@ -1,9 +1,11 @@
 kurento = null;
 pipeline = null;
 create = null;
+
 sources = {};
 mixes = {};
 viewers = {};
+recorders = {};
 
 Meteor.methods({
     streamingConnected: function () {

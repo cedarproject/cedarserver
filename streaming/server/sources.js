@@ -55,8 +55,10 @@ Meteor.methods({
         source.element.setMaxOuputBitrate(settings.streamingsource_bitrate * 1000000);
         
         source.element.on('MediaStateChanged', (event) => {
-            if (event.newState == 'DISCONENCTED')
+            if (event.newState == 'DISCONENCTED') {
+                source.element.release();
                 streamingsources.update(sourceid, {$set: {connected: false}});
+            }
         });
 
         source.element.on('OnIceCandidate', Meteor.bindEnvironment(function (event) {
@@ -106,6 +108,7 @@ Meteor.methods({
 
             source.element.on('EndOfStream', Meteor.bindEnvironment((event) => {
                 streamingsources.update(sourceid, {$set: {connected: false}});
+                source.element.release();
             }));
             
             source.element.connect(source.passthrough, (err) => {if (err) console.log(err)});

@@ -1,0 +1,57 @@
+<template name="streamingRecorders">
+    <div class="container">
+        <h3>Recorders</h3>
+        
+        <div class="well">
+            <label>Record From:</label>
+            <select id="recordtype" class="form-control">
+                <option value="sources">Sources</option>
+                <option value="mixes">Mixes</option>
+            </select>
+            
+            {{#if recordTypeIs 'source'}}
+                <label>Source:</label>
+                <select id="source" class="form-control">
+                    {{#each getSources}}
+                        <option value={{_id}}>{{title}}</option>
+                    {{/each}}
+                </select>
+            {{/if}}
+            
+            {{#if recordTypeIs 'mix'}}
+                <label>Mix:</label>
+                <select id="mix" class="form-control">
+                    {{#each getMixes}}
+                        <option value={{_id}}>{{title}}</option>
+                    {{/each}}
+                </select>
+            {{/if}}
+            
+            <label>Output URI:</label>
+            <input id="uri" class="form-control">
+            
+            <button id="record" class="btn btn-primary">
+                <span class="glyphicon glyphicon-record"></span>
+                Record
+            </button>
+        </div>
+        
+        <hr>
+        
+        <ul class="list-group">
+            {{#each recorders}}
+                <li class="list-group-item">
+                    <button class="recorder-stop btn btn-danger">
+                        <span class="glyphicon glyphicon-stop"></span>
+                        Stop
+                    </button>
+                    
+                    <h4>{{getRecorderTitle}}</h4>
+                    <p>{{uri}}</p>
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+</template>
+        
+        

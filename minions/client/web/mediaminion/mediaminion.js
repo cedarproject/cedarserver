@@ -307,6 +307,13 @@ Template.webminionmedia.onRendered(function () {
         added: changed.bind(this),
         changed: changed.bind(this)
     });
+    
+    Meteor.call('streamingConnected', (err, res) => {
+        if (!err && res) {
+            this.source = streamingsources.findOne({type: 'minion', 'settings.streamingsource_minion': this.data._id});
+            if (this.source) mediaminion_stream(this.source, this.renderer.domElement);
+        }
+    });
 });
 
 Template.webminionmedia.onDestroyed(function () {
