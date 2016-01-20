@@ -41,6 +41,14 @@
             <label>Source URL:</label>
             <input class="setting form-control" data-setting="streamingsource_url" value={{getSetting 'streamingsource_url'}}>
             
+            <label>
+                <input type="checkbox" data-setting="streamingsource_passthrough" 
+                     class="setting" checked={{getSetting 'streamingsource_passthrough'}}>
+                Passthrough Received Stream
+            </label>
+            
+            <br>
+            
             <button id="rtsp-connect" class="btn btn-primary">
                 Connect
             </button>

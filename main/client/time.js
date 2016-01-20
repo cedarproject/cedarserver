@@ -11,7 +11,7 @@ time = {
             
             var offset = (server_now - latency / 2) - now;
                         
-            if (this.offsets.length >= 1) this.offsets.shift();
+            if (this.offsets.length >= 8) this.offsets.shift();
             this.offsets.push(offset);
         })
     }

@@ -37,7 +37,11 @@ Template.streamingSource.events({
     
     'change .setting': function (event, template) {
         var setting = $(event.target).data('setting');
-        var value = $(event.target).val();
+        
+        if ($(event.target).attr('type') == 'checkbox')
+            var value = $(event.target).prop('checked');
+        else var value = $(event.target).val();
+        
         Meteor.call('streamingSourceSetting', template.data._id, setting, value);
     },
     

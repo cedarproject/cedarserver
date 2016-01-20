@@ -99,9 +99,16 @@ Meteor.methods({
         var source = streamingGetSourceStuff(sourceid);
         
         var settings = combineSettings(streamingsources.findOne(sourceid).settings);
+        console.log(settings.streamingsource_passthrough);
         if (settings.streamingsource_url.length == 0) throw new Meteor.Error('no-url', `No URL for source ${sourceid}`);
         
-        pipeline.create('PlayerEndpoint', {uri: settings.streamingsource_url}, Meteor.bindEnvironment((err, endpoint) => {
+        var args = {
+            uri: settings.streamingsource_url,
+            useEncodedMedia: settings.streamingsource_passthrough
+        };
+        console.log(args, settings.streamingsource_passthrough);
+        
+        pipeline.create('PlayerEndpoint', args, Meteor.bindEnvironment((err, endpoint) => {
             if (err) throw new Meteor.Error('rtsp-error', err);
             source.element = endpoint;
             source.element.setMaxOuputBitrate(settings.streamingsource_bitrate * 1000000);
