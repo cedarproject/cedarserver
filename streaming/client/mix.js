@@ -13,7 +13,7 @@ Template.streamingMix.helpers({
 });
 
 Template.streamingMix.onRendered(function () {
-    receiveStream('mix', this.data._id, this.$('#mix-video')[0]);
+    receiveStream(this.data._id, this.$('#mix-video')[0]);
 });
 
 Template.streamingMix.events({

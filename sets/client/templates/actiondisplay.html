@@ -7,11 +7,17 @@
         {{/with}}
     {{/if}}
     
-    {{#if actionType 'streaming'}}
-        {{#with getStreaming}}
+    {{#if actionType 'streamingsource'}}
+        {{#with getStreamingSource}}
             <h4>{{title}}</h4>
         {{/with}}
     {{/if}}
+    
+    {{#if actionType 'streamingmix'}}
+        {{#with getStreamingMix}}
+            <h4>{{title}}</h4>
+        {{/with}}
+    {{/if}}    
     
     {{#if actionType 'playlist'}}
         {{#with getPlaylist}}

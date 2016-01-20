@@ -3,17 +3,13 @@ Meteor.startup(function () {
 });
 
 Meteor.methods({
-    streamingViewerAdd: function (type, _id) {
-        var v = {
+    streamingViewerAdd: function (sourceid) {
+        var viewid = streamingviewers.insert({
+            source: sourceid,
             servercandidates: [],
             serveranswer: null,
             connected: false
-        }
-        
-        if (type == 'source') v.source = _id;
-        else if (type == 'mix') v.mix = _id;
-
-        var viewid = streamingviewers.insert(v);
+        });
         
         return viewid;
     },
@@ -23,10 +19,7 @@ Meteor.methods({
         
         var viewer = streamingviewers.findOne(viewid);
         
-        if (viewer.source)
-            var sourcestuff = streamingGetSourceStuff(viewer.source);
-        else if (viewer.mix)
-            var sourcestuff = mixes[viewer.mix];
+        var sourcestuff = streamingGetSourceStuff(viewer.source);
 
         var viewerstuff = viewers[viewid];
         if (!viewerstuff) var viewerstuff = viewers[viewid] = new StreamingStuff();

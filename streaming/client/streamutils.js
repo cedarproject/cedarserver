@@ -1,4 +1,4 @@
-receiveStream = function (type, _id, video) {
+receiveStream = function (sourceid, video) {
     var viewid = null;
     var webRtcPeer = null;
 
@@ -27,7 +27,7 @@ receiveStream = function (type, _id, video) {
         }
     }
 
-    Meteor.call('streamingViewerAdd', type, _id, (err, _viewid) => {
+    Meteor.call('streamingViewerAdd', sourceid, (err, _viewid) => {
         viewid = _viewid;
         streamingviewers.find({_id: viewid}).observe({changed: check});
             

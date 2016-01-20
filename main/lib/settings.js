@@ -62,10 +62,8 @@ defaults = JSON.stringify({
     streamingsource_passthrough: false,
     streamingsource_minion: '',
     
-    streamingmix_width: 1280,
-    streamingmix_height: 720,
-    streamingmix_framerate: 30,
-    streamingmix_bitrate: 3, // Megabits
+    streamingmix_aspect_width: 16,
+    streamingmix_aspect_height: 9,
     streamingmix_fade: 0,
     
     lights_fade: 1,

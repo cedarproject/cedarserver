@@ -1,9 +1,3 @@
-streamingMixStartAll = function () {
-    streamingmixes.find({}).forEach((mix) => {
-        streamingMixStart(mix);
-    });
-};
-
 streamingMixStart = function (mix) {
     if (!kurento) throw new Meteor.Error('not-connected', "Cedar isn't connected to the Kurento server!");
     
@@ -48,7 +42,6 @@ Meteor.methods({
         streamingmixes.update(mixid, {$set: s});
     },
 
-    
     streamingMixAddSource: function (mixid, sourceid) {
         streamingmixes.update(mixid, {$push: {sources: sourceid}});
     },
@@ -56,33 +49,12 @@ Meteor.methods({
     streamingMixRemoveSource: function (mixid, sourceid) {
         streamingmixes.update(mixid, {$pull: {sources: sourceid}});
     },
-
     
-    streamingMixChangeVideoMix: function (mixid, videomix) {
-        var mixstuff = mixes[mixid];
-        if (mixstuff.current_video) mixstuff.current_video.disconnect(mixstuff.element, 'VIDEO');
-        
-        if (videomix.length > 0) {
-            var sourcestuff = streamingGetSourceStuff(videomix[0]);
-            mixstuff.current_video = sourcestuff.passthrough;
-            
-            sourcestuff.passthrough.connect(mixstuff.element, 'VIDEO');
-        }
-        
+    streamingMixChangeVideoMix: function (mixid, videomix) {        
         streamingmixes.update(mixid, {$set: {videomix: videomix}});
     },
 
     streamingMixChangeAudioMix: function (mixid, audiomix) {
-        var mixstuff = mixes[mixid];
-        if (mixstuff.current_audio) mixstuff.current_audio.disconnect(mixstuff.element, 'AUDIO');
-        
-        if (audiomix.length > 0) {
-            var sourcestuff = streamingGetSourceStuff(audiomix[0]);
-            mixstuff.current_audio = sourcestuff.passthrough;
-            
-            sourcestuff.passthrough.connect(mixstuff.element, 'AUDIO');
-        }
-        
         streamingmixes.update(mixid, {$set: {audiomix: audiomix}});
     }
 });

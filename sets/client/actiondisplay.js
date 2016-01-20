@@ -7,11 +7,12 @@ Template.actionDisplay.helpers({
         return media.findOne(this.media);
     },
     
-    getStreaming: function () {
-        if (this.streamingtype == 'source')
-            return streamingsources.findOne(this.source);
-        else if (this.streamingtype == 'mix')
-            return streamingmixes.findOne(this.mix);
+    getStreamingSource: function () {
+        return streamingsources.findOne(this.source);
+    },
+    
+    getStreamingMix: function () {
+        return streamingmixes.findOne(this.mix);
     },
     
     getMix: function () {

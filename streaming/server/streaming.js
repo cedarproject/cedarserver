@@ -3,7 +3,6 @@ pipeline = null;
 create = null;
 
 sources = {};
-mixes = {};
 viewers = {};
 recorders = {};
 
@@ -24,8 +23,6 @@ Meteor.methods({
                 console.log('connected to kurento server');
                 pipeline = _pipeline;
                 create = Meteor.wrapAsync(pipeline.create, this);
-                
-                streamingMixStartAll();
             }));
         }));
     },

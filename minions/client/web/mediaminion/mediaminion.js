@@ -114,7 +114,7 @@ var create_blocks = function (play) {
             m[2], m[5],   0,    1
         );
         
-        if ((play.type == 'video' || play.type == 'image' || play.type == 'streaming')
+        if ((play.type == 'video' || play.type == 'image' || play.type == 'streamingsource')
             && combineSettings(play.settings).media_preserve_aspect == 'yes') {
                 if (play.video) var borders = getBorders(play.video.videoWidth, play.video.videoHeight);
                 else if (play.image) var borders = getBorders(play.image.width, play.image.height);
@@ -200,11 +200,12 @@ var changed = function (id, fields) {
                 playlist: MediaMinionPlaylist,
                 song: MediaMinionSong,
                 presentation: MediaMinionPresentation,
-                streaming: MediaMinionStreaming,
+                streamingsource: MediaMinionStreamingSource,
+                streamingmix: MediaMinionStreamingMix,
                 'clear-layer': MediaMinionClearLayer,
                 timer: MediaMinionTimer
             };
-
+            
             this.layers[i] = new actionmap[action.type](action, this);
             this.layers[i].show(old);
         }

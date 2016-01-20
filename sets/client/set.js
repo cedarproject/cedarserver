@@ -182,16 +182,14 @@ Template.set.events({
         }
         
         else if (col == 'streamingsources') {
-            action.type = 'streaming';
-            action.streamingtype = 'source';
+            action.type = 'streamingsource';
             action.source = $(event.target).data('id');
             action.title = streamingsources.findOne(action.source).title;
             action.layer = 'foreground'; // TODO blah
         }
         
         else if (col == 'streamingmixes') {
-            action.type = 'streaming';
-            action.streamingtype = 'mix';
+            action.type = 'streamingmix';
             action.mix = $(event.target).data('id');
             action.title = streamingmixes.findOne(action.mix).title;
             action.layer = 'foreground'; // TODO blah
