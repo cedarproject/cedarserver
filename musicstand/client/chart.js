@@ -9,6 +9,10 @@ Template.musicstandchart.helpers({
         return sections;
     },
     
+    getSetKey: function () {
+        return Template.parentData().settings.key;
+    },
+    
     getKeys: function () {
         var keys = [];
         for (var p in key2num) if (key2num.hasOwnProperty(p)) keys.push(p);
@@ -16,7 +20,7 @@ Template.musicstandchart.helpers({
     },
     
     keySelected: function (key) {
-        if (Template.parentData(2).settings.key == key) {
+        if (Session.get('transpose-' + Template.parentData()._id) == key) {
             return 'selected';
         }
     },
@@ -30,7 +34,8 @@ Template.musicstandchart.helpers({
     },
 
     getText: function () {
-        return songTextToChordChart(this.text, Template.parentData(2).transpose.get());
+        return songTextToChordChart(this.text, Template.parentData(2).transpose.get(), 
+                                    Session.get('flat-' + Template.parentData(2)._id));
     },
     
     isHeaderActive: function () {
@@ -52,20 +57,33 @@ Template.musicstandchart.helpers({
 
 Template.musicstandchart.onCreated(function () {
     var t = Template.currentData();
+    
+    var k = Template.parentData().settings.key
+    Session.set('transpose-' + t._id, k);
+    
+    if (k.length > 1 && k[1] == 'b')
+        Session.set('flat-' + t._id, true);
+    else
+        Session.set('flat-' + t._id, false);
+    
     this.autorun(function () {
         var t = Template.currentData();
         if (!t.transpose) t.transpose = new ReactiveVar(0);
 
         var songkey = key2num[t.key];
         var userkey = key2num[Session.get('transpose-' + t._id)];
-        if (userkey === undefined) userkey = key2num[Template.parentData().settings.key];
         
-        t.transpose.set(userkey - songkey);
+        t.transpose.set(userkey - songkey, Session.get('flat-', t._id));
     });
 });
 
 Template.musicstandchart.events({
     'change .chart-key': function (event, template) {
-        Session.set('transpose-' + template.data._id, $(event.target).val());
+        var k = $(event.target).val();
+        Session.set('transpose-' + template.data._id, k);
+        if (k.length > 1 && k[1] == 'b')
+            Session.set('flat-' + template.data._id, true);
+        else
+            Session.set('flat-' + template.data._id, false);
     }
 });
