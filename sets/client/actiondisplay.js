@@ -7,18 +7,6 @@ Template.actionDisplay.helpers({
         return media.findOne(this.media);
     },
     
-    getStreamingSource: function () {
-        return streamingsources.findOne(this.source);
-    },
-    
-    getStreamingMix: function () {
-        return streamingmixes.findOne(this.mix);
-    },
-    
-    getMix: function () {
-        return streamingmix.findOne(this.mix);
-    },
-    
     getPlaylist: function () {
         return mediaplaylists.findOne(this.playlist);
     },

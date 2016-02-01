@@ -3,6 +3,7 @@ Template.musicstandchart.helpers({
         var sections = [];
         for (var i in this.arrangement.order) {
             var section = songsections.findOne(this.arrangement.order[i]);
+            section._id = i;
             section.section = i;
             sections.push(section);
         }

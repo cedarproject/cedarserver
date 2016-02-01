@@ -1,10 +1,16 @@
 Template.mediaSettings.helpers({
-    typeIs: function (type) {
-        if (this.type == type) return true;
+    typeIs: function () {
+        for (var arg in arguments) {
+            if (arguments[arg] == this.type) return true;
+        }
     },
     
     mediaPath: function () {
         return settings.findOne({key: 'mediaurl'}).value + this.location;
+    },
+    
+    getLength: function () {
+        return secondsToTimeString(parseFloat(this.duration));
     }
 });
 

@@ -19,7 +19,11 @@
         <label>Title:</label>
         <input class="media-title form-control" value={{title}}>
         
-        <small>Filename: {{location}}</small>
+        <p><small>Filename: {{location}}</small></p>
+        
+        {{#if typeIs 'audio' 'video'}}
+            <p><small>Length: {{getLength}}</small></p>
+        {{/if}}
         
         <br>
         

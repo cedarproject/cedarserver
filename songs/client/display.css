@@ -1,22 +1,25 @@
 .song-content {
-    transition: box-shadow 0.25s;
+    transition: box-shadow 0.25s border 0.25s;
     display: flex;
     align-content: center;
     justify-content: center;
 
+    font-size: 115%;
+
     text-align: center;
     line-height: 1;
     
-    border: 1px solid gray;
-    border-radius: 2.5px;
+    border: 2px solid gray;
+    border-radius: 10px;
 
     background: #FAFAFA;
     color: black;
-    height: 5em;
+    height: 7em;
     
     margin: 2px;
 }
 
 .list-group-item.active .song-content.active {
+    border: 2px solid #FFFF88;
     box-shadow: 0px 0px 16px 8px #FFFF88;
 }

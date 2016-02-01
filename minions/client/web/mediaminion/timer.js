@@ -63,19 +63,7 @@ MediaMinionTimer = class MediaMinionTimer {
             this.cx.clearRect(0, 0, window.innerWidth, window.innerHeight);
             
             var t = (this.target - this.last) * 0.001;
-            var sign = '';
-            
-            if (t < 0) {
-                sign = '-';
-                t = Math.abs(t);
-            }
-            
-            // And the award for 'worst abuse of template strings' goes to...
-            var hours = `0${Math.floor(t / 3600)}`.slice(-2);
-            var minutes = `0${Math.floor((t - hours * 3600) / 60)}`.slice(-2);
-            var seconds = `0${Math.floor(t % 60)}`.slice(-2);
-            
-            var text = `${sign}${hours}:${minutes}:${seconds}`;
+            var text = secondsToTimeString(t);
             
             this.cx.fillText(text, this.x, this.y);
             this.cx.strokeText(text, this.x, this.y);

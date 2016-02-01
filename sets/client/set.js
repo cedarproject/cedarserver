@@ -181,20 +181,6 @@ Template.set.events({
             action.layer = 'foreground'; // TODO fix this to default to the topmost layer, or something.
         }
         
-        else if (col == 'streamingsources') {
-            action.type = 'streamingsource';
-            action.source = $(event.target).data('id');
-            action.title = streamingsources.findOne(action.source).title;
-            action.layer = 'foreground'; // TODO blah
-        }
-        
-        else if (col == 'streamingmixes') {
-            action.type = 'streamingmix';
-            action.mix = $(event.target).data('id');
-            action.title = streamingmixes.findOne(action.mix).title;
-            action.layer = 'foreground'; // TODO blah
-        }
-        
         else if (col == 'special') {
             var special = $(event.target).data('id');
             

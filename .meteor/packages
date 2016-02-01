@@ -10,7 +10,6 @@ tomi:upload-server
 tomi:upload-jquery
 reactive-var
 twbs:bootstrap
-davidcittadini:three
 flowkey:numeric
 patte:mime-npm
 cfs:graphicsmagick
@@ -32,10 +31,9 @@ spacebars
 check
 ecmascript
 trever:quill
-cglace:kurento-client
 cosmos:browserify
 hunternet93:kurento-utils
 tsega:bootstrap3-datetimepicker
 momentjs:moment
-lablancas:webrtc-adapter
 risul:bootstrap-colorpicker
+limemakers:three
