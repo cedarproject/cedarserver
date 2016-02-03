@@ -1,7 +1,7 @@
 Cedar
 ===========
 
-Cedar is an open source show control application designed for churches. Cedar handles multimedia, presentatinos, song lyrics, and lighting, all controlled simultaneously over a network. Built using the Meteor framework, Cedar is almost entirely web-based, allowing greater flexibility than other church media software.
+Cedar is an open source show control application designed for churches. Cedar handles multimedia, presentations, song lyrics, and lighting, all controlled simultaneously over a network. Built using the Meteor framework, Cedar is almost entirely web-based, allowing greater flexibility than other church media software.
 
 Cedar is currently in pre-alpha status, so not all features work properly.
 
