@@ -48,6 +48,9 @@
                         
                         <label>Minion Background Color:</label>
                         <input class="setting form-control" data-setting="mediaminion_background_color" value={{getSetting 'mediaminion_background_color'}}>
+                        <label>Color Adjust Range:</label>
+                        <small>Adjusts media color values within this range of the background color, for luma keying.</small>
+                        <input class="setting form-control" data-setting="mediaminion_color_adjust_range" value={{getSetting 'mediaminion_color_adjust_range'}}>
                         
                         <div class="well well-sm">
                             <p><a href={{pathFor 'webminionmedia' _id}}>Launch Web Minion</a></p>

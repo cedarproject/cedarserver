@@ -10,9 +10,15 @@ var vertShaderSource = `
 var fragShaderSource = `
     varying vec2 vUv;
     uniform sampler2D uSampler;
+
     uniform float brightness;
     uniform float opacity;
+
     uniform vec4 borders;
+    
+    uniform vec4 background;
+    uniform float adjust;
+    
     void main (void) {
         if (vUv[0] <= borders[0] || vUv[0] >= borders[2] || vUv[1] <= borders[1] || vUv[1] >= borders[3]) {
             gl_FragColor = vec4(0, 0, 0, 1);
@@ -27,6 +33,16 @@ var fragShaderSource = `
         }
 
         gl_FragColor *= vec4(brightness, brightness, brightness, opacity);
+        
+        for (int i = 0; i <= 2; i++) {
+            if (gl_FragColor[i] - background[i] < adjust && gl_FragColor[i] - background[i] >= 0.0) {
+                gl_FragColor[i] = background[i] + adjust;
+            }
+            
+            else if (gl_FragColor[i] - background[i] > -adjust && gl_FragColor[i] - background[i] < 0.0) {
+                gl_FragColor[i] = background[i] - adjust;
+            }
+        }
     }
 `;
 
@@ -119,6 +135,9 @@ var create_blocks = function (play) {
                 if (play.video) var borders = getBorders(play.video.videoWidth, play.video.videoHeight);
                 else if (play.image) var borders = getBorders(play.image.width, play.image.height);
         } else var borders = [0, 0, 1, 1];
+        
+        var adjust = parseInt(this.settings.mediaminion_color_adjust_range) / 255.0;
+        if (!isFinite(adjust)) adjust = 0;
                 
         var material = new THREE.ShaderMaterial({
             vertexShader: vertShaderSource,
@@ -130,9 +149,13 @@ var create_blocks = function (play) {
                 uTransformMatrix: {type: 'm4', value: matrix},
                 uSampler: {type: 't', value: play.texture},
                 borders: {type: 'v4', value: new THREE.Vector4(borders[0], borders[1],
-                                                               borders[2], borders[3])}
+                                                               borders[2], borders[3])},
+                background: {type: 'v4', value: this.background},
+                adjust: {type: 'f', value: adjust}
             }
         });
+        
+        console.log(material.uniforms);
         
         var uvs = [
             new THREE.Vector2(block.x, block.y + block.height),
@@ -294,7 +317,16 @@ Template.webminionmedia.onRendered(function () {
     this.renderer = new THREE.WebGLRenderer({antialias: true});
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-
+    
+    var c = [];
+    for (var i = 2; i <= 6; i = i + 2) {
+        var n = parseInt(this.settings.mediaminion_background_color.slice(2,4), 16) / 255.0;
+        if (isFinite(n)) c.push(n);
+        else c.push(0);
+    }
+    
+    this.background = new THREE.Vector4(c[0], c[1], c[2], 1.0);
+    
     this.renderer.setClearColor(new THREE.Color(parseInt(this.settings.mediaminion_background_color)), 1);
 
     $('.media-container').append(this.renderer.domElement);

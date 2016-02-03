@@ -1,5 +1,6 @@
 defaults = JSON.stringify({
     mediaminion_background_color: '0x000000',
+    mediaminion_color_adjust_range: 0,
     mediaminion_volume: 1, // Per-minion upper limit
 
     media_fade: 1,
@@ -49,22 +50,7 @@ defaults = JSON.stringify({
     timers_font_shadow_color: 'black',
     
     timers_text_align: 'left', // Horizontal alignment (left, center, right)
-    timers_text_vertical_align: 'bottom', // Vertical alignment (top, center, bottom)
-    
-    streamingsource_video: true,
-    streamingsource_audio: true,
-    streamingsource_width: 0,
-    streamingsource_height: 0,
-    streamingsource_framerate: 30,
-    streamingsource_bitrate: 3, // Megabits
-
-    streamingsource_url: '',
-    streamingsource_passthrough: false,
-    streamingsource_minion: '',
-    
-    streamingmix_aspect_width: 16,
-    streamingmix_aspect_height: 9,
-    streamingmix_fade: 0,
+    timers_text_vertical_align: 'bottom', // Vertical alignment (top, center, bottom)    
     
     lights_fade: 1,
 });
