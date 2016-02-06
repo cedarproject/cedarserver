@@ -23,7 +23,12 @@ MediaMinionSong = class MediaMinionSong {
 
         this.section = songsections.findOne(this.arrangement.order[this.args.section]);
         this.contents = this.section.contents[this.args.index];
-        this.text = songTextToCanvas(this.contents.text).split('\n');
+
+        this.text = [];
+        for (var line of songTextToCanvas(this.contents.text).split('\n')) {
+            line = line.trim();
+            if (line.length > 0) this.text.push(line);
+        }
         
         this.settings = combineSettings(this.settings, this.song.settings, this.minion.settings);
         
@@ -52,10 +57,10 @@ MediaMinionSong = class MediaMinionSong {
             this.cx.textBaseline = 'bottom';
             var y = window.innerHeight - this.settings.songs_font_size * this.text.length;
         }
-                        
+        
         for (var l in this.text) {
             var line = this.text[l].trim();
-
+            
             this.cx.fillText(line, x, y + (this.settings.songs_font_size * l), window.innerWidth);                    
             this.cx.strokeText(line, x, y + (this.settings.songs_font_size * l), window.innerWidth);
         }

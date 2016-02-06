@@ -50,6 +50,7 @@
 }
 
 #sidebar-layers {
+    height: 45%;
     overflow-y: scroll;
 }
 
