@@ -13,7 +13,9 @@
         {{/if}}
     </div>
     
-    <h4>{{title}}</h4>
+    {{#if title}}
+        <h4>{{title}}</h4>
+    {{/if}}
     
     <div class="settings collapse">
         {{> actionSettings}}

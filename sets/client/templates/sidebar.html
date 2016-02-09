@@ -6,7 +6,13 @@
     <div id="sidebar">
         <ul id="sidebar-nav" class="nav nav-sidebar">
             {{#each actions}}
-                <li><a href="#act-{{_id}}" class="action-nav">{{title}}</a></li>
+                <li><a href="#act-{{_id}}" class="action-nav">
+                    {{#if title}}
+                        {{title}}
+                    {{else}}
+                        {{defaulttitle}}
+                    {{/if}}
+                </a></li>
             {{/each}}
         </ul>
         

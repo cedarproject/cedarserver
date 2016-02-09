@@ -19,6 +19,31 @@ Meteor.methods({
         });
     },
     
+    setCopy: function (setid) {
+        var set = checkSet(setid);
+        
+        delete set._id;
+        set.title = `Copy of ${set.title}`;
+        
+        var newid = sets.insert(set);
+        
+        actions.find({set: setid}).forEach((action) => {
+            var old_actid = action._id;
+            delete action._id;
+
+            action.set = newid;
+            var new_actid = actions.insert(action);
+            
+            actions.find({actionid: old_actid}).forEach((trigger) => {
+                delete trigger._id;
+                trigger.actionid = new_actid;
+                actions.insert(trigger);
+            });
+        });
+        
+        return newid;
+    },
+    
     setDelete: function (setid) {
         var set = checkSet(setid);
         
@@ -54,6 +79,30 @@ Meteor.methods({
         var action = actions.findOne(actionid);
         actions.remove(actionid);
         if (action.order !== null) actions.update({set: action.set, order: {$gte: action.order}}, {$inc: {order: -1}}, {multi: true});
+    },
+    
+    actionReplace: function (oldid, action) {
+        var old = actions.findOne(oldid);
+        
+        for (var setting in old.settings) {
+            if (old.settings.hasOwnProperty(setting)) {
+                if (action.settings[setting] === undefined) {
+                    action.settings[setting] = old.settings[setting];
+                }
+            }
+        }
+        
+        for (var prop in old) {
+            if (old.hasOwnProperty(prop)) {
+                if (action[prop] === undefined) {
+                    action[prop] = old[prop];
+                }
+            }
+        }
+        
+        if (old['layer']) action.layer = old.layer;
+        
+        actions.update(oldid, action);
     },
     
     actionTitle: function (actionid, title) {

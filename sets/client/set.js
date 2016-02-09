@@ -144,7 +144,7 @@ Template.set.events({
             action.type = 'media';
             action.media = $(event.target).data('id');
             var m = media.findOne(action.media);
-            action.title = m.title;
+            action.defaulttitle = m.title;
             action.mediatype = m.type;
             action.layer = m.layer;
         }
@@ -153,7 +153,7 @@ Template.set.events({
             action.type = 'playlist';
             action.playlist = $(event.target).data('id');
             var p = mediaplaylists.findOne(action.playlist);
-            action.title = p.title;
+            action.defaulttitle = p.title;
             if (p.contents.length > 0) action.layer = media.findOne(p.contents[0]).layer;
             else action.layer = 'background'; // TODO figure out a more sensible default!
         }
@@ -161,7 +161,7 @@ Template.set.events({
         else if (col == 'lightscenes') {
             action.type = 'lightscene';
             action.lightscene = $(event.target).data('id');
-            action.title = lightscenes.findOne(action.lightscene).title;
+            action.defaulttitle = lightscenes.findOne(action.lightscene).title;
         }
         
         else if (col == 'songs') {
@@ -169,7 +169,7 @@ Template.set.events({
             action.song = $(event.target).data('id');
             var s = songs.findOne(action.song)
             action.settings.key = s.key;
-            action.title = s.title;
+            action.defaulttitle = s.title;
             action.settings.arrangement = songarrangements.findOne({song: action.song})._id;
             action.layer = 'foreground'; // TODO fix this to default to the topmost layer, or something.
         }
@@ -177,7 +177,7 @@ Template.set.events({
         else if (col == 'presentations') {
             action.type = 'presentation';
             action.presentation = $(event.target).data('id');
-            action.title = presentations.findOne(action.presentation).title;
+            action.defaulttitle = presentations.findOne(action.presentation).title;
             action.layer = 'foreground'; // TODO fix this to default to the topmost layer, or something.
         }
         
@@ -186,27 +186,31 @@ Template.set.events({
             
             if (special == 'clear-layer') {
                 action.type = 'clear-layer';
-                action.title = 'Clear Layer';
+                action.defaulttitle = 'Clear Layer';
                 action.layer = 'foreground'; // TODO fix this to default to the topmost layer, or something.
             }
             
             if (special == 'timer') {
                 action.type = 'timer';
-                action.title = 'Timer';
+                action.defaulttitle = 'Timer';
                 action.layer = 'foreground'; // TODO same as above!
                 action.settings.timer_time = {hours: 0, minutes: 0, seconds: 0};
             }
         }
         
-        if (Session.get('add-to')['type'] == 'set') {
+        var add_to = Session.get('add-to');
+        
+        if (add_to.type == 'set') {
             var a = actions.findOne({set: template.data._id}, {sort: {order: -1}, fields: {order: 1}});
             if (a) action.order = a.order + 1;
             else action.order = 0;
 
-            action['set'] = template.data._id;
+            action.set = template.data._id;
+        } else if (add_to.type == 'replace') {
+            Meteor.call('actionReplace', add_to.action, action);
+        } else {
+            action.actionid = add_to.action;
         }
-
-        else action['actionid'] = Session.get('add-to').action;
         
         Meteor.call('actionAdd', action);
                     

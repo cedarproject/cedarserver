@@ -87,12 +87,17 @@ Template.actionSettings.events({
     },
 
     'click .trigger-add': function (event, template) {
-        Session.set('add-to', {type: 'action', action: this._id });
+        Session.set('add-to', {type: 'action', action: this._id});
         $('.action-selector-modal').modal('show');
     },
         
     'click .action-del': function (event, template) {
         Meteor.call('actionRemove', template.data._id);
+    },
+    
+    'click .action-replace': function (event, template) {
+        Session.set('add-to', {type: 'replace', action: this._id});
+        $('.action-selector-modal').modal('show');
     },
     
     'click .well': function(event, template) {

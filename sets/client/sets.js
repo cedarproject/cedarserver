@@ -10,8 +10,14 @@ Template.setsMenu.helpers({
 
 Template.setsMenu.events({
     'click .sets-new': function () {
-         Meteor.call('setNew', function (err, val) {
-            if (!err) Router.go('/set/' + val);
+         Meteor.call('setNew', function (err, newid) {
+            if (!err) Router.go(`/set/${newid}`);
         });
     },
+    
+    'click .set-copy': function () {
+        Meteor.call('setCopy', this._id, function (err, newid) {
+            if (!err) Router.go(`/set/${newid}`);
+        });
+    }
 });
