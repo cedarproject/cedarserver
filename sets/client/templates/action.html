@@ -3,6 +3,7 @@
         <button class="settings-button btn btn-default">
             <span class="glyphicon glyphicon-cog"></span>
         </button>
+
         {{#if set}}
             <button type="button" class="action-triggers btn {{triggersActive}}">
                 <span class="glyphicon glyphicon-pushpin"></span>
@@ -14,7 +15,7 @@
     </div>
     
     {{#if title}}
-        <h4>{{title}}</h4>
+        <h4><b>{{title}}</b></h4>
     {{/if}}
     
     <div class="settings collapse">

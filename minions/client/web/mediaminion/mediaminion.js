@@ -330,6 +330,13 @@ Template.webminionmedia.onRendered(function () {
     this.renderer.setClearColor(new THREE.Color(parseInt(this.settings.mediaminion_background_color)), 1);
 
     $('.media-container').append(this.renderer.domElement);
+    
+    $(this.renderer.domElement).on('click', () => {
+        if (this.renderer.domElement.requestFullscreen) this.renderer.domElement.requestFullscreen();
+        else if (this.renderer.domElement.msRequestFullscreen) this.renderer.domElement.msRequestFullscreen();
+        else if (this.renderer.domElement.mozRequestFullScreen) this.renderer.domElement.mozRequestFullScreen();
+        else if (this.renderer.domElement.webkitRequestFullscreen) this.renderer.domElement.webkitRequestFullscreen();
+    });
         
     this.continue = true;    
     this.render();
