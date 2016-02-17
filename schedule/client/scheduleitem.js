@@ -31,13 +31,15 @@ Template.scheduleItem.onRendered(function () {
         inline: true,
         format: 'h:mm:ss a',
         defaultDate: new moment(
-            `${this.data.h[0]}:${this.data.m[0]}:${this.data.s[0]}`,
-            'H:mm:ss'
-        )
+            `${this.data.h[0]}:${this.data.m[0]}:${this.data.s[0]} +0000`,
+            'H:mm:ss Z'
+        ).utcOffset(moment().utcOffset())
     }).on('dp.change', (event) => {
         Session.set('saved', false);
         
         var when = Session.get('when');
+        
+        event.date.utc();
         
         when.schedules[this.data.index].h = [event.date.hour()];
         when.schedules[this.data.index].m = [event.date.minute()];
