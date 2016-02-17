@@ -107,8 +107,7 @@ Meteor.methods({
     },
     
     songActionActivate: function (action) {
-        var set = sets.findOne(action.set);
-        var targets = minions.find({type: 'media', stage: set.stage});
+        var targets = minions.find({type: 'media', stage: action.stage});
         
         if (!action.settings['layer']) action.settings.layer = 'foreground';
 

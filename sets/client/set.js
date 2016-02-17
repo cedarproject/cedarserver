@@ -130,74 +130,12 @@ Template.set.events({
         template.$('.action-selector-modal').modal('show');
     },
     
-    'click .collection-add': function (event, template) {    
-        var action = {
-            args: {},
-            settings: {
-                triggers: true
-            }
-        };
-                
+    'click .collection-add': function (event, template) {                
         var col = $(event.target).data('collection');
+        var _id = $(event.target).data('id');
+        
+        var action = create_action(col, _id);
 
-        if (col == 'media') {
-            action.type = 'media';
-            action.media = $(event.target).data('id');
-            var m = media.findOne(action.media);
-            action.defaulttitle = m.title;
-            action.mediatype = m.type;
-            action.layer = m.layer;
-        }
-        
-        if (col == 'mediaplaylists') {
-            action.type = 'playlist';
-            action.playlist = $(event.target).data('id');
-            var p = mediaplaylists.findOne(action.playlist);
-            action.defaulttitle = p.title;
-            if (p.contents.length > 0) action.layer = media.findOne(p.contents[0]).layer;
-            else action.layer = 'background'; // TODO figure out a more sensible default!
-        }
-        
-        else if (col == 'lightscenes') {
-            action.type = 'lightscene';
-            action.lightscene = $(event.target).data('id');
-            action.defaulttitle = lightscenes.findOne(action.lightscene).title;
-        }
-        
-        else if (col == 'songs') {
-            action.type = 'song';
-            action.song = $(event.target).data('id');
-            var s = songs.findOne(action.song)
-            action.settings.key = s.key;
-            action.defaulttitle = s.title;
-            action.settings.arrangement = songarrangements.findOne({song: action.song})._id;
-            action.layer = 'foreground'; // TODO fix this to default to the topmost layer, or something.
-        }
-        
-        else if (col == 'presentations') {
-            action.type = 'presentation';
-            action.presentation = $(event.target).data('id');
-            action.defaulttitle = presentations.findOne(action.presentation).title;
-            action.layer = 'foreground'; // TODO fix this to default to the topmost layer, or something.
-        }
-        
-        else if (col == 'special') {
-            var special = $(event.target).data('id');
-            
-            if (special == 'clear-layer') {
-                action.type = 'clear-layer';
-                action.defaulttitle = 'Clear Layer';
-                action.layer = 'foreground'; // TODO fix this to default to the topmost layer, or something.
-            }
-            
-            if (special == 'timer') {
-                action.type = 'timer';
-                action.defaulttitle = 'Timer';
-                action.layer = 'foreground'; // TODO same as above!
-                action.settings.timer_time = {hours: 0, minutes: 0, seconds: 0};
-            }
-        }
-        
         var add_to = Session.get('add-to');
         
         if (add_to.type == 'set') {

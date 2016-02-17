@@ -31,9 +31,8 @@ spacebars
 check
 ecmascript
 trever:quill
-cosmos:browserify
-hunternet93:kurento-utils
 tsega:bootstrap3-datetimepicker
-momentjs:moment
 risul:bootstrap-colorpicker
 limemakers:three
+mrt:later
+risul:moment-timezone

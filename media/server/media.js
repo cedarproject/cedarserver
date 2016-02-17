@@ -38,9 +38,7 @@ Meteor.methods({
     },
 
     mediaActionActivate: function (action) {
-        var set = sets.findOne(action.set);
-        
-        var targets = minions.find({type: 'media', stage: set.stage}).fetch();                   
+        var targets = minions.find({type: 'media', stage: action.stage}).fetch();                   
         var actMedia = media.findOne(action.media);
                 
         var s = {}; s['layers.' + action.layer] = action;

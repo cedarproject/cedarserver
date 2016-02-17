@@ -1,0 +1,80 @@
+<template name="schedule">
+    <div class="container">
+        <h3>{{title}}</h3>
+        
+        <label>Title:</label>
+        <input id="title" class="form-control" value={{title}}>
+        
+        <label>Stage</label>
+        <select id="stage" class="form-control">
+            <option value="{{stage}}" selected>{{stageTitle stage}}</option>
+            {{#each stages}}
+                <option value="{{_id}}">{{title}}</option>
+            {{/each}}
+        </select>
+        
+        <br>
+        
+        <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-default {{activeIsActive true}}">
+                <input type="radio" name="active" id="schedule-active" value="true" autocomplete="off" {{activeIsChecked true}}>
+                Active
+            </label>
+            
+            <label class="btn btn-default {{activeIsActive false}}">
+                <input type="radio" name="active" id="schedule-disabled" value="false" autocomplete="off" {{activeIsChecked false}}>
+                Disabled
+            </label>
+        </div>
+        
+        <h4>Schedule</h4>
+        
+        <ul class="list-group">
+            {{#each getSchedules}}
+                {{> scheduleItem}}
+            {{/each}}
+        </ul>
+        
+        <button id="add-item" class="btn btn-primary">
+            <span class="glyphicon glyphicon-plus"></span>
+            Add Schedule Item
+        </button>
+        
+        <button id="save" class="btn btn-primary" {{saveDisabled}}>
+            <span class="glyphicon glyphicon-calendar"></span>
+            Save Schedule
+        </button>
+        
+        <hr>
+        
+        <h4>Actions</h4>
+        
+        <ul class="list-group">
+            {{#each getActions}}
+                <li class="list-group-item">
+                    <div class="btn-group pull-right" role="group">
+                        <button class="action-settings btn btn-default">
+                            <span class="glyphicon glyphicon-cog"></span>
+                        </button>
+                        <button class="action-remove btn btn-danger">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                    </div>
+                    
+                    <div class="settings collapse">
+                        {{> actionSettings}}
+                    </div>
+
+                    {{> actionDisplay}}
+                </li>
+            {{/each}}
+        </ul>
+        
+        <button id="add-action" class="btn btn-primary">
+            <span class="glyphicon glyphicon-plus"></span>
+            Add Action
+        </button>
+    </div>
+    
+    {{> actionSelector}}
+</template>
