@@ -25,6 +25,8 @@ function schedule_register (schedule) {
 }
 
 Meteor.startup(function () {
+    later.date.localTime();
+
     schedules.find().forEach((schedule) => {
         schedule_register(schedule);
     });
