@@ -109,9 +109,7 @@ Meteor.methods({
     songActionActivate: function (action) {
         var targets = minions.find({type: 'media', stage: action.stage});
         
-        if (!action.settings['layer']) action.settings.layer = 'foreground';
-
-        var s = {}; s['layers.' + action.settings.layer] = action;        
+        var s = {}; s['layers.' + action.layer] = action;        
         targets.forEach(function (minion) {
             if (minion.layers.hasOwnProperty(action.settings.layer))
                 minions.update(minion._id, {$set: s});
