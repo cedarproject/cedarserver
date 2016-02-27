@@ -81,7 +81,7 @@ Meteor.methods({
         
         var s = {}; s['layers.' + action.layer] = action;        
         targets.forEach(function (minion) {
-            if (minion.layers.hasOwnProperty(action.settings.layer))
+            if (minion.layers.hasOwnProperty(action.layer))
                 minions.update(minion._id, {$set: s});
         });
     }
