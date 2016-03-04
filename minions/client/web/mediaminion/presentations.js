@@ -14,14 +14,15 @@ MediaMinionPresentation = class MediaMinionPresentation {
         
         this.pres = presentations.findOne(this.action.presentation);
         
-        this.settings = combineSettings(this.action.settings, this.pres.settings, this.minion.settings);
-
         if (action.args.order === undefined) {
             this.blank = true;
             return;
         }
 
         this.slide = presentationslides.findOne({presentation: this.action.presentation, order: this.action.args.order});
+
+        this.settings = combineSettings(this.action.settings, this.slide.settings, this.pres.settings, this.minion.settings);
+
         this.html = this.slide.content;
         this.imageids = this.slide.images;
         this.images = [];
