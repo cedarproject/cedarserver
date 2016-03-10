@@ -248,6 +248,8 @@ MediaMinionPresentation = class MediaMinionPresentation {
                 this.toload++;
             }                    
         }
+        
+        if (this.toload == 0) render();
     }
     
     show (old) {
