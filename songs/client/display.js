@@ -6,8 +6,11 @@ Template.songDisplay.helpers({
             for (var c in section.contents) {
                 var content = section.contents[c];
                 content.section = i;
+                if (c == 0) content.title = section.title;
+                
                 content.index = parseInt(c);
                 content.action = this.action;
+                
                 contents.push(content);
             }
         });
