@@ -104,15 +104,5 @@ Meteor.methods({
     
     songArrangementOrder: function (arrid, order) {
         songarrangements.update(arrid, {$set: {order: order}});
-    },
-    
-    songActionActivate: function (action) {
-        var targets = minions.find({type: 'media', stage: action.stage});
-        
-        var s = {}; s['layers.' + action.layer] = action;        
-        targets.forEach(function (minion) {
-            if (minion.layers.hasOwnProperty(action.layer))
-                minions.update(minion._id, {$set: s});
-        });
     }
 });

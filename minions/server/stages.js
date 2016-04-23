@@ -14,6 +14,11 @@ Meteor.methods({
             active: null,
             settings: {
                 layers: ['audio', 'background', 'foreground']
+            },
+            layers: {
+                'audio': null,
+                'background': null,
+                'foreground': null
             }
         });
     },
@@ -35,5 +40,11 @@ Meteor.methods({
         var stage = checkStage(stageid);
         var s = {}; s['settings.' + key] = value;
         stages.update(stage, {$set: s});
+    },
+    
+    stageLayer: function (stageid, layer, value) {
+        var stage = checkStage(stageid);
+        var l = {}; l['layers.' + layer] = value;
+        stages.update(stage, {$set: l});
     }
 });

@@ -3,19 +3,14 @@ action_activate = function (action) {
     else if (action.schedule) action.stage = schedules.findOne(action.schedule).stage;
     
     if (action.type == 'media' || action.type == 'playlist' ||
-        action.type == 'clear-layer' || action.type == 'timer') {
-            Meteor.call('mediaActionActivate', action);
+        action.type == 'clear-layer' || action.type == 'timer' ||
+        action.type == 'song' || action.type == 'presentation') {
+
+        var l = {}; l['layers.' + action.layer] = action;
+        stages.update(action.stage, {$set: l});
     }
     
     else if (action.type == 'lightscene') {
         Meteor.call('sceneActionActivate', action);
-    }
-    
-    else if (action.type == 'song') {
-        Meteor.call('songActionActivate', action);
-    }
-    
-    else if (action.type == 'presentation') {
-        Meteor.call('presentationActionActivate', action);
     }
 };

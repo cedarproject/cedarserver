@@ -130,6 +130,8 @@ var create_blocks = function (play) {
             m[2], m[5],   0,    1
         );
         
+        console.log(JSON.stringify(['before', before, 'after', after, 'b', b, 'A', A, 'm', m, 'matrix', matrix]));
+        
         if ((play.type == 'video' || play.type == 'image')
             && combineSettings(play.settings).media_preserve_aspect == 'yes') {
                 if (play.video) var borders = getBorders(play.video.videoWidth, play.video.videoHeight);

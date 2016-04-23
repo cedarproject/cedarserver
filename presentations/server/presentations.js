@@ -74,15 +74,5 @@ Meteor.methods({
         if (slide.order > index) presentationslides.update({presentation: presid, order: {$gte: index, $lt: slide.order}}, {$inc: {order: 1}}, {multi: true});
         else if (slide.order < index) presentationslides.update({presentation: presid, order: {$lte: index, $gt: slide.order}}, {$inc: {order: -1}}, {multi: true});
         presentationslides.update({_id: slideid}, {$set: {order: index}});
-    },
-    
-    presentationActionActivate: function (action) {
-        var targets = minions.find({type: 'media', stage: action.stage});
-        
-        var s = {}; s['layers.' + action.layer] = action;        
-        targets.forEach(function (minion) {
-            if (minion.layers.hasOwnProperty(action.layer))
-                minions.update(minion._id, {$set: s});
-        });
     }
 });

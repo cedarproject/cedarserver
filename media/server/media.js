@@ -35,16 +35,5 @@ Meteor.methods({
         if (m['thumbnail']) fs.unlink(prefix + m.thumbnail, function () {});
 
         media.remove(m);
-    },
-
-    mediaActionActivate: function (action) {
-        var targets = minions.find({type: 'media', stage: action.stage}).fetch();                   
-        var actMedia = media.findOne(action.media);
-                
-        var s = {}; s['layers.' + action.layer] = action;
-        targets.forEach(function (minion) {
-            if (minion.layers.hasOwnProperty(action.layer))
-                minions.update(minion._id, {$set: s});
-        });
     }
 });
