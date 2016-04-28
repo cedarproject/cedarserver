@@ -5,9 +5,8 @@ Template.stageSettings.events({
     
     'click #add-layer, keypress #add-layer-title': function (event, template) {
         if (event.type == 'keypress' && event.which != 13) return;
-        var layers = template.data.settings.layers;
-        layers.push($('#add-layer-title').val());
-        Meteor.call('stageSetting', template.data._id, 'layers', layers);
+
+        Meteor.call('stageAddLayer', template.data._id, $('#add-layer-title').val());
         $('#add-layer-title').val('');
     },
     
@@ -30,10 +29,7 @@ Template.stageSettings.events({
     },
     
     'click .layer-del': function (event, template) {
-        var layers = template.data.settings.layers;
-        var i = layers.indexOf(this.toString());
-        layers.splice(i, 1);
-        Meteor.call('stageSetting', template.data._id, 'layers', layers);
+        Meteor.call('stageDelLayer', template.data._id, this.toString());
     },
     
     'click .stage-settings-delete': function (event, template) {

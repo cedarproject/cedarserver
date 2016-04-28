@@ -13,6 +13,7 @@ Router.route('/media/playlist/:_id', {
 });
 
 Router.route('/media/static/:filepath*', function () {
+    // TODO figure out serving HTTP ranges stuff
     if (settings.findOne({key: 'mediainternalserver'}).value) {
         var fs = Npm.require('fs');
         var filepath = settings.findOne({key: 'mediadir'}).value + '/' + this.params.filepath;

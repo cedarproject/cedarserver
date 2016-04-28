@@ -42,9 +42,21 @@ Meteor.methods({
         stages.update(stage, {$set: s});
     },
     
+    stageAddLayer: function (stageid, layer) {
+        var stage = checkStage(stageid);
+        var s = {}; s['layers.' + layer] = null;
+        stages.update(stage, {$push: {'settings.layers': layer}, $set: s});
+    },
+    
+    stageDelLayer: function (stageid, layer) {
+        var stage = checkStage(stageid);
+        var s = {}; s['layers.' + layer] = null;
+        stages.update(stage, {$pull: {'settings.layers': layer}, $unset: s});
+    },
+    
     stageLayer: function (stageid, layer, value) {
         var stage = checkStage(stageid);
         var l = {}; l['layers.' + layer] = value;
         stages.update(stage, {$set: l});
-    }
+    },
 });

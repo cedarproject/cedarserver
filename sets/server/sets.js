@@ -162,11 +162,7 @@ Meteor.methods({
     setClearLayer: function (setid, layer) {
         var set = checkSet(setid);
         
-        var s = {}; s['layers.' + layer] = null;
-        minions.find({type: 'media', stage: set.stage}).forEach(function (minion) {
-            if (minion.layers.hasOwnProperty(layer))
-                minions.update(minion, {$set: s});
-        });
+        Meteor.call('stageLayer', set.stage, layer, null);
     },
     
     setDeactivate: function (setid) {
@@ -175,13 +171,11 @@ Meteor.methods({
             var action = actions.findOne(set.active);
             sets.update(set, {$set: {active: null}});
         }
+        
+        var layers = stages.findOne(set.stage).settings.layers;
 
-        minions.find({type: 'media', stage: set.stage}).forEach(function (minion) {
-            var l = {};
-            for (var i in minion.layers) {
-                if (minion.layers.hasOwnProperty(i)) l['layers.' + i] = null;
-            }
-            minions.update(minion, {$set: l});
-        });                
+        layers.forEach((layer) => {
+            Meteor.call('stageLayer', set.stage, layer, null);
+        });            
     }
 });
