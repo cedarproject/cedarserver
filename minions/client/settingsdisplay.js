@@ -9,14 +9,14 @@ var block_props = [
     {prop: 'width', def: 1, title: 'Width', min: 0, max: 1, step: 0.01},
     {prop: 'height', def: 1, title: 'Height', min: 0, max: 1, step: 0.01},
     {prop: 'brightness', def: 1, title: 'Brightness', min: 0, max: 2, step: 0.01},
+    {prop: 'block-3-0', def: -1, title: 'X', min: -1, max: 1, step: 0.001},
+    {prop: 'block-3-1', def: 1, title: 'Y', min: -1, max: 1, step: 0.001},
+    {prop: 'block-2-0', def: 1, title: 'X', min: -1, max: 1, step: 0.001},
+    {prop: 'block-2-1', def: 1, title: 'Y', min: -1, max: 1, step: 0.001},
     {prop: 'block-0-0', def: -1, title: 'X', min: -1, max: 1, step: 0.001},
-    {prop: 'block-0-1', def: 1, title: 'Y', min: -1, max: 1, step: 0.001},
+    {prop: 'block-0-1', def: -1, title: 'Y', min: -1, max: 1, step: 0.001},
     {prop: 'block-1-0', def: 1, title: 'X', min: -1, max: 1, step: 0.001},
-    {prop: 'block-1-1', def: 1, title: 'Y', min: -1, max: 1, step: 0.001},
-    {prop: 'block-2-0', def: -1, title: 'X', min: -1, max: 1, step: 0.001},
-    {prop: 'block-2-1', def: -1, title: 'Y', min: -1, max: 1, step: 0.001},
-    {prop: 'block-3-0', def: 1, title: 'X', min: -1, max: 1, step: 0.001},
-    {prop: 'block-3-1', def: -1, title: 'Y', min: -1, max: 1, step: 0.001},
+    {prop: 'block-1-1', def: -1, title: 'Y', min: -1, max: 1, step: 0.001},
 ];
 
 var block_groups = [
@@ -55,7 +55,7 @@ Template.minionsettingsdisplay.events({
         var blocks = this.settings['blocks'] || [];
         
         blocks.push({
-            points: [[-1, 1], [1, 1], [-1, -1], [1, -1]],
+            points: [[-1, -1], [1, -1], [1, 1], [-1, 1]],
             width: 1,
             height: 1,
             x: 0, y: 0,
@@ -84,10 +84,12 @@ Template.minionsettingsdisplay.events({
             if (prop.split('-')[0] == 'block') {
                 // Also an ugly hack, TODO find a better way to do this...
                 var c = prop.split('-');
-                blocks[row.data('blocknum')].points[parseInt(c[1])][parseInt(c[2])] = parseFloat(row.find('.disp-' + prop).val()) || def;
+                var val = parseFloat(row.find('.disp-' + prop).val());
+                if (isNaN(val)) val = def;
+                blocks[row.data('blocknum')].points[parseInt(c[1])][parseInt(c[2])] = val;
             }
             
-            blocks[row.data('blocknum')][prop] = parseFloat(row.find('.disp-' + prop).val()) || def;
+            else blocks[row.data('blocknum')][prop] = parseFloat(row.find('.disp-' + prop).val()) || def;
         }
 
         Meteor.call('minionSetting', this._id, 'blocks', blocks);

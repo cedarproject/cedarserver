@@ -10,4 +10,15 @@ Meteor.startup(function () {
         
         stages.update(stage, {$set: {layers: layers}});
     });
+    
+    minions.find({type: 'media'}).forEach((minion) => {
+        if (minion.layers.__proto__ !== Array.prototype) {
+            var layers = [];
+            for (var l in minion.layers) {
+                if (minion.layers.hasOwnProperty(l)) layers.push(l);
+            }
+            
+            minions.update(minion, {$set: {layers: layers}});
+        }
+    });
 });

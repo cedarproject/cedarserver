@@ -27,7 +27,7 @@ Template.minionsettings.helpers({
     },
     
     isLayerChecked: function () {
-        if (Template.parentData().layers.hasOwnProperty(this)) return 'true';
+        if (Template.parentData().layers.indexOf(this) > -1) return 'true';
     }
 });
 

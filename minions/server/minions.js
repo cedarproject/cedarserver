@@ -22,9 +22,9 @@ Meteor.methods({
         };
         
         if (type == 'media') {
-            minion.layers = {background: null, foreground: null, audio: null};
+            minion.layers = ['audio', 'background', 'foreground'];
             minion.settings.blocks = [{
-                points: [[-1, 1], [1, 1], [-1, -1], [1, -1]],
+                points: [[-1, -1], [1, -1], [1, 1], [-1, 1]],
                 width: 1,
                 height: 1,
                 x: 0, y: 0,
@@ -64,14 +64,12 @@ Meteor.methods({
     
     minionAddLayer: function (minionid, layer) {
         var minion = checkMinion(minionid);
-        var s = {}; s['layers.' + layer] = null;
-        minions.update(minion, {$set: s});
+        minions.update(minion, {$push: {layers: layer}});
     },
     
     minionDelLayer: function (minionid, layer) {
         var minion = checkMinion(minionid);
-        var u = {}; u['layers.' + layer] = null;
-        minions.update(minion, {$unset: u});
+        minions.update(minion, {$pull: {layers: layer}});
     },
     
     minionSetting: function (minionid, key, value) {
