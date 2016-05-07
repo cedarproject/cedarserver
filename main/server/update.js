@@ -11,6 +11,7 @@ Meteor.startup(function () {
         stages.update(stage, {$set: {layers: layers}});
     });
     
+    // change layers from object to array
     minions.find({type: 'media'}).forEach((minion) => {
         if (minion.layers.__proto__ !== Array.prototype) {
             var layers = [];
@@ -20,5 +21,10 @@ Meteor.startup(function () {
             
             minions.update(minion, {$set: {layers: layers}});
         }
+    });
+    
+    // move name variable to title
+    minions.find({name: {$exists: true}}).forEach((minion) => {
+        minions.update(minion, {$set: {title: minion.name}, $unset: {name: null}});
     });
 });

@@ -14,7 +14,7 @@ Meteor.methods({
         }
         
         var minion = {
-            name: 'New ' + type + ' minion',
+            title: 'New ' + type + ' minion',
             stage: null,
             type: type,
             settings: {},
@@ -48,9 +48,9 @@ Meteor.methods({
         minions.remove(minion);
     },
     
-    minionName: function (minionid, name) {
+    minionTitle: function (minionid, title) {
         var minion = checkMinion(minionid);
-        minions.update(minion, {$set: {name: name}});
+        minions.update(minion, {$set: {title: title}});
     },
     
     minionStage: function (minionid, stageid) {

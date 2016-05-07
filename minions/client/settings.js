@@ -27,13 +27,13 @@ Template.minionsettings.helpers({
     },
     
     isLayerChecked: function () {
-        if (Template.parentData().layers.indexOf(this) > -1) return 'true';
+        if (Template.parentData().layers.indexOf(this.toString()) > -1) return 'true';
     }
 });
 
 Template.minionsettings.events({
-    'blur .minion-name': function (event, template) {
-        Meteor.call('minionName', this._id, $(event.target).val());
+    'blur .minion-title': function (event, template) {
+        Meteor.call('minionTitle', this._id, $(event.target).val());
     },
     
     'change .minion-stage': function (event, template) {

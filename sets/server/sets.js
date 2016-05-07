@@ -148,7 +148,7 @@ Meteor.methods({
         
         sets.update(set, {$set: {active: actionid}});
         
-        var time = Date.now() + 100;
+        var time = (Date.now() + 100) * 0.001;
 
         for (var i in set_actions) {
             var action = set_actions[i];

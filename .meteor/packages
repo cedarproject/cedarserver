@@ -15,7 +15,6 @@ patte:mime-npm
 cfs:graphicsmagick
 kidovate:bootstrap-slider
 pfafman:font-awesome-4
-standard-minifiers
 meteor-base
 mobile-experience
 mongo
@@ -36,3 +35,5 @@ risul:bootstrap-colorpicker
 limemakers:three
 mrt:later
 risul:moment-timezone
+standard-minifier-css
+standard-minifier-js
