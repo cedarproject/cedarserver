@@ -29,7 +29,6 @@ ejson
 spacebars
 check
 ecmascript
-trever:quill
 tsega:bootstrap3-datetimepicker
 risul:bootstrap-colorpicker
 limemakers:three
@@ -37,3 +36,4 @@ mrt:later
 risul:moment-timezone
 standard-minifier-css
 standard-minifier-js
+perak:codemirror

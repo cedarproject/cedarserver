@@ -9,24 +9,25 @@ Template.presentationSlide.helpers({
     }
 });
 
-Template.presentationSlide.onRendered(function () {
-    this.quill = new Quill(this.$('.slide-editor')[0]);
-    this.quill.addFormat('fillin', {tag: 'mark', prepare: 'fillin'});
-    this.quill.addModule('toolbar', {container: this.$('.editor-toolbar')[0]});
+// TODO per-pres and per-slide settings; color, bgcolor, font size, etc.
 
-    this.$('.color').colorpicker({format: 'rgb'}).on('changeColor.colorpicker', (event) => {
-        this.quill.focus(); 
-        var range = this.quill.getSelection();
-        if (range) {
-            this.quill.formatText(range.start, range.end, 'color', event.color.toHex());
-        }
-    });
-    
+Template.presentationSlide.onRendered(function () {
+    this.editor = CodeMirror(this.$('.editor-container')[0], {
+        mode: 'gfm',
+        theme: 'cedar',
+        lineNumbers: false,
+        lineWrapping: true,
+        pollInterval: 500,
+        workTime: 100,
+        workDelay: 500
+    });        
+
     this.autorun(function () {
-        var slide = presentationslides.findOne(this.data._id);
-        this.quill.setHTML(slide.content);
-    }.bind(this));
+        var content = presentationslides.findOne(Template.currentData()._id).content;
+        Template.instance().editor.setValue(content);
+    });
 });
+        
 
 Template.presentationSlide.events({
     'change .setting': function (event, template) {
@@ -34,23 +35,65 @@ Template.presentationSlide.events({
         Meteor.call('presentationSlideSetting', template.data._id, setting, $(event.target).val());
     },
 
-    'click .fillin': function (event, template) {
-        template.quill.focus(); 
-        var range = template.quill.getSelection();
-        if (range) {
-            // Eventually this should use a <mark> tag or <span> with custom class, waiting on Quill update.
-            template.quill.formatText(range.start, range.end, 'strike', true);
-        }
+    'mousedown .edit-span-btn': function (event, template) {
+        if (!template.editor.hasFocus()) template.editor.focus();
+        var type = $(event.target).data('type');
+        
+        if (type == 'bold') var wrap = '**';
+        else if (type == 'italic') var wrap = '_';
+        else if (type == 'underline') var wrap = '~~';
+        else if (type == 'fillin') var wrap = '`';
+        
+        var selection = template.editor.getSelection();
+        template.editor.replaceSelection(wrap + selection + wrap, 'around');
     },
     
-    'click .align': function (event, template) {
-        template.quill.focus();
-        var range = template.quill.getSelection();
-        if (range) {
-            template.quill.formatLine(range.start, range.end, 'align', $(event.target).data('value'));
-        }
-    },
+    'mousedown .edit-line-btn': function (event, template) {
+        if (!template.editor.hasFocus()) template.editor.focus();
+
+        var type = $(event.target).data('type');
+
+        if (type == 'h1') var pre = '# ';
+        else if (type == 'h2') var pre = '## ';
+        else if (type == 'h3') var pre = '### ';
+        else if (type == 'ul') var pre = '* ';
+
+        var selection = template.editor.listSelections()[0];
+        var start = Math.min(selection.anchor.line, selection.head.line);
+        var end = Math.max(selection.anchor.line, selection.head.line) + 1;
         
+        var edited = '';
+        var lastLength = null;
+
+        if (type == 'ol') {
+            if (start > 0) {
+                var prev = template.editor.getLine(start - 1);
+                var n = parseInt(prev.split('. ')[0]);
+                if (!isNaN(n)) var pre_n = n + 1;
+                else var pre_n = 1;
+                
+            } else var pre_n = 1;
+        }
+        // TODO finish CSS classes styling, add per-pres and per-slide colorings, edit CSS classes from JS for colors, etc.
+        
+        for (var i = start; i < end; i++) {
+            var line = template.editor.getLine(i);
+
+            if (type == 'ol') {
+                var s = line.split('. ');
+                if (!isNaN(parseInt(s[0]))) line = s.slice(1).join('. ');
+            
+                var pre = pre_n + '. ';
+                pre_n++;
+            }
+
+            edited += pre + line + '\n';
+        }
+                
+        template.editor.setSelection({line: start, ch: 0}, {line: end, ch: 0});
+        template.editor.replaceSelection(edited, 'around');
+    },
+      
     'click .image-add': function (event, template) {
         Session.set('add-to', template.data._id);
         $('.image-modal').modal('show');
@@ -64,12 +107,8 @@ Template.presentationSlide.events({
         template.$('.image-modal').modal('hide');
     },
 
-    'blur .slide-editor': function (event, template) {
-        Meteor.call('presentationSlideContent', template.data._id, template.quill.getHTML());
-    },
-    
-    'blur .slide-html-editor': function (event, template) {
-        Meteor.call('presentationSlideContent', template.data._id, $(event.target).val());
+    'blur .CodeMirror': function (event, template) {
+        Meteor.call('presentationSlideContent', template.data._id, template.editor.getValue());
     },
     
     'click .slide-settings-toggle': function (event, template) {

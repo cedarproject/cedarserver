@@ -14,7 +14,7 @@ Template.presentationSettings.helpers({
 
 Template.presentationSettings.events({
     'click #pres-settings-toggle': function (event, template) {
-        template.$('.collapse').collapse('toggle');
+        template.$('#pres-settings-collapse').collapse('toggle');
     },
     
     'blur #pres-title': function (event, template) {

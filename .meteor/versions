@@ -62,7 +62,9 @@ npm-mongo@1.4.43
 observe-sequence@1.0.11
 ordered-dict@1.0.7
 patte:mime-npm@0.0.1
+perak:codemirror@1.3.1
 pfafman:font-awesome-4@4.6.1
+pntbr:js-yaml-client@0.0.1
 promise@0.6.7
 random@1.0.9
 reactive-dict@1.1.7
@@ -82,7 +84,6 @@ templating-tools@1.0.4
 tomi:upload-jquery@2.4.0
 tomi:upload-server@1.3.4
 tracker@1.0.13
-trever:quill@0.0.5
 tsega:bootstrap3-datetimepicker@4.17.37_1
 twbs:bootstrap@3.3.6
 ui@1.0.11

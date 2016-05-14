@@ -1,12 +1,14 @@
 <template name="presentationSettings">
-    <div class="container">
-        <button id="pres-settings-toggle" class="btn btn-default pull-right">
-            <span class="glyphicon glyphicon-cog"></span>
-        </button>
-    
-        <h3>{{title}}</h3>
+    <div class="container">    
+        <h3>
+            <button id="pres-settings-toggle" class="btn btn-default pull-right">
+                <span class="glyphicon glyphicon-cog"></span>
+            </button>
+
+            {{title}}
+        </h3>
         
-        <div class="collapse">
+        <div id="pres-settings-collapse">
             <div class="well">
                 <label>Title:</label>
                 <input id="pres-title" class="form-control" value={{title}}>            
@@ -19,13 +21,11 @@
             </div>
         </div>
         
-        <ul class="list-group">
-            {{#each slides}}
-                <li class="list-group-item">
-                    {{> presentationSlide}}
-                </li>
-            {{/each}}
-        </ul>
+        <br>
+        
+        {{#each slides}}
+            {{> presentationSlide}}
+        {{/each}}
         
         <button id="add-slide" class="btn btn-primary">
             <span class="glyphicon glyphicon-plus"></span>

@@ -1,17 +1,30 @@
-.slide-edit-buttons {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 100;
+.editor-container {
+    width: 100%;
+    height: 25em;
+    border: 1px solid grey;
 }
 
-s {
-    text-decoration: none !important;
-    text-shadow: 0 0 8px #337AB7;
-    border: 1px dotted #AAA;
+.cm-s-cedar .cm-header-1 {
+    font-size: 2em;
 }
 
-.slide-editor {
-    background-color: black;
-    color: white;
+.cm-s-cedar .cm-header-2 {
+    font-size: 1.5em;
+}
+
+.cm-s-cedar .cm-header-3 {
+    font-size: 1.17em;
+}
+
+.cm-s-cedar .cm-strikethrough {
+    text-decoration: underline;
+}
+
+.cm-s-cedar .cm-comment {
+    border: 1px dotted grey;
+}
+
+/* Select lists, but not their contents */
+.cm-s-cedar .cm-variable-2- {
+    margin-left: 1em;
 }
