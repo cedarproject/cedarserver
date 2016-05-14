@@ -1,0 +1,3 @@
+[submodule "private/common"]
+	path = private/common
+	url = https://github.com/cedarsuite/common
