@@ -13,22 +13,31 @@
     </select>
         
     <label>Font Color:</label>
-    <input type="text" data-setting="timers_font_color" class="setting form-control" value={{getSetting 'timers_font_color'}}>
+    {{> colorpicker classes='setting' value=(getSetting 'timers_font_color') data-setting="timers_font_color" format="rgb"}}
+
+    <label>Font Outline:</label>
+    <input type="number" min=0 max=10 step=1 data-setting="timers_font_outline" class="setting form-control" value={{getSetting 'timers_font_outline' format="rgb"}}>
     
-    <label>Font Shadow:</label>
-    <input type="number" min=0 max=10 step=1 data-setting="timers_font_shadow" class="setting form-control" value={{getSetting 'timers_font_shadow'}}>
+    <label>Font Outline Color:</label>
+    {{> colorpicker classes='setting' value=(getSetting 'timers_font_outline_color') data-setting="timers_font_outline_color" format="rgb"}}
     
-    <label>Font Shadow Color:</label>
-    <input type="text" data-setting="timers_font_shadow_color" class="setting form-control" value={{getSetting 'timers_font_shadow_color'}}>
+    <label>Warning Time (seconds):</label>
+    <input type="number" min=0 max=3600 step=1 data-setting="timers_font_warn_time" class="setting form-control" value={{getSetting 'timers_font_warn_time'}}>
     
-    <label>Align:</label>
+    <label>Warning Color:</label>
+    {{> colorpicker classes='setting' value=(getSetting 'timers_font_warn_color') data-setting="timers_font_warn_color" format="rgb"}}
+    
+    <label>Negative Color:</label>
+    {{> colorpicker classes='setting' value=(getSetting 'timers_font_negative_color') data-setting="timers_font_negative_color" format="rgb"}}
+    
+    <label>Horizontal Align:</label>
     <select data-setting="timers_text_align" class="setting form-control">
         <option value="left" {{isSelected 'timers_text_align' 'left'}}>Left</option>
         <option value="center" {{isSelected 'timers_text_align' 'center'}}>Center</option>
         <option value="right" {{isSelected 'timers_text_align' 'right'}}>Right</option>
     </select>
     
-    <label>Vertical Align</label>
+    <label>Vertical Align:</label>
     <select data-setting="timers_text_vertical_align" class="setting form-control">
         <option value="top" {{isSelected 'timers_text_vertical_align' 'top'}}>Top</option>
         <option value="center" {{isSelected 'timers_text_vertical_align' 'center'}}>Center</option>

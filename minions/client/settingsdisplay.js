@@ -17,6 +17,10 @@ var block_props = [
     {prop: 'block-0-1', def: -1, title: 'Y', min: -1, max: 1, step: 0.001},
     {prop: 'block-1-0', def: 1, title: 'X', min: -1, max: 1, step: 0.001},
     {prop: 'block-1-1', def: -1, title: 'Y', min: -1, max: 1, step: 0.001},
+    {prop: 'blend_top', def: 0, title: 'Top', min: 0, max: 1, step: 0.01},
+    {prop: 'blend_bottom', def: 0, title: 'Bottom', min: 0, max: 1, step: 0.01},
+    {prop: 'blend_left', def: 0, title: 'Left', min: 0, max: 1, step: 0.01},
+    {prop: 'blend_right', def: 0, title: 'Right', min: 0, max: 1, step: 0.01},
 ];
 
 var block_groups = [
@@ -24,7 +28,8 @@ var block_groups = [
     {heading: 'Top-Left', props: block_props.slice(5, 7)},
     {heading: 'Top-Right', props: block_props.slice(7, 9)},
     {heading: 'Bottom-Left', props: block_props.slice(9, 11)},
-    {heading: 'Bottom-Right', props: block_props.slice(11, 13)}
+    {heading: 'Bottom-Right', props: block_props.slice(11, 13)},
+    {heading: 'Edge Blend', props: block_props.slice(13, 17)}
 ];
 
 Template.minionsettingsdisplay.helpers({
@@ -40,6 +45,7 @@ Template.minionsettingsdisplay.helpers({
     blockGroups: function () {
         return block_groups;
     },
+    
     get: function (prop) {
         if (prop.split('-')[0] == 'block') {
             // Also an ugly hack, TODO find a better way to do this...
@@ -59,7 +65,11 @@ Template.minionsettingsdisplay.events({
             width: 1,
             height: 1,
             x: 0, y: 0,
-            brightness: 1
+            brightness: 1,
+            blend_left: 0,
+            blend_right: 0,
+            blend_top: 0,
+            blend_bottom: 0            
         });
         
         Meteor.call('minionSetting', this._id, 'blocks', blocks);

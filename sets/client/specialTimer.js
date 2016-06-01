@@ -1,6 +1,6 @@
 Template.specialTimer.helpers({
     typeIs: function (type) {
-        return combineSettings(this.settings).timer_type == type;
+        return combineSettings(this.settings).timers_type == type;
     },
     
     getTime: function (type) {
