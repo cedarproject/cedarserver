@@ -27,4 +27,9 @@ Meteor.startup(function () {
     minions.find({name: {$exists: true}}).forEach((minion) => {
         minions.update(minion, {$set: {title: minion.name}, $unset: {name: null}});
     });
+    
+    // ensure all presentations have settings object
+    presentations.find({settings: {$exists: false}}).forEach((pres) => {
+        presentations.update(pres, {$set: {settings: {}}});
+    });
 });

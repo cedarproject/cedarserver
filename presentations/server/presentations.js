@@ -8,6 +8,7 @@ Meteor.methods({
     presentationNew: function () {
         return presentations.insert({
             title: 'New Presentation',
+            settings: {},
             tags: []
         });
     },
@@ -23,6 +24,12 @@ Meteor.methods({
         presentations.update(pres, {$set: {title: title}});
     },
     
+    presentationSetting: function (presid, setting, value) {
+        var pres = getPresentation(presid);
+        var s = {}; s['settings.' + setting] = value;
+        presentations.update(pres, {$set: s});
+    },
+    
     presentationAddSlide: function (presid) {
         var pres = getPresentation(presid);
 
@@ -32,7 +39,7 @@ Meteor.methods({
             
         return presentationslides.insert({
             presentation: presid,
-            content: '<p>Click to edit.</p>',
+            content: '',
             triggers: [],
             images: [],
             settings: {},

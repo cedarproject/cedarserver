@@ -58,6 +58,19 @@ Template.minionsettings.events({
         Meteor.call('minionSetting', template.data._id, setting, value);
     },
     
+    'changeColor .setting': function (event, template) {
+        var setting = $(event.target).data('setting');
+        
+        var c = event.color.toRGB();
+        if ($(event.target).data('colorpicker').options.format == 'rgba') {
+            var value = [c.r / 255.0, c.g / 255.0, c.b / 255.0, c.a];
+        } else {
+            var value = [c.r / 255.0, c.g / 255.0, c.b / 255.0];
+        }
+
+        Meteor.call('minionSetting', template.data._id, setting, value);
+    },
+    
     'click .minion-settings-delete': function (event) {
         $('.delete-modal').modal('show');
     },

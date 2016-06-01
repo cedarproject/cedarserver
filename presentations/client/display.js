@@ -3,15 +3,15 @@ Template.presentationDisplay.helpers({
         var slides = [];
         presentationslides.find({presentation: this._id}, {sort: [['order', 'asc']]}).forEach(function (slide) {
             slide.action = this.action;
-
-            var tags = slide.content.match(/<s>/g);
-            if (tags) slide.fillins = tags.length;
-            else slide.fillins = 0;
-
             slides.push(slide);
         }.bind(this));
         
         return slides;
+    },
+    
+    renderContent: function () {
+        var md = new Remarkable();
+        return md.render(this.content);
     },
     
     isActive: function () {
@@ -28,11 +28,11 @@ Template.presentationDisplay.helpers({
     },
     
     fillins: function () {
-        var tags = this.content.match(/<s>/g);
+        var tags = this.content.match(/`/g);
         
         if (tags) {
             var numbers = [];
-            for (var i = 0; i <= tags.length; i++) numbers.push({action: this.action, order: this.order, fillin: i});
+            for (var i = 0; i <= tags.length / 2; i++) numbers.push({action: this.action, order: this.order, fillin: i});
             return numbers;
         }
     },

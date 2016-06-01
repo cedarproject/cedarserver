@@ -57,10 +57,59 @@
                 <option value="bottom" {{isSelected 'presentations_image_side' 'bottom'}}>Bottom</option>
             </select>
             
-            <label>Edit HTML</label>
-            <textarea class="slide-html-editor form-control">
-                {{content}}
-            </textarea>
+            <div class="row">
+                <div class="col-lg-2 col-sm-4 col-xs-6">                
+                    <label>Font Color:</label>
+                    {{> colorpicker classes='setting' value=(getSetting 'presentations_font_color') data-setting="presentations_font_color" format="rgb"}}
+                    <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_color">Reset</button>
+                </div>
+
+                <div class="col-lg-2 col-sm-4 col-xs-6">                
+                    <label>Italic Text Color:</label>
+                    {{> colorpicker classes='setting' value=(getSetting 'presentations_font_color_bold') data-setting="presentations_font_color_bold" format="rgb"}}
+                    <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_color_bold">Reset</button>
+                </div>
+
+                <div class="col-lg-2 col-sm-4 col-xs-6">                
+                    <label>Bold Text Color:</label>
+                    {{> colorpicker classes='setting' value=(getSetting 'presentations_font_color_italic') data-setting="presentations_font_color_italic" format="rgb"}}
+                    <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_color_italic">Reset</button>
+                </div>
+
+                <div class="col-lg-2 col-sm-4 col-xs-6">                
+                    <label>Underlined Text Color:</label>
+                    {{> colorpicker classes='setting' value=(getSetting 'presentations_font_color_underline') data-setting="presentations_font_color_underline" format="rgb"}}
+                    <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_color_underline">Reset</button>
+                </div>
+
+                <div class="col-lg-2 col-sm-4 col-xs-6">                
+                    <label>Font Outline Color:</label>
+                    {{> colorpicker classes='setting' value=(getSetting 'presentations_font_outline_color') data-setting="presentations_font_outline_color" format="rgb"}}
+                    <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_outline_color">Reset</button>
+                </div>
+                
+                <div class="col-lg-2 col-sm-4 col-xs-6">
+                    <label>Background Color:</label>
+                    {{> colorpicker classes='setting' value=(getSetting 'presentations_background_color') data-setting="presentations_background_color" format="rgba"}}  
+                    <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_background_color">Reset</button>
+                </div>
+            </div>
+
+            <label>Text Align:</label>
+            <select data-setting="presentations_align_horizontal" class="setting form-control">
+                <option value="">--unset--</option>
+                <option value="left" {{isSelected 'presentations_align_horizontal' 'left'}}>Left</option>
+                <option value="center" {{isSelected 'presentations_align_horizontal' 'center'}}>Center</option>
+                <option value="right" {{isSelected 'presentations_align_horizontal' 'right'}}>Right</option>
+            </select>
+            
+            <label>Vertical Text Align:</label>
+            <select data-setting="presentations_align_vertical" class="setting form-control">
+                <option value="">--unset--</option>
+                <option value="top" {{isSelected 'presentations_align_vertical' 'top'}}>Top</option>
+                <option value="center" {{isSelected 'presentations_align_vertical' 'center'}}>Center</option>
+                <option value="bottom" {{isSelected 'presentations_align_vertical' 'bottom'}}>Bottom</option>
+            </select>
         </div>
     </div>
 
@@ -74,6 +123,7 @@
                         <button class="image-del btn btn-danger pull-right">
                             <span class="glyphicon glyphicon-remove"></span>
                         </button>
+
                         {{> mediaItem}}
                     </li>
                 {{/with}}

@@ -47,15 +47,11 @@
                         <input type="number" min=0 max=1 step=0.05 class="setting form-control" data-setting="mediaminion_volume" value={{getSetting 'mediaminion_volume'}}>
                         
                         <label>Minion Background Color:</label>
-                        <input class="setting form-control" data-setting="mediaminion_background_color" value={{getSetting 'mediaminion_background_color'}}>
+                        {{> colorpicker classes='setting' value=(getSetting 'displayminion_background_color') data-setting="displayminion_background_color" format="rgb"}}
+                        
                         <label>Color Adjust Range:</label>
                         <small>Adjusts media color values within this range of the background color, for luma keying.</small>
-                        <input class="setting form-control" data-setting="mediaminion_color_adjust_range" value={{getSetting 'mediaminion_color_adjust_range'}}>
-                        
-                        <div class="well well-sm">
-                            <p><a href={{pathFor 'webminionmedia' _id}}>Launch Web Minion</a></p>
-                            <p>Direct link: <pre>{{urlFor 'webminionmedia' _id}}</pre></p>
-                        </div>
+                        <input class="setting form-control" data-setting="displayminion_color_adjust_range" value={{getSetting 'displayminion_color_adjust_range'}}>
                     {{/if}}
                 </div>
                 

@@ -6,10 +6,13 @@ Template.presentationSlide.helpers({
     isSelected: function (k, v) {
         var pres = presentations.findOne(this.presentation);
         if (combineSettings(this.settings, pres.settings)[k] == v) return 'selected';
+    },
+
+    getSetting: function (setting) {
+        var pres = presentations.findOne(this.presentation);
+        return combineSettings(this.settings, pres.settings)[setting];
     }
 });
-
-// TODO per-pres and per-slide settings; color, bgcolor, font size, etc.
 
 Template.presentationSlide.onRendered(function () {
     this.editor = CodeMirror(this.$('.editor-container')[0], {
@@ -31,8 +34,30 @@ Template.presentationSlide.onRendered(function () {
 
 Template.presentationSlide.events({
     'change .setting': function (event, template) {
+        event.stopImmediatePropagation()
         var setting = $(event.target).data('setting');
-        Meteor.call('presentationSlideSetting', template.data._id, setting, $(event.target).val());
+        var value = $(event.target).val();
+        if (value == '') value = null;
+        Meteor.call('presentationSlideSetting', template.data._id, setting, value);
+    },
+    
+    'changeColor .setting': function (event, template) {
+        event.stopImmediatePropagation()
+        var setting = $(event.target).data('setting');
+        
+        var c = event.color.toRGB();
+        if ($(event.target).data('colorpicker').options.format == 'rgba') {
+            var value = [c.r / 255.0, c.g / 255.0, c.b / 255.0, c.a];
+        } else {
+            var value = [c.r / 255.0, c.g / 255.0, c.b / 255.0];
+        }
+
+        Meteor.call('presentationSlideSetting', template.data._id, setting, value);
+    },
+
+    'click .setting-reset': function (event, template) {
+        var setting = $(event.target).data('setting');
+        Meteor.call('presentationSlideSetting', template.data._id, setting, null);
     },
 
     'mousedown .edit-span-btn': function (event, template) {

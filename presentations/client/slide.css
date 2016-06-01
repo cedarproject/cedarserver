@@ -4,24 +4,33 @@
     border: 1px solid grey;
 }
 
-.cm-s-cedar .cm-header-1 {
+.cm-s-cedar .cm-header-1, .presentation-content h1 {
     font-size: 2em;
+    margin: 0 0 !important;
 }
 
-.cm-s-cedar .cm-header-2 {
+.cm-s-cedar .cm-header-2, .presentation-content h2 {
     font-size: 1.5em;
+    margin: 0 0 !important;
 }
 
-.cm-s-cedar .cm-header-3 {
+.cm-s-cedar .cm-header-3, .presentation-content h3 {
     font-size: 1.17em;
+    margin: 0 0 !important;
 }
 
-.cm-s-cedar .cm-strikethrough {
+.cm-s-cedar .cm-strikethrough, .presentation-content del {
     text-decoration: underline;
 }
 
-.cm-s-cedar .cm-comment {
+.cm-s-cedar .cm-comment, .presentation-content code {
+    /* Overrides for Bootstrap's <code> styling */
     border: 1px dotted grey;
+    padding: 0 0 !important;
+    font-size: inherit !important;
+    color: inherit !important;
+    background-color: inherit !important;
+    font-family: inherit !important;
 }
 
 /* Select lists, but not their contents */

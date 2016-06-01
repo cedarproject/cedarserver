@@ -13,25 +13,56 @@
     </select>
         
     <label>Font Color:</label>
-    <input type="text" data-setting="songs_font_color" class="setting form-control" value={{getSetting 'songs_font_color'}}>
+    {{> colorpicker classes='setting' value=(getSetting 'songs_font_color') data-setting="songs_font_color" format="rgb"}}    
+
+    <label>Font Outline:</label>
+    <input type="number" min=0 max=10 step=1 data-setting="songs_font_outline" class="setting form-control" value={{getSetting 'songs_font_outline'}}>
     
-    <label>Font Shadow:</label>
-    <input type="number" min=0 max=10 step=1 data-setting="songs_font_shadow" class="setting form-control" value={{getSetting 'songs_font_shadow'}}>
-    
-    <label>Font Shadow Color:</label>
-    <input type="text" data-setting="songs_font_shadow_color" class="setting form-control" value={{getSetting 'songs_font_shadow_color'}}>
+    <label>Font Outline Color:</label>
+    {{> colorpicker classes='setting' value=(getSetting 'songs_font_outline_color') data-setting="songs_font_outline_color" format="rgb"}}
     
     <label>Align:</label>
-    <select data-setting="songs_text_align" class="setting form-control">
-        <option value="left" {{isSelected 'songs_text_align' 'left'}}>Left</option>
-        <option value="center" {{isSelected 'songs_text_align' 'center'}}>Center</option>
-        <option value="right" {{isSelected 'songs_text_align' 'right'}}>Right</option>
+    <select data-setting="songs_align_horizontal" class="setting form-control">
+        <option value="left" {{isSelected 'songs_align_horizontal' 'left'}}>Left</option>
+        <option value="center" {{isSelected 'songs_align_horizontal' 'center'}}>Center</option>
+        <option value="right" {{isSelected 'songs_align_horizontal' 'right'}}>Right</option>
     </select>
     
-    <label>Vertical Align</label>
-    <select data-setting="songs_text_vertical_align" class="setting form-control">
-        <option value="top" {{isSelected 'songs_text_vertical_align' 'top'}}>Top</option>
-        <option value="center" {{isSelected 'songs_text_vertical_align' 'center'}}>Center</option>
-        <option value="bottom" {{isSelected 'songs_text_vertical_align' 'bottom'}}>Bottom</option>
-    </select>    
+    <label>Vertical Align:</label>
+    <select data-setting="songs_align_vertical" class="setting form-control">
+        <option value="top" {{isSelected 'songs_align_vertical' 'top'}}>Top</option>
+        <option value="center" {{isSelected 'songs_align_vertical' 'center'}}>Center</option>
+        <option value="bottom" {{isSelected 'songs_align_vertical' 'bottom'}}>Bottom</option>
+    </select>
+
+    <label>Container Width:</label>
+    <div class="input-group">
+        <input type="number" data-setting="songs_width" class="setting form-control"
+            value={{getSetting 'songs_width'}} min=0 max=100 step=1>
+        <div class="input-group-addon">%</div>
+    </div>
+
+    <label>Container Height:</label>
+    <div class="input-group">
+        <input type="number" data-setting="songs_height" class="setting form-control"
+            value={{getSetting 'songs_height'}} min=0 max=100 step=1>
+        <div class="input-group-addon">%</div>
+    </div> 
+
+    <label>Horizontal Container Position:</label>
+    <select data-setting="songs_position_horizontal" class="setting form-control">
+        <option value="left" {{isSelected 'songs_position_horizontal' 'left'}}>Left</option>
+        <option value="center" {{isSelected 'songs_position_horizontal' 'center'}}>Center</option>
+        <option value="right" {{isSelected 'songs_position_horizontal' 'right'}}>Right</option>
+    </select>
+    
+    <label>Vertical Container Position:</label>
+    <select data-setting="songs_position_vertical" class="setting form-control">
+        <option value="top" {{isSelected 'songs_position_vertical' 'top'}}>Top</option>
+        <option value="center" {{isSelected 'songs_position_vertical' 'center'}}>Center</option>
+        <option value="bottom" {{isSelected 'songs_position_vertical' 'bottom'}}>Bottom</option>
+    </select>
+    
+    <label>Background Color:</label>
+    {{> colorpicker classes='setting' value=(getSetting 'songs_background_color') data-setting="songs_background_color" format="rgba"}}        
 </template>
