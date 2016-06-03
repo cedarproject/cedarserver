@@ -21,6 +21,7 @@ var block_props = [
     {prop: 'blend_bottom', def: 0, title: 'Bottom', min: 0, max: 1, step: 0.01},
     {prop: 'blend_left', def: 0, title: 'Left', min: 0, max: 1, step: 0.01},
     {prop: 'blend_right', def: 0, title: 'Right', min: 0, max: 1, step: 0.01},
+    {prop: 'alpha_mask', def: false, title: 'Alpha Mask', type: 'checkbox'}
 ];
 
 var block_groups = [
@@ -29,7 +30,8 @@ var block_groups = [
     {heading: 'Top-Right', props: block_props.slice(7, 9)},
     {heading: 'Bottom-Left', props: block_props.slice(9, 11)},
     {heading: 'Bottom-Right', props: block_props.slice(11, 13)},
-    {heading: 'Edge Blend', props: block_props.slice(13, 17)}
+    {heading: 'Edge Blend', props: block_props.slice(13, 17)},
+    {heading: 'Misc', props: block_props.slice(17, 18)}
 ];
 
 Template.minionsettingsdisplay.helpers({
@@ -53,6 +55,14 @@ Template.minionsettingsdisplay.helpers({
             return Template.parentData(2).points[parseInt(c[1])][parseInt(c[2])];
         }
         else return Template.parentData(2)[prop];
+    },
+    
+    settingTypeIs: function (type) {
+        if (this['type'] == type) return true;
+    },
+    
+    isChecked: function (prop) {
+        if (Template.parentData(2)[prop]) return 'checked';
     }
 });
 
@@ -69,7 +79,8 @@ Template.minionsettingsdisplay.events({
             blend_left: 0,
             blend_right: 0,
             blend_top: 0,
-            blend_bottom: 0            
+            blend_bottom: 0,
+            alpha_mask: false 
         });
         
         Meteor.call('minionSetting', this._id, 'blocks', blocks);
@@ -91,15 +102,19 @@ Template.minionsettingsdisplay.events({
             var prop = block_props[i].prop;
             var def = block_props[i].def;
             
-            if (prop.split('-')[0] == 'block') {
-                // Also an ugly hack, TODO find a better way to do this...
-                var c = prop.split('-');
-                var val = parseFloat(row.find('.disp-' + prop).val());
-                if (isNaN(val)) val = def;
-                blocks[row.data('blocknum')].points[parseInt(c[1])][parseInt(c[2])] = val;
+            if (def.type == 'checkbox') {
+                blocks[row.data('blocknum')][prop] = row.find('.disp' + prop).prop('checked');
+            } else {
+                if (prop.split('-')[0] == 'block') {
+                    // Also an ugly hack, TODO find a better way to do this...
+                    var c = prop.split('-');
+                    var val = parseFloat(row.find('.disp-' + prop).val());
+                    if (isNaN(val)) val = def;
+                    blocks[row.data('blocknum')].points[parseInt(c[1])][parseInt(c[2])] = val;
+                }
+                
+                else blocks[row.data('blocknum')][prop] = parseFloat(row.find('.disp-' + prop).val()) || def;
             }
-            
-            else blocks[row.data('blocknum')][prop] = parseFloat(row.find('.disp-' + prop).val()) || def;
         }
 
         Meteor.call('minionSetting', this._id, 'blocks', blocks);
