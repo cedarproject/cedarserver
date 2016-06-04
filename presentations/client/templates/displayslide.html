@@ -1,0 +1,25 @@
+<template name="presentationDisplaySlide">
+    <div class="col-lg-4 col-md-6 col-xs-12">
+        <div class="presentation-content {{isActive}}">
+            <div class="display-container"></div>
+
+            {{#each images}}
+                {{#with getMedia}}
+                    <img src="/media/static/{{location}}" style="width: 100%">
+                {{/with}}
+            {{/each}}
+            
+            {{#if fillins}}
+                <div class="fillin-controls text-center"><nav>
+                    <ul class="pagination pagination-sm">
+                        {{#each fillins}}
+                            <li class="presentation-fillin {{fillinActive}}">
+                                <span>{{fillin}}</span>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </nav></div>
+            {{/if}}
+        </div>
+    </div>
+</template>
