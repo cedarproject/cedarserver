@@ -27,3 +27,9 @@
     left: 0;
     width: 100%;
 }
+
+.display-container s {
+    border-top: 1px dotted grey;
+    border-bottom: 1px dotted grey;
+    text-decoration: none;
+}

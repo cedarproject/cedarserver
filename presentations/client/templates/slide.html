@@ -6,28 +6,46 @@
             <button class="edit-span-btn btn btn-default" data-type="underline"><b><u>U</u></b></button>
         </div>
 
+        <select class="edit-size form-control">
+            <option value="small">Small</option>
+            <option value="" selected>Normal</option>
+            <option value="large">Large</option>
+            <option value="huge">Huge</option>
+        </select>
+
         <div class="btn-group">
-            <button class="edit-line-btn btn btn-default" data-type="h1"><b>H</b></button>
-            <button class="edit-line-btn btn btn-default" data-type="h2"><b>h</b></button>
-            <button class="edit-line-btn btn btn-default" data-type="h3"><b><small>h</small></b></button>
-        </div>
-        
-        <div class="btn-group">
-            <button class="edit-line-btn btn btn-default" data-type="ol">
+            <button class="edit-line-btn btn btn-default" data-type="list" data-value="ordered">
                 <span class="glyphicon glyphicon-list"></span>
             </button>
-            <button class="edit-line-btn btn btn-default" data-type="ul">
+            <button class="edit-line-btn btn btn-default" data-type="list" data-value="bullet">
                 <span class="glyphicon glyphicon-th-list"></span>
             </button>
         </div>
+        
+        <div class="btn-group">
+            <button class="edit-line-btn btn btn-default" data-type="indent" data-value="+1">
+                <span class="glyphicon glyphicon-indent-left"></span>
+            </button>
+            <button class="edit-line-btn btn btn-default" data-type="indent" data-value="-1">
+                <span class="glyphicon glyphicon-indent-right"></span>
+            </button>
+        </div>
+        
+        <button class="edit-color btn btn-default">
+            <span class="glyphicon glyphicon-text-color"></span>
+        </button>
                         
-        <button class="edit-span-btn btn btn-default" data-type="fillin">
+        <button class="edit-span-btn btn btn-default" data-type="strike">
             {{! Not the best icon for the job, but the only vaugely-related one in the set}}
             <span class="glyphicon glyphicon-sunglasses"></span>
         </button>
         
         <button class="image-add btn btn-default">
             <span class="glyphicon glyphicon-picture"></span>
+        </button>
+        
+        <button class="edit-save btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>Save
         </button>
 
         <div class="btn-group pull-right">
@@ -58,37 +76,13 @@
             </select>
             
             <div class="row">
-                <div class="col-lg-2 col-sm-4 col-xs-6">                
+                <div class="col-xs-6">                
                     <label>Font Color:</label>
                     {{> colorpicker classes='setting' value=(getSetting 'presentations_font_color') data-setting="presentations_font_color" format="rgb"}}
                     <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_color">Reset</button>
                 </div>
-
-                <div class="col-lg-2 col-sm-4 col-xs-6">                
-                    <label>Italic Text Color:</label>
-                    {{> colorpicker classes='setting' value=(getSetting 'presentations_font_color_bold') data-setting="presentations_font_color_bold" format="rgb"}}
-                    <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_color_bold">Reset</button>
-                </div>
-
-                <div class="col-lg-2 col-sm-4 col-xs-6">                
-                    <label>Bold Text Color:</label>
-                    {{> colorpicker classes='setting' value=(getSetting 'presentations_font_color_italic') data-setting="presentations_font_color_italic" format="rgb"}}
-                    <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_color_italic">Reset</button>
-                </div>
-
-                <div class="col-lg-2 col-sm-4 col-xs-6">                
-                    <label>Underlined Text Color:</label>
-                    {{> colorpicker classes='setting' value=(getSetting 'presentations_font_color_underline') data-setting="presentations_font_color_underline" format="rgb"}}
-                    <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_color_underline">Reset</button>
-                </div>
-
-                <div class="col-lg-2 col-sm-4 col-xs-6">                
-                    <label>Font Outline Color:</label>
-                    {{> colorpicker classes='setting' value=(getSetting 'presentations_font_outline_color') data-setting="presentations_font_outline_color" format="rgb"}}
-                    <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_outline_color">Reset</button>
-                </div>
                 
-                <div class="col-lg-2 col-sm-4 col-xs-6">
+                <div class="col-xs-6">
                     <label>Background Color:</label>
                     {{> colorpicker classes='setting' value=(getSetting 'presentations_background_color') data-setting="presentations_background_color" format="rgba"}}  
                     <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_background_color">Reset</button>

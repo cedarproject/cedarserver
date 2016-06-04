@@ -116,6 +116,7 @@ Template.set.events({
     'click .presentation-fillin': function (event, template) {
         event.stopImmediatePropagation();
         if (Session.get('set-control-locked')) return;
+        
         var args = {
             order: this.order,
             fillin: this.fillin
