@@ -91,7 +91,7 @@ Meteor.methods({
                 scene.settings.fade = parseFloat(action.settings.lights_fade);
         }
         
-        else scene.settings.time = Date.now() + 100;
+        else scene.settings.time = Date.now() * 0.001;
         
         var scenelights = {};
         

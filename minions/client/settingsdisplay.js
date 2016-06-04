@@ -94,7 +94,7 @@ Template.minionsettingsdisplay.events({
         }
     },
     
-    'input .block-list': function (event) {
+    'input .block-list, click .block-list checkbox': function (event) {
         var blocks = this.settings.blocks;
         var row = $(event.target).parents('.row');
 
