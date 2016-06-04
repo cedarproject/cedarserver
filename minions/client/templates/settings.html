@@ -42,6 +42,14 @@
                         
                             <br>
                         {{/if}}
+
+                        <label>Display Width:</label>
+                        <small>(set to 0 for automatic)</small>
+                        <input type="number" min=0 max=10000 step=1 class="setting form-control" data-setting="mediaminion_width" value={{getSetting 'mediaminion_width'}}>
+
+                        <label>Display Height:</label>
+                        <small>(set to 0 for automatic)</small>
+                        <input type="number" min=0 max=10000 step=1 class="setting form-control" data-setting="mediaminion_height" value={{getSetting 'mediaminion_height'}}>
                         
                         <label>Audio Volume:</label>
                         <input type="number" min=0 max=1 step=0.05 class="setting form-control" data-setting="mediaminion_volume" value={{getSetting 'mediaminion_volume'}}>
