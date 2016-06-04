@@ -93,11 +93,19 @@ Template.set.onRendered(function () {
                     var slides = presentationslides.find({presentation: pres._id}).count();
 
                     var slide = presentationslides.findOne({presentation: pres._id, order: args.order});
-                    var tags = slide.content.match(/<s>/g);
 
-                    if (tags) var fillins = tags.length;
-                    else var fillins = 0;
-                    
+                    var cont = false;
+                    var fillins = 0;
+
+                    slide.content.ops.forEach((section, i) => {
+                        if (section['attributes'] && section['attributes']['strike']) {
+                            if (!cont) {
+                                fillins++;
+                                cont = true;
+                            }
+                        } else cont = false;
+                    });
+
                     if (event.key == 'ArrowRight' && args.fillin < fillins) {
                         args.fillin++;
                         Meteor.call('actionArgs', action._id, args);
