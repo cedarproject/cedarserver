@@ -11,6 +11,10 @@ Template.presentationSlide.helpers({
     getSetting: function (setting) {
         var pres = presentations.findOne(this.presentation);
         return combineSettings(this.settings, pres.settings)[setting];
+    },
+    
+    getRecentColor: function () {
+        return Session.get('pres-recent-color');
     }
 });
 
@@ -24,7 +28,9 @@ Template.presentationSlide.onRendered(function () {
     
     // TODO implement most-recently-used color saving
     this.initialEvent = false;
-    this.colorpicker = this.$('.edit-color').colorpicker({});
+    this.colorpicker = this.$('.edit-color').colorpicker({format: 'hex'});
+    
+    if (!Session.get('pres-recent-color')) Session.set('pres-recent-color', 'black');
 });
         
 
@@ -81,8 +87,15 @@ Template.presentationSlide.events({
         else {
             template.editor.focus();
             var color = event.color.toHex();
+            
+            Session.set('pres-recent-color', color);
             template.editor.format('color', color);
         }
+    },
+    
+    'click .edit-color-recent': function (event, template) {
+        template.editor.focus();
+        template.editor.format('color', Session.get('pres-recent-color'));
     },
     
     'mousedown .edit-line-btn': function (event, template) {

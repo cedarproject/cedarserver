@@ -31,9 +31,14 @@
             </button>
         </div>
         
-        <button class="edit-color btn btn-default">
-            <span class="glyphicon glyphicon-text-color"></span>
-        </button>
+        <div class="btn-group">
+            <button class="edit-color btn btn-default">
+                <span class="glyphicon glyphicon-text-color"></span>
+            </button>
+            <button class="edit-color-recent btn btn-default">
+                <span class="glyphicon glyphicon-repeat" style="color: {{getRecentColor}}"></span>
+            </button>
+        </div>
                         
         <button class="edit-span-btn btn btn-default" data-type="strike">
             {{! Not the best icon for the job, but the only vaugely-related one in the set}}
