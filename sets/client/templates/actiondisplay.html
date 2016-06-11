@@ -15,6 +15,18 @@
         {{/with}}
     {{/if}}
     
+    {{#if actionType 'light'}}
+        {{#with getLight}}
+            {{> light}}
+        {{/with}}
+    {{/if}}
+    
+    {{#if actionType 'lightgroup'}}
+        {{#with getLightGroup}}
+            {{> lightGroup}}
+        {{/with}}
+    {{/if}}
+    
     {{#if actionType 'lightscene'}}
         {{#with getLightScene}}
             {{> lightScene}}
@@ -33,8 +45,18 @@
         {{/with}}
     {{/if}}
     
+    {{#if actionType 'sequence'}}
+        {{#with getSequence}}
+            {{> sequence}}
+        {{/with}}
+    {{/if}}
+    
     {{#if actionType 'clear-layer'}}
         {{> specialClearLayer}}
+    {{/if}}
+    
+    {{#if actionType 'clear-channel'}}
+        {{> specialClearChannel}}
     {{/if}}
     
     {{#if actionType 'timer'}}

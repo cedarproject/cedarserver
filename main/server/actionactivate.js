@@ -10,7 +10,29 @@ action_activate = function (action) {
         stages.update(action.stage, {$set: l});
     }
     
+    else if (action.type == 'light') {
+        var settings = {
+            time: action.time,
+            fade: action.lights_fade
+        };
+
+        Meteor.call('lightValues', action.light, action.settings.values, settings);
+    }
+    
+    else if (action.type == 'lightgroup') {
+        var settings = {
+            time: action.time,
+            fade: action.lights_fade
+        };
+
+        Meteor.call('lightGroupValues', action.lightgroup, action.settings.values, settings);
+    }
+    
     else if (action.type == 'lightscene') {
         Meteor.call('sceneActionActivate', action);
+    }
+    
+    else if (action.type == 'sequence') {
+        Meteor.call('sequenceActionActivate', action);
     }
 };

@@ -1,5 +1,5 @@
 Template.set.onRendered(function () {
-    $(window).keydown(function (setid, event) {
+    this.handler = function (setid, event) {
         // This is pretty ugly.
         
         if (event.key != 'ArrowLeft' && event.key != 'ArrowRight') return;
@@ -150,5 +150,11 @@ Template.set.onRendered(function () {
                 Meteor.call('setActivate', set._id, go._id);
             }
         }
-    }.bind(this, Template.currentData()._id));
+    }.bind(this, Template.currentData()._id);
+    
+    $(window).keydown(this.handler);
+});
+
+Template.set.onDestroyed(function () {
+    $(window).off('keydown', null, this.handler);
 });

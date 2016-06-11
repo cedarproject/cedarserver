@@ -11,6 +11,14 @@ Template.actionDisplay.helpers({
         return mediaplaylists.findOne(this.playlist);
     },
     
+    getLight: function () {
+        return lights.findOne(this.light);
+    },
+    
+    getLightGroup: function () {
+        return lightgroups.findOne(this.lightgroup);
+    },
+    
     getLightScene: function () {
         return lightscenes.findOne(this.lightscene);
     },
@@ -26,5 +34,9 @@ Template.actionDisplay.helpers({
         var pres = presentations.findOne(this.presentation);
         pres.action = this._id;
         return pres;
-    }
+    },
+    
+    getSequence: function () {
+        return sequences.findOne(this.sequence);
+    },
 });

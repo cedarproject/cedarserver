@@ -155,6 +155,7 @@ Meteor.methods({
             action.set = setid;
             action.time = time;
             
+            if (action.type == 'sequence') console.log('calling', action.time);
             action_activate(action);
         }
     },

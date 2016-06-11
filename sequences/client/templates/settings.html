@@ -1,0 +1,86 @@
+<template name="sequenceSettings">
+    <div class="container-fluid">
+        <h3>
+            <div class="btn-group pull-right">
+                <button id="sequence-play" class="btn btn-success">
+                    <span class="glyphicon glyphicon-play"></span>
+                </button>
+                <button id="sequence-stop" class="btn btn-warning">
+                    <span class="glyphicon glyphicon-stop"></span>
+                </button>
+                <button id="settings-toggle" class="btn btn-default">
+                    <span class="glyphicon glyphicon-cog"></span>
+                </button>
+            </div>
+            
+            {{title}}
+        </h3>
+        
+        <div id="settings" class="collapse">
+            <div class="well">
+                <label>Title:</label>
+                <input id="title" class="form-control" value={{title}}>
+                
+                <label>Stage:</label>
+                <select id="stage" class="form-control">
+                    <option value="{{stage}}" selected>{{stageTitle stage}}</option>
+                    {{#each stages}}
+                        <option value="{{_id}}">{{title}}</option>
+                    {{/each}}
+                </select>
+                
+                <label>Duration:</label>
+                <input class="setting form-control" type="number" min=0 max=10000 step=1 data-setting="duration" value={{getSetting 'duration'}}>
+                
+                <label>Use BPM:</label>
+                <select class="setting form-control" data-setting="useBPM">
+                    <option value="no" {{isSelected 'useBPM' 'no'}}>No</option>
+                    <option value="yes" {{isSelected 'useBPM' 'yes'}}>Yes</option>
+                </select>
+                
+                <label>BPM:</label>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button id="bpm-tap" class="btn btn-default">Tap</button>
+                    </span>
+                    <input class="setting form-control" type="number" min=0.1 max=1000 step=0.5 data-setting="bpm" value={{getSetting 'bpm'}}>
+                </div>
+                
+                <p><i>Beat length: <b>{{getBeat}}</b></i></p>
+                
+                <label>Loop:</label>
+                <select class="setting form-control" data-setting="loop">
+                    <option value="no" {{isSelected 'loop' 'no'}}>No</option>
+                    <option value="yes" {{isSelected 'loop' 'yes'}}>Yes</option>
+                </select>
+            </div>
+        </div>
+        
+        <div id="sequence-container" class="row">
+            <div class="sequence-panel col-md-6 col-xs-12">
+                <button id="add-action" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    Add Action
+                </button>
+                
+                <ul class="list-group">
+                    {{#each actions}}
+                        {{> sequenceActionDisplay}}
+                    {{/each}}
+                </ul>
+            </div>
+
+            <div class="sequence-panel col-md-6 col-xs-12">
+                {{#if selectedAction}}
+                    {{#with selectedAction}}
+                        {{> actionSettings}}
+                        
+                        <button class="action-del btn btn-danger">Delete</button>
+                    {{/with}}
+                {{/if}}
+            </div>
+        </div>
+    </div>
+    
+    {{> actionSelector}}
+</template>

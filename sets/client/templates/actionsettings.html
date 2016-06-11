@@ -89,9 +89,38 @@
         
         {{#if typeIs 'lightscene'}}
             <label>Fade Length:</label>
-            <input type="number" class="setting form-control" data-setting="lights_fade" min=0 max=60 step=0.1 value={{getLightSceneFade}}>
+            <input type="number" class="setting form-control" data-setting="lights_fade" min=0 max=60 step=0.1 value={{getLightFade}}>
         {{/if}}
-            
+        
+        {{#if typeIs 'light'}}
+            <label>Fade Length:</label>
+            <input type="number" class="setting form-control" data-setting="lights_fade" min=0 max=60 step=0.1 value={{getSetting 'lights_fade'}}>
+
+            <label>Light Value:</label>
+            {{#with getLight}}
+                <div class="valueselector">
+                    {{> valueSelector}}
+                </div>
+            {{/with}}
+        {{/if}}
+        
+        {{#if typeIs 'lightgroup'}}
+            <label>Fade Length:</label>
+            <input type="number" class="setting form-control" data-setting="lights_fade" min=0 max=60 step=0.1 value={{getSetting 'lights_fade'}}>
+
+            <label>Light Group Value:</label>
+            {{#with getLightGroup}}
+                <div class="valueselector">
+                    {{> valueSelector}}
+                </div>
+            {{/with}}
+        {{/if}}
+        
+        {{#if typeIs 'sequence' 'clear-channel'}}
+            <label>Sequence Channel:</label>
+            <input class="setting form-control" data-setting="sequence_channel" value={{getSetting 'sequence_channel'}}>
+        {{/if}}
+        
         {{#if set}}
             <h4>Triggers</h4>
             

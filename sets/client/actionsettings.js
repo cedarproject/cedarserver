@@ -48,6 +48,18 @@ Template.actionSettings.helpers({
         if (Template.parentData().settings.key == key) return 'selected';
     },
     
+    getLight: function () {
+        var light = lights.findOne(this.light);
+        light.values = this.settings.values;
+        return light;
+    },
+    
+    getLightGroup: function () {
+        var group = lightgroups.findOne(this.lightgroup);
+        group.values = this.settings.values;
+        return group;
+    },
+    
     getLightSceneFade: function () {
         if (typeof this.settings['lights_fade'] === 'undefined')
             return lightscenes.findOne(this.lightscene).settings.fade;
@@ -70,6 +82,16 @@ Template.actionSettings.events({
         var setting = $(event.target).data('setting');
         var value = $(event.target).val();
         Meteor.call('actionSetting', template.data._id, setting, value);
+    },
+
+    'slideStop .valueselector': function (event, template) {
+        var channel = $(event.target).data('channel');
+        var type = $(event.currentTarget).data('type');
+                
+        var values = this.values;
+        values[channel] = parseFloat($(event.target).val());
+        
+        Meteor.call('actionSetting', template.data._id, 'values', values);
     },
     
     'change .song-arrangement': function (event, template) {

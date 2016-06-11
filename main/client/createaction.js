@@ -24,6 +24,28 @@ create_action = function (col, _id) {
         else action.layer = 'background'; // TODO figure out a more sensible default!
     }
     
+    else if (col == 'lights') {
+        action.type = 'light';
+        action.light = _id;
+
+        var light = lights.findOne(action.light)
+        action.defaulttitle = light.title;
+
+        action.settings.values = [];
+        light.channels.forEach((channel) => {action.settings.values.push(0)});
+    }
+
+    else if (col == 'lightgroups') {
+        action.type = 'lightgroup';
+        action.lightgroup = _id;
+
+        var group = lightgroups.findOne(action.lightgroup)
+        action.defaulttitle = group.title;
+
+        action.settings.values = [];
+        group.channels.forEach((channel) => {action.settings.values.push(0)});
+    }
+    
     else if (col == 'lightscenes') {
         action.type = 'lightscene';
         action.lightscene = _id;
@@ -47,6 +69,13 @@ create_action = function (col, _id) {
         action.layer = 'foreground'; // TODO fix this to default to the topmost layer, or something.
     }
     
+    else if (col == 'sequences') {
+        action.type = 'sequence';
+        action.sequence = _id;
+        action.defaulttitle = sequences.findOne(action.sequence).title;
+        action.settings.sequence_channel = 'default';
+    }
+    
     else if (col == 'special') {
         if (_id == 'clear-layer') {
             action.type = 'clear-layer';
@@ -54,7 +83,13 @@ create_action = function (col, _id) {
             action.layer = 'foreground'; // TODO fix this to default to the topmost layer, or something.
         }
         
-        if (_id == 'timer') {
+        else if (_id == 'clear-channel') {
+            action.type = 'clear-channel';
+            action.defaulttitle = 'Clear Channel';
+            action.settings.sequence_channel = 'default';
+        }
+        
+        else if (_id == 'timer') {
             action.type = 'timer';
             action.defaulttitle = 'Timer';
             action.layer = 'foreground'; // TODO same as above!

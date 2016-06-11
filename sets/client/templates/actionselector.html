@@ -24,9 +24,21 @@
                             <li role="presentation">
                                 <a href="#playlists" role="tab" data-toggle="tab">Playlists</a>
                             </li>
+
+                            <li role="presentation">
+                                <a href="#lights" role="tab" data-toggle="tab">Lights</a>
+                            </li>
+
+                            <li role="presentation">
+                                <a href="#lightgroups" role="tab" data-toggle="tab">Light Groups</a>
+                            </li>
                             
                             <li role="presentation">
                                 <a href="#scenes" role="tab" data-toggle="tab">Scenes</a>
+                            </li>
+
+                            <li role="presentation">
+                                <a href="#sequences" role="tab" data-toggle="tab">Sequences</a>
                             </li>
 
                             <li role="presentation">
@@ -50,9 +62,21 @@
                             <div role="tabpanel" class="tab-pane fade" id="playlists">
                                 {{> collectionSelector playlistSelector}}
                             </div>
+
+                            <div role="tabpanel" class="tab-pane fade" id="lights">
+                                {{> collectionSelector lightSelector}}
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane fade" id="lightgroups">
+                                {{> collectionSelector lightgroupSelector}}
+                            </div>
                             
                             <div role="tabpanel" class="tab-pane fade" id="scenes">
                                 {{> collectionSelector sceneSelector}}
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane fade" id="sequences">
+                                {{> collectionSelector sequenceSelector}}
                             </div>
 
                             <div role="tabpanel" class="tab-pane fade" id="special">

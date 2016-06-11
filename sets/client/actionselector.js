@@ -15,6 +15,22 @@ Template.actionSelector.helpers({
         addbutton: true
     },
     
+    lightSelector: {
+        collection: lights,
+        displayTemplate: 'light',
+        fields: [{field: 'title', type: String}, {field: 'stage', type: Stage}],
+        sort: [['title', 1]],
+        addbutton: true
+    },
+
+    lightgroupSelector: {
+        collection: lightgroups,
+        displayTemplate: 'lightGroup',
+        fields: [{field: 'title', type: String}, {field: 'stage', type: Stage}],
+        sort: [['title', 1]],
+        addbutton: true
+    },
+    
     sceneSelector: {
         collection: lightscenes,
         displayTemplate: 'lightScene',
@@ -38,6 +54,14 @@ Template.actionSelector.helpers({
         sort: [['title', 1]],
         addbutton: true
     },
+    
+    sequenceSelector: {
+        collection: sequences,
+        displayTemplate: 'sequence',
+        fields: [{field: 'title', type: String}],
+        sort: [['title', 1]],
+        addbutton: true
+    }
 });
 
 Template.actionSelector.events({    
