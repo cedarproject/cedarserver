@@ -24,7 +24,6 @@ ecmascript-runtime@0.2.10
 ejson@1.0.11
 fastclick@1.0.11
 fish:ffmpeg@1.0.0
-flowkey:numeric@1.0.3
 geojson-utils@1.0.8
 hot-code-push@1.0.4
 html-tools@1.0.9
@@ -43,7 +42,6 @@ iron:url@1.0.11
 jquery@1.11.8
 kidovate:bootstrap-slider@0.0.5
 launch-screen@1.0.11
-limemakers:three@0.75.0
 livedata@1.0.18
 logging@1.0.12
 meteor@1.1.14
@@ -68,7 +66,6 @@ promise@0.6.7
 random@1.0.9
 reactive-dict@1.1.7
 reactive-var@1.0.9
-redhead:remarkable@1.6.2
 reload@1.1.8
 retry@1.0.7
 risul:bootstrap-colorpicker@2.3.0

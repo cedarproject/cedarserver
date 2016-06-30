@@ -3,34 +3,38 @@ SequenceHandler = class SequenceHandler {
         this.action = action;
         this.sequence = sequences.findOne(action.sequence);
         
-        this.time = this.action.time;
+        this.time = parseFloat(this.action.time);
         this.loop = this.sequence.settings.loop;
-        this.duration = this.sequence.settings.duration;
+        this.duration = parseFloat(this.sequence.settings.duration);
         
         this.useBPM = this.sequence.settings.useBPM;
-        if (this.useBPM) {
-            this.bpm = this.sequence.settings.bpm;
+        if (this.useBPM == 'yes') {
+            this.bpm = parseFloat(this.sequence.settings.bpm);
             this.beat = 60.0 / this.bpm;
             this.duration *= this.beat;
         }
         
         this.actions = actions.find({sequenceid: this.sequence._id}).fetch();
         
-        if (this.useBPM) {                
-            for (var p of ['lights_fade', 'media_fade']) {
-                if (action.settings.hasOwnProperty(p)) action.settings[p] *= this.beat;
-            }
+        if (this.useBPM == 'yes') {
+            this.actions.forEach((action) => {
+                if (action.type == 'light' || action.type == 'lightgroup' || action.type == 'lightscene')
+                    action.settings.lights_fade = parseFloat(combineSettings(action.settings).lights_fade) * this.beat;
+                if (action.type == 'media' || action.type == 'mediaplaylist')
+                    action.settings.media_fade = parseFloat(combineSettings(action.settings).media_fade) * this.beat;
+            });
         }
         
         this.start();
     }
 
     start () {
+        var b = Date.now()
         this.sequence_handlers = {};
         this.timers = [];
         
         this.actions.forEach((action) => {
-            if (this.useBPM) {
+            if (this.useBPM == 'yes') {
                 var time = this.time + (action.settings.sequence_start * this.beat) - 0.1;
             } else {
                 var time = this.time + action.settings.sequence_start - 0.1;
@@ -50,15 +54,17 @@ SequenceHandler = class SequenceHandler {
         });
         
         if (this.loop == 'yes') {            
-            if (this.useBPM) {
-                console.log('restart at', (this.time + (this.duration * this.beat)) * 1000 - Date.now());
-                this.time += this.duration * this.beat;
-                this.timers.push(Meteor.setTimeout(() => {this.stop(); this.start();}, (this.time + (this.duration * this.beat)) * 1000 - Date.now()));
+            if (this.useBPM == 'yes') {
+                this.time += this.duration;
+                console.log('restart at', this.time * 1000 - Date.now());
+                this.timers.push(Meteor.setTimeout(() => {this.stop(); this.start();}, this.time * 1000 - Date.now()));
             } else {
                 this.time += this.duration;
-                this.timers.push(Meteor.setTimeout(() => {this.stop(); this.start();}, this.duration * 1000));
+                console.log('restart at', this.time, this.duration, this.time * 1000 - Date.now());
+                this.timers.push(Meteor.setTimeout(() => {this.stop(); this.start();}, this.time * 1000 - Date.now()));
             }
         }
+        console.log('start finished in', Date.now() - b)
     }
     
     do (action) {
@@ -66,6 +72,7 @@ SequenceHandler = class SequenceHandler {
             this.sequence_handlers[action.settings.sequence_channel] = new SequenceHandler(action);
         }
         
+        console.log('activating action', action.defaulttitle, action.time);
         action_activate(action);
     }
     

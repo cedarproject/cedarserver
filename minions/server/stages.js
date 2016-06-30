@@ -19,7 +19,8 @@ Meteor.methods({
                 'audio': null,
                 'background': null,
                 'foreground': null
-            }
+            },
+            sequences: {}
         });
     },
     

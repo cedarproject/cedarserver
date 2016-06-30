@@ -11,6 +11,9 @@ Meteor.startup(function () {
         stages.update(stage, {$set: {layers: layers}});
     });
     
+    // make sure stages have sequences object
+    stages.update({sequences: {$exists: false}}, {$set: {sequences: {}}}, {multi: true});
+    
     // change layers from object to array
     minions.find({type: 'media'}).forEach((minion) => {
         if (minion.layers.__proto__ !== Array.prototype) {

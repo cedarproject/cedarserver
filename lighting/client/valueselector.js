@@ -4,8 +4,11 @@ Template.valueSelector.helpers({
     channels: function () {
         var dc = [];
         for (var c in this.channels) {
-            if (this.channels[c].type != 'fixed') dc.push(this.channels[c]);
+            var channel = this.channels[c];
+            channel.index = c;
+            if (channel.type != 'fixed') dc.push(channel);
         }
+
         return dc;
     },
     
@@ -28,10 +31,6 @@ Template.valueSelector.helpers({
         var string = '#' + toHexColor(color.red * color.intensity) + toHexColor(color.green * color.intensity) + toHexColor(color.blue * color.intensity);
         return string;
     },
-    
-    getIndex: function () {
-        return Template.parentData().channels.indexOf(this);
-    }
 });
 
 Template.valueSelector.onRendered(function () {

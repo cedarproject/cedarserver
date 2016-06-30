@@ -13,7 +13,7 @@ action_activate = function (action) {
     else if (action.type == 'light') {
         var settings = {
             time: action.time,
-            fade: action.lights_fade
+            fade: parseFloat(combineSettings(action.settings).lights_fade)
         };
 
         Meteor.call('lightValues', action.light, action.settings.values, settings);
@@ -22,7 +22,7 @@ action_activate = function (action) {
     else if (action.type == 'lightgroup') {
         var settings = {
             time: action.time,
-            fade: action.lights_fade
+            fade: parseFloat(combineSettings(action.settings).lights_fade)
         };
 
         Meteor.call('lightGroupValues', action.lightgroup, action.settings.values, settings);
@@ -34,5 +34,9 @@ action_activate = function (action) {
     
     else if (action.type == 'sequence') {
         Meteor.call('sequenceActionActivate', action);
+    }
+
+    else if (action.type == 'clear-channel') {
+        Meteor.call('sequenceClearChannel', action.settings.sequence_channel);
     }
 };

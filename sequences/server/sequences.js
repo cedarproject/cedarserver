@@ -32,16 +32,16 @@ Meteor.methods({
     },
         
     sequenceActionActivate: function (action) {
-        if (sequence_handlers[action.settings.sequence_channel])
-            sequence_handlers[action.settings.sequence_channel].stop();
-        
-        sequence_handlers[action.settings.sequence_channel] = new SequenceHandler(action);
+        var sequence = sequences.findOne(action.sequence)
+        var stage = stages.findOne(sequence.stage);
+
+        var s = {}; s['sequences.' + action.settings.sequence_channel] = sequence._id;
+        stages.update(stage, {$set: s});
     },
     
     sequenceDeactivateChannel: function (channel) {
-        if (sequence_handlers[channel]) {
-            sequence_handlers[channel].stop();
-            delete sequence_handlers[channel];
-        }
+        // TODO this should only reset one stage's channel, not all.
+        var s = {}; s['sequences.' + channel] = null;
+        stages.update({}, {$unset: s}, {multi: true});
     }
 });
