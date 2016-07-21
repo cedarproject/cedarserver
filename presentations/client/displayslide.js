@@ -12,6 +12,12 @@ Template.presentationDisplaySlide.helpers({
         return media.findOne(this.toString());
     },
     
+    backgroundColor: function () {
+        var pres = presentations.findOne(this.presentation);
+        var color = combineSettings(pres.settings, this.settings).presentations_background_color;
+        return `rgb(${Math.round(color[0] * 255.0)}, ${Math.round(color[1] * 255.0)}, ${Math.round(color[2] * 255.0)})`;
+    },
+
     fillins: function () {
         var tags = 1;
         var numbers = [{action: this.action, order: this.order, fillin: 0}];

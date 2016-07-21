@@ -79,20 +79,10 @@
                 <option value="top" {{isSelected 'presentations_image_side' 'top'}}>Top</option>
                 <option value="bottom" {{isSelected 'presentations_image_side' 'bottom'}}>Bottom</option>
             </select>
-            
-            <div class="row">
-                <div class="col-xs-6">                
-                    <label>Font Color:</label>
-                    {{> colorpicker classes='setting' value=(getSetting 'presentations_font_color') data-setting="presentations_font_color" format="rgb"}}
-                    <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_color">Reset</button>
-                </div>
-                
-                <div class="col-xs-6">
-                    <label>Background Color:</label>
-                    {{> colorpicker classes='setting' value=(getSetting 'presentations_background_color') data-setting="presentations_background_color" format="rgba"}}  
-                    <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_background_color">Reset</button>
-                </div>
-            </div>
+
+            <label>Background Color:</label>
+            {{> colorpicker classes='setting' value=(getSetting 'presentations_background_color') data-setting="presentations_background_color" format="rgba"}}  
+            <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_background_color">Reset</button>
 
             <label>Text Align:</label>
             <select data-setting="presentations_align_horizontal" class="setting form-control">
@@ -112,7 +102,7 @@
         </div>
     </div>
 
-    <div class="editor-container"></div>
+    <div class="editor-container" style="background-color: {{backgroundColor}}"></div>
 
     {{#if images}}
         <ul class="list-group">

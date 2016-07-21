@@ -5,12 +5,18 @@ Template.presentationSlide.helpers({
     
     isSelected: function (k, v) {
         var pres = presentations.findOne(this.presentation);
-        if (combineSettings(this.settings, pres.settings)[k] == v) return 'selected';
+        if (combineSettings(pres.settings, this.settings)[k] == v) return 'selected';
     },
 
     getSetting: function (setting) {
         var pres = presentations.findOne(this.presentation);
-        return combineSettings(this.settings, pres.settings)[setting];
+        return combineSettings(pres.settings, this.settings)[setting];
+    },
+    
+    backgroundColor: function () {
+        var pres = presentations.findOne(this.presentation);
+        var color = combineSettings(pres.settings, this.settings).presentations_background_color;
+        return `rgb(${Math.round(color[0] * 255.0)}, ${Math.round(color[1] * 255.0)}, ${Math.round(color[2] * 255.0)})`;
     },
     
     getRecentColor: function () {

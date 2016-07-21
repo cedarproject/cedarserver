@@ -36,10 +36,21 @@ Meteor.methods({
         var last = presentationslides.findOne({presentation: presid}, {sort: {order: -1}, fields: {order: 1}});
         if (last) var order = last.order + 1;
         else var order = 0;
+        
+        var defaultcolor = combineSettings(pres.settings).presentations_font_color;
+        var cs = '#';
+        defaultcolor.forEach((v) => {cs += ('0' + Math.round(v * 255.0).toString(16)).slice(-2)});
+        
+        var content = {
+            ops: [{
+                attributes: {color : cs},
+                insert: 'New slide'
+            }]
+        };
             
         return presentationslides.insert({
             presentation: presid,
-            content: '',
+            content: content,
             triggers: [],
             images: [],
             settings: {},
