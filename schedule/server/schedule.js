@@ -2,7 +2,7 @@ schedule_handles = {};
 
 function schedule_callback (scheduleid) {
     var schedule = schedules.findOne(scheduleid);
-    var time = Date.now() + 100;
+    var time = Date.now() * 0.01 + 0.01;
 
     actions.find({schedule: schedule._id}).forEach((action) => {
         action.time = time;
