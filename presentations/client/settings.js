@@ -6,7 +6,15 @@ Template.presentationSettings.helpers({
         sort: [['title', 'asc']],
         addbutton: true
     },
+    
+    notImported: function () {
+        return !this.imported;
+    },
 
+    importstatusIs: function () {
+        return Array.from(arguments).indexOf(this.importstatus) != -1;
+    },
+    
     slides: function () {
         return presentationslides.find({presentation: this._id}, {sort: {order: 1}});
     },

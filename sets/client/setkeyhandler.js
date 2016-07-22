@@ -96,15 +96,17 @@ Template.set.onRendered(function () {
 
                     var cont = false;
                     var fillins = 0;
-
-                    slide.content.ops.forEach((section, i) => {
-                        if (section['attributes'] && section['attributes']['strike']) {
-                            if (!cont) {
-                                fillins++;
-                                cont = true;
-                            }
-                        } else cont = false;
-                    });
+                    
+                    if (!pres.imported) {
+                        slide.content.ops.forEach((section, i) => {
+                            if (section['attributes'] && section['attributes']['strike']) {
+                                if (!cont) {
+                                    fillins++;
+                                    cont = true;
+                                }
+                            } else cont = false;
+                        });
+                    }
 
                     if (event.key == 'ArrowRight' && args.fillin < fillins) {
                         args.fillin++;

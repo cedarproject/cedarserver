@@ -32,7 +32,8 @@ Meteor.startup(function () {
     });
     
     // ensure all presentations have settings object
-    presentations.find({settings: {$exists: false}}).forEach((pres) => {
-        presentations.update(pres, {$set: {settings: {}}});
-    });
+    presentations.update({settings: {$exists: false}}, {$set: {settings: {}}}, {multi: true});
+    
+    // ensure all presentations have imported property
+    presentations.update({imported: {$exists: false}}, {$set: {imported: false}}, {multi: true});
 });

@@ -9,12 +9,39 @@ Meteor.methods({
         return presentations.insert({
             title: 'New Presentation',
             settings: {},
-            tags: []
+            tags: [],
+            imported: false
         });
+    },
+    
+    presentationNewImported: function (title) {
+        return presentations.insert({
+            title: title,
+            settings: {},
+            tags: [],
+            imported: true,
+            importstatus: 'processing_1' // processing_1 > processing_2 > ready | error
+        });
+    },
+    
+    presentationImportStatus: function (presid, status) {
+        presentations.update({_id: presid}, {$set: {importstatus: status}});
     },
     
     presentationDel: function (presid) {
         var pres = getPresentation(presid);
+
+        if (pres.imported) {
+            var fs = Npm.require('fs');
+            var prefix = settings.findOne({key: 'mediadir'}).value;
+            
+            presentationslides.find({presentation: presid}).forEach((slide) => {
+                fs.unlink(prefix + '/' + slide.imagepath, () => {});
+            });
+            
+            fs.rmdir(prefix + '/presentations/' + presid);
+        }
+
         presentationslides.remove({presentation: presid});
         presentations.remove(pres);
     },
@@ -51,17 +78,34 @@ Meteor.methods({
         return presentationslides.insert({
             presentation: presid,
             content: content,
-            triggers: [],
             images: [],
             settings: {},
             order: order
         });
     },
     
+    presentationAddImportedSlide: function (presid, imagepath, order) {
+        return presentationslides.insert({
+            presentation: presid,
+            imagepath: imagepath,
+            order: order
+        });
+    },
+    
     presentationSlideDel: function (slideid) {
-        var index = presentationslides.findOne(slideid).order;
+        var slide = presentationslides.findOne(slideid);
+        var pres = presentations.findOne(slide.presentation);
+        
+        if (pres.imported) {
+            var fs = Npm.require('fs');
+            var prefix = settings.findOne({key: 'mediadir'}).value;
+            
+            fs.unlink(prefix + '/' + slide.imagepath, () => {});
+        }
+        
+        var index = slide.order;
         presentationslides.remove(slideid);
-        presentationslides.update({order: {$gte: index}}, {$inc: {order: -1}}, {multi: true});
+        presentationslides.update({presentation: slide.presentation, order: {$gte: index}}, {$inc: {order: -1}}, {multi: true});
     },
     
     presentationSlideContent: function (slideid, content) {

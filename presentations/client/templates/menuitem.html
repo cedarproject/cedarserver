@@ -1,3 +1,11 @@
 <template name="presentationMenuItem">
     <h4><a href={{pathFor 'presentationSettings' _id}}>{{title}}</a></h4>
+    {{#if imported}}
+        {{#if importstatusIs 'processing_1' 'processing_2'}}
+            <span class="label label-info"><i class="fa fa-refresh fa-spin fa-fw"></i>processing</span>
+        {{/if}}
+        {{#if importstatusIs 'error'}}
+            <span class="label label-danger"><i class="fa fa-exclamation-triangle"></i>import error</span>
+        {{/if}}
+    {{/if}}        
 </template>

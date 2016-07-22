@@ -8,5 +8,8 @@
             <span class="glyphicon glyphicon-plus"></span>
             New Presentation
         </button>
+        
+        <h4>Import Presentations</h4>
+        {{> upload_bootstrap multiple=true fileTypes='.odp,.ppt,.pptx,.pps,pot,.kth,.key,.pcd,.sda,.sdd,.sdp,.vor' formData=presentationFormData}}
     </div>
 </template>

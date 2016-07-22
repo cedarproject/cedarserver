@@ -6,6 +6,10 @@ Template.presentationsMenu.helpers({
         sort: [['title', 'asc']],
         addbutton: false
     },
+    
+    presentationFormData: {
+        type: 'importpresentation'
+    }
 });
 
 Template.presentationsMenu.events({

@@ -8,64 +8,78 @@
             {{title}}
         </h3>
         
+        {{#if imported}}
+            <p>
+                <span class="label label-default">imported</span>
+                {{#if importstatusIs 'processing_1' 'processing_2'}}
+                    <span class="label label-info"><i class="fa fa-refresh fa-spin fa-fw"></i>processing</span>
+                {{/if}}
+                {{#if importstatusIs 'error'}}
+                    <span class="label label-danger"><i class="fa fa-exclamation-triangle"></i>import error</span>
+                {{/if}}
+            </p>
+        {{/if}}
+        
         <div id="pres-settings-collapse" class="collapse">
             <div class="well">
                 <label>Title:</label>
                 <input id="pres-title" class="form-control" value={{title}}>
                 
-                <div class="row">
-                    <div class="col-lg-2 col-sm-4 col-xs-6">                
-                        <label>Font Color:</label>
-                        {{> colorpicker classes='setting' value=(getSetting 'presentations_font_color') data-setting="presentations_font_color" format="rgb"}}
-                        <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_color">Reset</button>
+                {{#if notImported}}
+                    <div class="row">
+                        <div class="col-lg-2 col-sm-4 col-xs-6">                
+                            <label>Font Color:</label>
+                            {{> colorpicker classes='setting' value=(getSetting 'presentations_font_color') data-setting="presentations_font_color" format="rgb"}}
+                            <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_color">Reset</button>
+                        </div>
+
+                        <div class="col-lg-2 col-sm-4 col-xs-6">                
+                            <label>Italic Text Color:</label>
+                            {{> colorpicker classes='setting' value=(getSetting 'presentations_font_color_bold') data-setting="presentations_font_color_bold" format="rgb"}}
+                            <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_color_bold">Reset</button>
+                        </div>
+
+                        <div class="col-lg-2 col-sm-4 col-xs-6">                
+                            <label>Bold Text Color:</label>
+                            {{> colorpicker classes='setting' value=(getSetting 'presentations_font_color_italic') data-setting="presentations_font_color_italic" format="rgb"}}
+                            <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_color_italic">Reset</button>
+                        </div>
+
+                        <div class="col-lg-2 col-sm-4 col-xs-6">                
+                            <label>Underlined Text Color:</label>
+                            {{> colorpicker classes='setting' value=(getSetting 'presentations_font_color_underline') data-setting="presentations_font_color_underline" format="rgb"}}
+                            <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_color_underline">Reset</button>
+                        </div>
+
+                        <div class="col-lg-2 col-sm-4 col-xs-6">                
+                            <label>Font Outline Color:</label>
+                            {{> colorpicker classes='setting' value=(getSetting 'presentations_font_outline_color') data-setting="presentations_font_outline_color" format="rgb"}}
+                            <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_outline_color">Reset</button>
+                        </div>
+                        
+                        <div class="col-lg-2 col-sm-4 col-xs-6">
+                            <label>Background Color:</label>
+                            {{> colorpicker classes='setting' value=(getSetting 'presentations_background_color') data-setting="presentations_background_color" format="rgba"}}  
+                            <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_background_color">Reset</button>
+                        </div>
                     </div>
 
-                    <div class="col-lg-2 col-sm-4 col-xs-6">                
-                        <label>Italic Text Color:</label>
-                        {{> colorpicker classes='setting' value=(getSetting 'presentations_font_color_bold') data-setting="presentations_font_color_bold" format="rgb"}}
-                        <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_color_bold">Reset</button>
-                    </div>
-
-                    <div class="col-lg-2 col-sm-4 col-xs-6">                
-                        <label>Bold Text Color:</label>
-                        {{> colorpicker classes='setting' value=(getSetting 'presentations_font_color_italic') data-setting="presentations_font_color_italic" format="rgb"}}
-                        <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_color_italic">Reset</button>
-                    </div>
-
-                    <div class="col-lg-2 col-sm-4 col-xs-6">                
-                        <label>Underlined Text Color:</label>
-                        {{> colorpicker classes='setting' value=(getSetting 'presentations_font_color_underline') data-setting="presentations_font_color_underline" format="rgb"}}
-                        <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_color_underline">Reset</button>
-                    </div>
-
-                    <div class="col-lg-2 col-sm-4 col-xs-6">                
-                        <label>Font Outline Color:</label>
-                        {{> colorpicker classes='setting' value=(getSetting 'presentations_font_outline_color') data-setting="presentations_font_outline_color" format="rgb"}}
-                        <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_font_outline_color">Reset</button>
-                    </div>
+                    <label>Text Align:</label>
+                    <select data-setting="presentations_align_horizontal" class="setting form-control">
+                        <option value="">--unset--</option>
+                        <option value="left" {{isSelected 'presentations_align_horizontal' 'left'}}>Left</option>
+                        <option value="center" {{isSelected 'presentations_align_horizontal' 'center'}}>Center</option>
+                        <option value="right" {{isSelected 'presentations_align_horizontal' 'right'}}>Right</option>
+                    </select>
                     
-                    <div class="col-lg-2 col-sm-4 col-xs-6">
-                        <label>Background Color:</label>
-                        {{> colorpicker classes='setting' value=(getSetting 'presentations_background_color') data-setting="presentations_background_color" format="rgba"}}  
-                        <button class="setting-reset btn btn-sm btn-warning" data-setting="presentations_background_color">Reset</button>
-                    </div>
-                </div>
-
-                <label>Text Align:</label>
-                <select data-setting="presentations_align_horizontal" class="setting form-control">
-                    <option value="">--unset--</option>
-                    <option value="left" {{isSelected 'presentations_align_horizontal' 'left'}}>Left</option>
-                    <option value="center" {{isSelected 'presentations_align_horizontal' 'center'}}>Center</option>
-                    <option value="right" {{isSelected 'presentations_align_horizontal' 'right'}}>Right</option>
-                </select>
-                
-                <label>Vertical Text Align:</label>
-                <select data-setting="presentations_align_vertical" class="setting form-control">
-                    <option value="">--unset--</option>
-                    <option value="top" {{isSelected 'presentations_align_vertical' 'top'}}>Top</option>
-                    <option value="center" {{isSelected 'presentations_align_vertical' 'center'}}>Center</option>
-                    <option value="bottom" {{isSelected 'presentations_align_vertical' 'bottom'}}>Bottom</option>
-                </select>
+                    <label>Vertical Text Align:</label>
+                    <select data-setting="presentations_align_vertical" class="setting form-control">
+                        <option value="">--unset--</option>
+                        <option value="top" {{isSelected 'presentations_align_vertical' 'top'}}>Top</option>
+                        <option value="center" {{isSelected 'presentations_align_vertical' 'center'}}>Center</option>
+                        <option value="bottom" {{isSelected 'presentations_align_vertical' 'bottom'}}>Bottom</option>
+                    </select>
+                {{/if}}
 
                 <hr>
                 
@@ -77,31 +91,45 @@
         
         <br>
         
-        {{#each slides}}
-            {{> presentationSlide}}
-        {{/each}}
+        {{#if imported}}
+            {{#each slides}}
+                {{> presentationSlideImported}}
+                <br><hr><br>
+            {{/each}}
+        {{else}}
+            {{#each slides}}
+                {{> presentationSlide}}
+                <br><hr><br>
+            {{/each}}
+        {{/if}}
         
-        <button id="add-slide" class="btn btn-primary">
-            <span class="glyphicon glyphicon-plus"></span>
-            Add Slide
-        </button>
+        
+        {{#if notImported}}
+            <button id="add-slide" class="btn btn-primary">
+                <span class="glyphicon glyphicon-plus"></span>
+                Add Slide
+            </button>
+        {{/if}}
     </div>
     
-    <div class="image-modal modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4>Insert Image</h4>
-                </div>
-                
-                <div class="modal-body">
-                    {{> collectionSelector imageSelector}}
-                </div>
-                
-                <div class="modal-footer">
-                    <button class="modal-close btn btn-default">Close</button>
+    
+    {{#if notImported}}
+        <div class="image-modal modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Insert Image</h4>
+                    </div>
+                    
+                    <div class="modal-body">
+                        {{> collectionSelector imageSelector}}
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button class="modal-close btn btn-default">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    {{/if}}
 </template>
