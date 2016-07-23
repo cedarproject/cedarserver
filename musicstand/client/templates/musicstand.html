@@ -7,13 +7,13 @@
         
         {{#each actions}}
             {{#if typeIs 'song'}}
-                <div class="musicstand-action">
+                <div id="action-{{_id}}" class="musicstand-action">
                     {{#with getSong}}
                         {{> musicstandchart}}
                     {{/with}}
                 </div>
             {{else}}
-                <div class="musicstand-action {{isActive}}">
+                <div id="action-{{_id}}" class="musicstand-action {{isActive}}">
                     {{> actionDisplay}}
                 </div>
             {{/if}}

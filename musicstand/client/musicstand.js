@@ -25,8 +25,13 @@ Template.musicstand.onRendered(function () {
         var activeid = Template.currentData().active;
         var action = actions.findOne(activeid);
         
-        if ($('#scroll-lock').hasClass('active') && $('.musicstand-active').length > 0)
-            scrollTo('.musicstand-active');
+        if ($('#scroll-lock').hasClass('active')) {
+            if (action.type == 'song' && action.args['section'] !== null ) {
+                scrollTo(`#${action._id}-${action.args.section} .musicstand-chart:nth-child(${action.args.index+2})`);
+            } else {
+                scrollTo(`#action-${action._id}`);
+            }
+        }
     });
 });
 

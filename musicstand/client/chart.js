@@ -4,6 +4,7 @@ Template.musicstandchart.helpers({
         for (var i in this.arrangement.order) {
             var section = songsections.findOne(this.arrangement.order[i]);
             section._id = i;
+            section.action = this.action;
             section.section = i;
             sections.push(section);
         }
@@ -35,7 +36,10 @@ Template.musicstandchart.helpers({
     },
 
     getText: function () {
-        return songTextToChordChart(this.text, Template.parentData(2).transpose.get(), 
+        console.log(this.text);
+        console.log(Template.parentData(2).transpose.get());
+        console.log(Session.get('flat-' + Template.parentData(2)._id));
+        return songTextToChordChart(this.text, Template.parentData(2).transpose.get(),
                                     Session.get('flat-' + Template.parentData(2)._id));
     },
     

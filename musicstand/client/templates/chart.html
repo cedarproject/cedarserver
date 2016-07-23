@@ -16,7 +16,7 @@
     </div>
     
     {{#each sections}}
-        <div class="">
+        <div id="{{action}}-{{section}}" class="">
             <p><b>{{title}}</b></p>
             {{#each contents}}
                 <p class="musicstand-chart {{isActive}}">{{{getText}}}</p>
