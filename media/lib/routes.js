@@ -58,6 +58,7 @@ Router.route('/media/static/:filepath*', function () {
             }
 
             headers['Content-Range'] = `bytes ${start}-${end}/${stats.size}`;
+            headers['Content-Length'] = end - start;
             var status = 206;
         }
         
