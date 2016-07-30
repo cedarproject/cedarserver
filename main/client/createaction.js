@@ -69,6 +69,17 @@ create_action = function (col, _id) {
         action.layer = 'foreground'; // TODO fix this to default to the topmost layer, or something.
     }
     
+    else if (col == 'presentationslide') {
+        action.type = 'presentationslide';
+        action.presentationslide = _id;
+
+        var slide = presentationslides.findOne(_id);
+        var pres = presentations.findOne(slide.presentation);
+
+        action.defaulttitle = pres.title + ' Slide ' + slide.order.toString();
+        action.layer = 'foreground';
+    }
+    
     else if (col == 'sequences') {
         action.type = 'sequence';
         action.sequence = _id;

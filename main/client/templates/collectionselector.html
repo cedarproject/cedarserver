@@ -39,11 +39,19 @@
         <ul class="list-group">
             {{#each filtered}}
                 <li class="list-group-item">
-                    {{#if ../addbutton}}
-                        <button type="button" class="collection-add btn btn-primary" style="float: right" data-collection={{collectionName}} data-id={{_id}}>
-                            <span class="glyphicon glyphicon-plus"></span>
-                        </button>
-                    {{/if}}
+                    <div class="btn-group pull-right">
+                        {{#if ../altbutton}}
+                            <button type="button" class="collection-alt btn btn-default" data-collection={{collectionName}} data-id={{_id}}>
+                                <i class="fa fa-ellipsis-h"></i>
+                            </button>
+                        {{/if}}
+                        
+                        {{#if ../addbutton}}
+                            <button type="button" class="collection-add btn btn-primary" data-collection={{collectionName}} data-id={{_id}}>
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        {{/if}}
+                    </div>
                     
                     {{> Template.dynamic template=../displayTemplate}}
                 </li>

@@ -52,7 +52,8 @@ Template.actionSelector.helpers({
         displayTemplate: 'presentation',
         fields: [{field: 'title', type: String}],
         sort: [['title', 1]],
-        addbutton: true
+        addbutton: true,
+        altbutton: true
     },
     
     sequenceSelector: {

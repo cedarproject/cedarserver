@@ -36,6 +36,12 @@ Template.actionDisplay.helpers({
         return pres;
     },
     
+    getPresentationSlide: function () {
+        var slides = presentationslides.findOne(this.presentationslide);
+        slide.action = this._id;
+        return slide;
+    },
+    
     getSequence: function () {
         return sequences.findOne(this.sequence);
     },

@@ -44,6 +44,10 @@
             {{> presentationDisplay}}
         {{/with}}
     {{/if}}
+
+    {{#if actionType 'presentationslide'}}
+        <h4>{{defaulttitle}}</h4>
+    {{/if}}
     
     {{#if actionType 'sequence'}}
         {{#with getSequence}}
