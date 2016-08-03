@@ -19,7 +19,7 @@ combineSettings = function () {
     
     for (var i in arguments) {
         for (var p in arguments[i]) {
-            if (arguments[i].hasOwnProperty(p) && typeof arguments[i][p] !== 'null' && typeof arguments[i][p] !== 'undefined')
+            if (arguments[i].hasOwnProperty(p) && arguments[i][p] !== null && typeof arguments[i][p] !== 'undefined')
                 out[p] = arguments[i][p];
         }
     }

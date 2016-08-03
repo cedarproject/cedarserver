@@ -16,10 +16,16 @@
     {{> colorpicker classes='setting' value=(getSetting 'presentations_font_color') data-setting="presentations_font_color" format="rgb"}}
 
     <label>Font Outline:</label>
-    <input type="number" min=0 max=10 step=1 data-setting="presentations_font_outline" class="setting form-control" value={{getSetting 'presentations_font_outline' format="rgb"}}>
+    <input type="number" min=0 max=10 step=1 data-setting="presentations_font_outline" class="setting form-control" value={{getSetting 'presentations_font_outline'}}>
     
     <label>Font Outline Color:</label>
     {{> colorpicker classes='setting' value=(getSetting 'presentations_font_outline_color') data-setting="presentations_font_outline_color" format="rgb"}}
+    
+    <label>Horizontal Text Margin:</label>
+    <input type="number" min=0 max=200 step=1 data-setting="presentations_text_margin_horizontal" class="setting form-control" value={{getSetting 'presentations_text_margin_horizontal'}}>
+
+    <label>Vertical Text Margin:</label>
+    <input type="number" min=0 max=200 step=1 data-setting="presentations_text_margin_vertical" class="setting form-control" value={{getSetting 'presentations_text_margin_vertical'}}>
                             
     <label>Text Align:</label>
     <select data-setting="presentations_align_horizontal" class="setting form-control">

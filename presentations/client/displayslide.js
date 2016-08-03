@@ -18,6 +18,12 @@ Template.presentationDisplaySlide.helpers({
         return `rgb(${Math.round(color[0] * 255.0)}, ${Math.round(color[1] * 255.0)}, ${Math.round(color[2] * 255.0)})`;
     },
 
+    fontColor: function () {
+        var pres = presentations.findOne(this.presentation);
+        var color = combineSettings(pres.settings, this.settings).presentations_font_color;
+        return `rgb(${Math.round(color[0] * 255.0)}, ${Math.round(color[1] * 255.0)}, ${Math.round(color[2] * 255.0)})`;
+    },
+
     fillins: function () {
         var tags = 1;
         var numbers = [{action: this.action, order: this.order, fillin: 0}];
