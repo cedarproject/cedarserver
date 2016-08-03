@@ -91,6 +91,30 @@ Template.set.events({
         Meteor.call('setActivate', template.data._id, this.action);
     },
     
+    'click .presentationslideselector .presentation-content': function (event, template) {
+        // This whole system is ugly. Very ugly. TODO rewrite the whole thing using ES2015 classes for each action type! Ugly hack for now due to deadline.
+        var action = create_action('presentationslide', this._id);
+
+        var add_to = Session.get('add-to');
+        
+        if (add_to.type == 'set') {
+            var a = actions.findOne({set: template.data._id}, {sort: {order: -1}, fields: {order: 1}});
+            if (a) action.order = a.order + 1;
+            else action.order = 0;
+
+            action.set = template.data._id;
+        } else if (add_to.type == 'replace') {
+            Meteor.call('actionReplace', add_to.action, action);
+        } else {
+            action.actionid = add_to.action;
+        }
+        
+        Meteor.call('actionAdd', action);
+                    
+        template.$('#presentation-slideselector-modal').modal('hide');
+        return false;
+    },
+        
     'click .presentation-content': function (event, template) {
         event.stopImmediatePropagation();
         if (Session.get('set-control-locked')) return;
@@ -129,6 +153,18 @@ Template.set.events({
     'click .set-add-item': function (event, template) {
         Session.set('add-to', {type: 'set'});
         template.$('.action-selector-modal').modal('show');
+    },
+    
+    'click .collection-alt': function (event, template) {
+        var col = $(event.target).data('collection');
+        var _id = $(event.target).data('id');
+        
+        if (col == 'presentations') {
+            Session.set('presentationSlideSelectorPresentation', _id);
+            template.$('#presentation-slideselector-modal').modal('show');
+        }
+        
+        $(event.target).parents('.modal').modal('hide');
     },
     
     'click .collection-add': function (event, template) {                
@@ -200,6 +236,10 @@ Template.set.events({
 
     'click #set-delete': function (event, template) {
         template.$('#delete-confirm-modal').modal('show');
+    },
+    
+    'click #presentation-slideselector-cancel': function (event, template) {
+        template.$('#presentation-slideselector-modal').modal('hide');
     },
     
     'click #set-delete-cancel': function (event, template) {

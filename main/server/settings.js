@@ -6,9 +6,9 @@ var defaults = [
     },
         
     {
-        key: 'streamingserver',
-        value: null,
-        description: 'URL of Kurento server'
+        key: 'mediaurl',
+        value: '/media/static/',
+        description: 'URL fragment of media server' // TODO get rid of this, it's not really useful.
     }
 ];
 

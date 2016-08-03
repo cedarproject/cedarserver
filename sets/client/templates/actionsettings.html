@@ -5,7 +5,7 @@
             <input class="action-title form-control" placeholder={{defaulttitle}} value={{title}}>
         {{/if}}
         
-        {{#if typeIs 'media' 'playlist' 'song' 'presentation' 'clear-layer' 'timer'}}
+        {{#if typeIs 'media' 'playlist' 'song' 'presentation' 'presentationslide' 'clear-layer' 'timer'}}
             <label>Layer:</label>
             
             <select class="action-layer form-control">
@@ -66,7 +66,7 @@
             </select>
         {{/if}}
         
-        {{#if typeIs 'presentation'}}
+        {{#if typeIs 'presentation' 'presentationslide'}}
             <label>Fade Length:</label>
             <input type="number" class="setting form-control" data-setting="presentations_fade" min=0 max=5 step=0.05 value={{getSetting 'presentations_fade'}}>
         {{/if}}

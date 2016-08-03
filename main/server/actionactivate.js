@@ -4,7 +4,8 @@ action_activate = function (action) {
     
     if (action.type == 'media' || action.type == 'playlist' ||
         action.type == 'clear-layer' || action.type == 'timer' ||
-        action.type == 'song' || action.type == 'presentation') {
+        action.type == 'song' || action.type == 'presentation' ||
+        action.type == 'presentationslide') {
 
         var l = {}; l['layers.' + action.layer] = action;
         stages.update(action.stage, {$set: l});

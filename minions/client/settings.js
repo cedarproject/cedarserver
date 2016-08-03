@@ -42,13 +42,9 @@ Template.minionsettings.events({
 
     'click .display-layer-checkbox': function (event, template) {
         if (event.target.checked) {
-            if (!template.data.layers.hasOwnProperty(this.toString())) 
-                Meteor.call('minionAddLayer', template.data._id, this.toString());
-        }
-        
-        else {
-            if (template.data.layers.hasOwnProperty(this.toString()))
-                Meteor.call('minionDelLayer', template.data._id, this.toString());
+            Meteor.call('minionAddLayer', template.data._id, this.toString());
+        } else {
+            Meteor.call('minionDelLayer', template.data._id, this.toString());
         }
     },
     

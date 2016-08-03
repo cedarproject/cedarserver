@@ -64,7 +64,7 @@ Meteor.methods({
     
     minionAddLayer: function (minionid, layer) {
         var minion = checkMinion(minionid);
-        minions.update(minion, {$push: {layers: layer}});
+        minions.update({_id: minion, layers: {$nin: [layer]}}, {$push: {layers: layer}});
     },
     
     minionDelLayer: function (minionid, layer) {
