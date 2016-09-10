@@ -1,7 +1,7 @@
 <template name="presentationDisplaySlide">
     <div class="col-lg-4 col-md-6 col-xs-12">
-        <div class="presentation-content {{isActive}}">
-            <div class="display-container" style="background-color: {{backgroundColor}}; color: {{fontColor}};"></div>
+        <div class="presentation-content {{isActive}}" style="background-color: {{backgroundColor}}; color: {{fontColor}};">
+            <div class="display-container"></div>
 
             {{#each images}}
                 {{#with getMedia}}
