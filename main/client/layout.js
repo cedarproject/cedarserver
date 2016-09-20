@@ -8,5 +8,9 @@ Template.layout.helpers({
     isActive: function (section) {
         var current = Router.current().lookupTemplate();
         if (current.toLowerCase().startsWith(section)) return 'active';
+    },
+
+    serverTitle: function () {
+        return settings.findOne({key: 'servertitle'})['value'] || 'Cedar';
     }
 });
