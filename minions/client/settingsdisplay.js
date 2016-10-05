@@ -94,16 +94,16 @@ Template.minionsettingsdisplay.events({
         }
     },
     
-    'input .block-list, click .block-list input:checkbox': function (event) {
-        var blocks = this.settings.blocks;
+    'input .block-list, click .block-list input:checkbox': function (event, template) {
+        var blocks = template.data.settings.blocks;
         var row = $(event.target).parents('.row');
 
         for (var i = 0; i < block_props.length; i++) {
             var prop = block_props[i].prop;
             var def = block_props[i].def;
             
-            if (def.type == 'checkbox') {
-                blocks[row.data('blocknum')][prop] = row.find('.disp' + prop).prop('checked');
+            if (block_props[i].type == 'checkbox') {
+                blocks[row.data('blocknum')][prop] = row.find('.disp-' + prop).prop('checked');
             } else {
                 if (prop.split('-')[0] == 'block') {
                     // Also an ugly hack, TODO find a better way to do this...
@@ -117,6 +117,6 @@ Template.minionsettingsdisplay.events({
             }
         }
 
-        Meteor.call('minionSetting', this._id, 'blocks', blocks);
+        Meteor.call('minionSetting', template.data._id, 'blocks', blocks);
     }
 });

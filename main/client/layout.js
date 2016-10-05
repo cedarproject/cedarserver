@@ -11,6 +11,8 @@ Template.layout.helpers({
     },
 
     serverTitle: function () {
-        return settings.findOne({key: 'servertitle'})['value'] || 'Cedar';
+        var s = settings.findOne({key: 'servertitle'});
+        if (s) return s['value'];
+        else return 'Cedar';
     }
 });

@@ -28,7 +28,10 @@ Meteor.methods({
                 width: 1,
                 height: 1,
                 x: 0, y: 0,
-                brightness: 1
+                brightness: 1,
+                blend_top: 0, blend_bottom: 0,
+                blend_left: 0, blend_right: 0,
+                alpha_mask: false
             }];
         }
         
@@ -64,7 +67,7 @@ Meteor.methods({
     
     minionAddLayer: function (minionid, layer) {
         var minion = checkMinion(minionid);
-        minions.update({_id: minion, layers: {$nin: [layer]}}, {$push: {layers: layer}});
+        minions.update({_id: minion._id, layers: {$nin: [layer]}}, {$push: {layers: layer}});
     },
     
     minionDelLayer: function (minionid, layer) {

@@ -21,7 +21,7 @@
                                 {{#each props}}
                                     {{#if settingTypeIs 'checkbox'}}
                                         <label>
-                                            <input type="checkbox" {{isChecked prop}}> {{title}}
+                                            <input type="checkbox" class="disp-{{prop}} disp-setting" {{isChecked prop}}> {{title}}
                                         </label>
                                     {{else}}
                                         <div class="input-group">
