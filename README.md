@@ -12,23 +12,24 @@ Cedar requires the following software:
 
 * Meteor
 * FFMpeg (LibAV has not been tested but will probably work too)
-* GraphicsMagick
+* GraphicsMagick or ImageMagick
+* LibreOffice (optional, for importing Impress and PowerPoint presentations)
 
 After installing the above and downloading Cedar, then simply run command `meteor` in Cedar's directory. On first start, Meteor will download and install multiple packages, this will take some time. Once Meteor starts the application, open a browser to http://localhost:3000/.
 
 About Cedar
 ===========
 
-> I plan to redesign a lot of how Cedar is structured in the near future, changing the "Minions" concept into something more intuitive. (I originally planned the Media minion to be a separate program, not browser-based.) -- Isaac
+> Cedar is currently in alpha status, most features work properly but with occasional bugs. -- Isaac
 
 Cedar is composed of many different parts that work together:
 
   * Minions: Minons handle instructions from Cedar and perform certain actions, like displaying media files or controlling lights. Minions are sorted into Stages, allowing one Cedar server to control minions in multiple areas simultaneously.
-  * Media: Users can upload videos, images, and audio to be displayed by Media minions.
-  * Presentations: Users can create presentations to be displayed by Media minions.
-  * Songs: Songs contain both song lyrics and (optionally) chords, lyrics are displayed by media minions while chord charts are displayed by Music Stand.
-  * Music Stand: Displays song lyrics and chord charts, automatically scrolling to the currently active lyrics.
-  * Lighting: Defines light fixtures, groups of lights, light scenes, and consoles. Control of light fixtures is handled by the separate lighting minion software.
+  * Media: Users can upload videos, images, and audio to be displayed by Display minions.
+  * Presentations: Users can create presentations to be displayed by Display minions.
+  * Songs: Songs contain both song lyrics and (optionally) chords, lyrics are displayed by Display minions while chord charts are displayed by Music Stand.
+  * Music Stand: Displays song lyrics and chord charts, automatically scrolling to the currently-active lyrics.
+  * Lighting: Defines light fixtures, groups of lights, light scenes, and consoles. Control of light fixtures is handled by the Lighting minion.
   * Sets: Sets are the mainstay of Cedar, allowing media, presentations, songs, and light scenes to be added to a playlist-like Set. Set actions can trigger other actions simultaneously, for example a song triggering a background image and multiple light scenes.
 
 Quick Start
@@ -54,4 +55,4 @@ Credits
 
 Cedar is designed and developed by Isaac "hunternet93" Smith.
 
-The Cedar logo was created by jilllio and released into public domain on openclipart.org ([https://openclipart.org/detail/224342/Young-Cedar-Tree Link to image])
+The Cedar logo was created by jilllio and released into public domain on OpenClipArt at [https://openclipart.org/detail/224342/Young-Cedar-Tree]([https://openclipart.org/detail/224342/Young-Cedar-Tree)
