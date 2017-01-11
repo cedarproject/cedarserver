@@ -12,7 +12,6 @@ reactive-var
 twbs:bootstrap
 patte:mime-npm
 cfs:graphicsmagick
-kidovate:bootstrap-slider
 pfafman:font-awesome-4
 meteor-base
 mobile-experience
@@ -36,3 +35,4 @@ standard-minifier-css
 standard-minifier-js
 http
 hunternet93:quilljs
+rgnevashev:bootstrap-slider

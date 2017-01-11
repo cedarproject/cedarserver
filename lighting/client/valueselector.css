@@ -1,40 +1,42 @@
-#red-slider .slider-selection {
+.light-slider-container-red .slider-selection {
     background: rgb(200,0,0);
 }
 
-#red-slider .slider-handle {
+.light-slider-container-red .slider-handle {
     background: rgb(255,0,0);
 }
 
-#green-slider .slider-selection {
+.light-slider-container-green .slider-selection {
     background: rgb(0,200,0);
 }
 
-#green-slider .slider-handle {
+.light-slider-container-green .slider-handle {
     background: rgb(0,255,0);
 }
 
-#blue-slider .slider-selection {
+.light-slider-container-blue .slider-selection {
     background: rgb(0,0,200);
 }
 
-#blue-slider .slider-handle {
+.light-slider-container-blue .slider-handle {
     background: rgb(0,0,255);
 }
 
-#intensity-slider .slider-selection {
+.light-slider-container-intensity .slider-selection {
     background: rgb(225, 225, 225);
 }
 
-#intensity-slider .slider-handle {
+.light-slider-container-intensity .slider-handle {
     background: rgb(175, 175, 175);
 }
 
-#colordisplay {
+.light-color-display {
     background: rgb(0,0,0);
+    transition: background 0.1s;
 
-    width: 2em;
+    width: 80%;
     height: 2em;
+    margin: 5px auto;
 
     border: 1px solid gray;
     border-radius: 10px;

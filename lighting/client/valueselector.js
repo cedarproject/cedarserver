@@ -1,4 +1,4 @@
- toHexColor = function (i) {return ('0' + Math.round(i * 255 || 0).toString(16)).slice(-2)};
+toHexColor = function (i) {return ('0' + Math.round(i * 255 || 0).toString(16)).slice(-2)};
 
 Template.valueSelector.helpers({
     channels: function () {
@@ -20,8 +20,6 @@ Template.valueSelector.helpers({
         return false;
     },
 
-    // TODO getColor is apparently buggy and causes the colordisplay to come up black sometimes, fix!
-    // Also adjust so it still works if not all colors are present, and account for intensity values.
     getColor: function () {
         var color = {red: 0, green: 0, blue: 0, intensity: 1};
         for (var c in this.channels) {
@@ -34,12 +32,15 @@ Template.valueSelector.helpers({
 });
 
 Template.valueSelector.onRendered(function () {
-    this.$('.value-slider').slider({max: 1, step: 0.01, tooltip: 'hide'});
+    this.sliders = [];
+    this.$('.light-slider').each((i, e) => {
+        this.sliders.push(new Slider(e, {max: 1, step: 0.01, tooltip: 'hide'}));
+    });
     
-    this.autorun(function () {
+    this.autorun(() => {
         var d = Template.currentData()
         for (var c in d.channels) {
-            Template.instance().$('#' + d.channels[c].type).slider('setValue', d.values[c]);
+            this.sliders[c].setValue(d.values[c]);
         }
     });
 });

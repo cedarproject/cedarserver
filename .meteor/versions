@@ -40,7 +40,6 @@ iron:middleware-stack@1.1.0
 iron:router@1.0.13
 iron:url@1.0.11
 jquery@1.11.9
-kidovate:bootstrap-slider@0.0.5
 launch-screen@1.0.12
 livedata@1.0.18
 logging@1.0.14
@@ -68,6 +67,7 @@ reactive-dict@1.1.8
 reactive-var@1.0.10
 reload@1.1.10
 retry@1.0.8
+rgnevashev:bootstrap-slider@6.1.6
 risul:bootstrap-colorpicker@2.3.0
 risul:moment-timezone@0.5.0_5
 routepolicy@1.0.11

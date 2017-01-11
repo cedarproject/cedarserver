@@ -89,7 +89,7 @@
         
         {{#if typeIs 'lightscene'}}
             <label>Fade Length:</label>
-            <input type="number" class="setting form-control" data-setting="lights_fade" min=0 max=60 step=0.1 value={{getLightFade}}>
+            <input type="number" class="setting form-control" data-setting="lights_fade" min=0 max=60 step=0.1 value={{getSetting 'light_fade'}}>
         {{/if}}
         
         {{#if typeIs 'light'}}

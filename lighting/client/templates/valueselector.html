@@ -1,11 +1,11 @@
 <template name="valueSelector">
     {{#each channels}}
-        <div id="{{type}}-slider">
-            <input type="text" id={{type}} class="value-slider" data-channel={{index}}>
+        <div class="light-slider-container light-slider-container-{{type}}">
+            <input type="text" class="light-slider" data-channel={{index}}>
         </div>
     {{/each}}
     
     {{#if hasColor}}
-        <div id="colordisplay" style="background: {{getColor}}"></div>
+        <div class="light-color-display" style="background: {{getColor}}"></div>
     {{/if}}
 </template>

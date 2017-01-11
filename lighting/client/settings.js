@@ -5,7 +5,7 @@ Template.lightSettings.helpers({
 
     nameOf: function (minionid) {
         var minion = minions.findOne({_id: minionid});
-        if (minion) {return minion.name;}
+        if (minion) {return minion.title;}
         else {return 'Unassigned';}
     },
     
