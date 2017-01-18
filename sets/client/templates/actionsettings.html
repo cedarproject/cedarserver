@@ -5,7 +5,7 @@
             <input class="action-title form-control" placeholder={{defaulttitle}} value={{title}}>
         {{/if}}
         
-        {{#if typeIs 'media' 'playlist' 'song' 'presentation' 'presentationslide' 'clear-layer' 'timer'}}
+        {{#if typeIs 'media' 'playlist' 'song' 'presentation' 'presentationslide' 'clear-layer' 'timer' 'camera'}}
             <label>Layer:</label>
             
             <select class="action-layer form-control">
@@ -15,7 +15,7 @@
             </select>
         {{/if}}
         
-        {{#if typeIs 'media' 'playlist'}}
+        {{#if typeIs 'media' 'playlist' 'camera'}}
             <label>Fade Length:</label>
             <input type="number" class="setting form-control" data-setting="media_fade" min=0 max=5 step=0.05 value={{getSetting 'media_fade'}}>
 
@@ -24,7 +24,23 @@
                 <option value="yes" {{isSelected 'media_preserve_aspect' 'yes'}}>Yes (scale to fit)</option>
                 <option value="no" {{isSelected 'media_preserve_aspect' 'no'}}>No (stretch to fit)</option>
             </select>
+        
+        {{/if}}
+        
+        {{#if typeIs 'camera'}}
+            <label>Camera Index:</label>
+            <input type="number" class="setting form-control" data-setting="camera_index" min=0 max=10000 step=1 value={{getSetting 'camera_index'}}>
             
+            <label>Preferred Width:</label>
+            <small>Set to 0 for automatic</small>
+            <input type="number" class="setting form-control" data-setting="camera_width" min=0 max=10000 step=1 value={{getSetting 'camera_width'}}>
+
+            <label>Preferred Height:</label>
+            <small>Set to 0 for automatic</small>
+            <input type="number" class="setting form-control" data-setting="camera_height" min=0 max=10000 step=1 value={{getSetting 'camera_height'}}>
+        {{/if}}
+        
+        {{#if typeIs 'media' 'playlist'}}
             <label>Loop:</label>
             <select class="setting form-control" data-setting="media_loop">
                 <option value="yes" {{isSelected 'media_loop' 'yes'}}>Yes</option>

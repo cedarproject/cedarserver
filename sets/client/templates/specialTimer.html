@@ -1,13 +1,17 @@
 <template name="specialTimer">
-    {{#if typeIs 'countdown'}}
-        <h4>Timer - Countdown {{getTime}}</h4>
-    {{/if}}
-    
-    {{#if typeIs 'startAt'}}
-        <h4>Timer - Start At {{getTime}}</h4>
-    {{/if}}
-    
-    {{#if typeIs 'endAt'}}
-        <h4>Timer - End At {{getTime}}</h4>
-    {{/if}}
+    <h4>
+        <i class="fa fa-clock-o"></i> 
+        Timer - 
+        {{#if typeIs 'countdown'}}
+            Countdown {{getTime}}
+        {{/if}}
+        
+        {{#if typeIs 'startAt'}}
+            Start At {{getTime}}
+        {{/if}}
+        
+        {{#if typeIs 'endAt'}}
+            End At {{getTime}}
+        {{/if}}
+    </h4>
 </template>

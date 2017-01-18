@@ -5,7 +5,7 @@ action_activate = function (action) {
     if (action.type == 'media' || action.type == 'playlist' ||
         action.type == 'clear-layer' || action.type == 'timer' ||
         action.type == 'song' || action.type == 'presentation' ||
-        action.type == 'presentationslide') {
+        action.type == 'presentationslide' || action.type == 'camera') {
 
         var l = {}; l['layers.' + action.layer] = action;
         stages.update(action.stage, {$set: l});

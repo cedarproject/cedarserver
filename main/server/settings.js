@@ -1,7 +1,7 @@
 var defaults = [
     {
         key: 'mediadir',
-        value: process.env.PWD + '/.uploads',
+        value: process.env.PWD + '/.uploads/',
         description: 'Directory to store uploaded media files.'
     },
         

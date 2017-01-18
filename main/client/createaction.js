@@ -106,6 +106,13 @@ create_action = function (col, _id) {
             action.layer = 'foreground'; // TODO same as above!
             action.settings.timer_time = {hours: 0, minutes: 0, seconds: 0};
         }
+        
+        else if (_id == 'camera') {
+            action.type = 'camera';
+            action.defaulttitle = 'Camera';
+            action.layer = 'foreground';
+            action.settings.camera_index = 0;
+        }
     }
 
     return action;
