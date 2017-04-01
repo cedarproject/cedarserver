@@ -15,7 +15,12 @@ Cedar requires the following software:
 * GraphicsMagick or ImageMagick
 * LibreOffice (optional, for importing Impress and PowerPoint presentations)
 
-After installing the above and downloading Cedar, then simply run command `meteor` in Cedar's directory. On first start, Meteor will download and install multiple packages, this will take some time. Once Meteor starts the application, open a browser to http://localhost:3000/.
+After installing the above and downloading Cedar, initialize the common settings submodule with the commands:
+
+    git submodule init
+    git submodule update
+
+Then, simply run command `meteor` in Cedar's directory. On first start, Meteor will download and install multiple packages, this will take some time. Once Meteor starts the application, open a browser to http://localhost:3000/.
 
 About Cedar
 ===========
