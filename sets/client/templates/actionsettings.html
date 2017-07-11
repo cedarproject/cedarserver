@@ -28,8 +28,8 @@
         {{/if}}
         
         {{#if typeIs 'camera'}}
-            <label>Camera Index:</label>
-            <input type="number" class="setting form-control" data-setting="camera_index" min=0 max=10000 step=1 value={{getSetting 'camera_index'}}>
+            <label>Camera Pipeline:</label>
+            <input class="setting form-control" data-setting="camera_pipeline" value={{getSetting 'camera_pipeline'}}>
             
             <label>Preferred Width:</label>
             <small>Set to 0 for automatic</small>
