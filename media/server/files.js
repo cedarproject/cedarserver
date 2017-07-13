@@ -4,6 +4,12 @@ Meteor.startup(function () {
     fs.mkdir(prefix + '/thumbs', function () {});
 });
 
+Meteor.methods({
+    mediaDirectAdd: function (filename) {
+        process_media({name: filename}, null);
+    }
+});
+
 process_media = function (fileInfo, formFields) {
     var mediaid = media.insert({
         title: fileInfo.name,
