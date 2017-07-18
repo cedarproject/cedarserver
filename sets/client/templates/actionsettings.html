@@ -40,6 +40,11 @@
             <input type="number" class="setting form-control" data-setting="camera_height" min=0 max=10000 step=1 value={{getSetting 'camera_height'}}>
         {{/if}}
         
+        {{#if typeIs 'custom'}}
+            <label>Custom Action String:</label>
+            <input class="setting form-control" data-setting="action_string" value={{getSetting 'action_string'}}>
+        {{/if}}
+        
         {{#if typeIs 'media' 'playlist'}}
             <label>Loop:</label>
             <select class="setting form-control" data-setting="media_loop">

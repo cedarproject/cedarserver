@@ -111,7 +111,11 @@ create_action = function (col, _id) {
             action.type = 'camera';
             action.defaulttitle = 'Camera';
             action.layer = 'foreground';
-            action.settings.camera_index = 0;
+        }
+        
+        else if (_id == 'custom') {
+            action.type = 'custom';
+            action.defaulttitle = 'Custom';
         }
     }
 

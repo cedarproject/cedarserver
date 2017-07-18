@@ -40,4 +40,8 @@ action_activate = function (action) {
     else if (action.type == 'clear-channel') {
         Meteor.call('sequenceClearChannel', action.settings.sequence_channel);
     }
+    
+    else if (action.type == 'custom') {
+        Meteor.call('customActionTriggered', action.settings.action_string || '');
+    }
 };
