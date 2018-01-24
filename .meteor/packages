@@ -36,4 +36,6 @@ useraccounts:bootstrap
 accounts-password
 useraccounts:iron-routing
 mrt:jquery-ui-sortable
-universe:i18n-blaze
+msgfmt:core@2.0.0-preview.23
+msgfmt:extract
+msgfmt:ui-dev-only

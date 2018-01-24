@@ -1,0 +1,23 @@
+<template name="stages_menu">
+    <div class="container-fluid">
+        <nav class="navbar justify-content-between">
+            <h1>{{mf 'stages_title' 'Stages'}}</h1>
+            
+            {{#if isInRole 'editor'}}
+                <button id="new-stage" class="btn btn-outline-success">{{mf 'new_stage_button' 'New Stage'}}</button>
+            {{/if}}
+        </nav>
+        
+        <ul class="list-group">
+            {{#each this}}
+                {{> stages_menu_entry}}
+            {{/each}}
+        </ul>
+    </div>
+</template>
+
+<template name="stages_menu_entry">
+    <li class="list-group-item">
+        <a href="{{pathFor route='stage.settings'}}">{{title}}</a>
+    </li>
+</template>

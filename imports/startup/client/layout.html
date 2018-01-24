@@ -1,0 +1,59 @@
+<template name="layout">
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-success">
+        <a class="navbar-brand" href="#">{{mf 'cedar_title' 'Cedar'}}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbar-dropdown-control" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{mf 'control_title' 'Control'}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbar-dropdown-control">
+                        <a class="dropdown-item" href="#">{{mf 'sets_title' 'Sets'}}</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbar-dropdown-content" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{mf 'content_title' 'Content'}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbar-dropdown-content">
+                        <a class="dropdown-item" href="#">{{mf 'media_title' 'Media'}}</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbar-dropdown-configure" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{mf 'configure_title' 'Configure'}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbar-dropdown-configure">
+                        <a class="dropdown-item" href="/stages">{{mf 'stages_title' 'Stages'}}</a>
+                    </div>
+                </li>
+            </ul>
+            
+            {{#if currentUser}}{{#with currentUser}}
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown">
+                        {{userPrimaryEmail}}
+                    </button>
+                    <div class="dropdown-menu">
+                        <a id="switch-theme" class="dropdown-item" href="#">
+                            {{#if themeIs 'light'}}
+                                {{mf 'use_dark_theme' 'Use Dark Theme'}}
+                            {{else}}
+                                {{mf 'use_light_theme' 'Use Light Theme'}}
+                            {{/if}}
+                        </a>
+                        <a id="logout-user" class="dropdown-item" href="#">{{mf 'logout' 'Log Out'}}</a>
+                    </div>
+                </div>
+            {{/with}}{{/if}}
+        </div>
+    </nav>
+    
+    {{> yield}}
+</template>

@@ -2,6 +2,7 @@ accounts-base@1.4.2
 accounts-password@1.5.0
 alanning:roles@1.2.16
 allow-deny@1.1.0
+amplify@1.0.0
 autoupdate@1.3.12
 babel-compiler@6.24.7
 babel-runtime@1.1.1
@@ -17,6 +18,7 @@ callback-hook@1.0.10
 check@1.2.5
 coffeescript@1.12.7_3
 coffeescript-compiler@1.12.7_3
+cosmos:browserify@0.5.1
 ddp@1.4.0
 ddp-client@2.2.0
 ddp-common@1.3.0
@@ -24,6 +26,8 @@ ddp-rate-limiter@1.0.7
 ddp-server@2.1.1
 deps@1.0.12
 diff-sequence@1.0.7
+djedi:sanitize-html@1.11.3
+djedi:sanitize-html-client@1.11.3
 dynamic-import@0.2.1
 ecmascript@0.9.0
 ecmascript-runtime@0.5.0
@@ -31,6 +35,7 @@ ecmascript-runtime-client@0.5.0
 ecmascript-runtime-server@0.5.0
 ejson@1.1.0
 email@1.2.3
+fastclick@1.0.13
 fourseven:scss@4.5.4
 geojson-utils@1.0.10
 hot-code-push@1.0.4
@@ -46,6 +51,7 @@ iron:location@1.0.11
 iron:middleware-stack@1.1.0
 iron:router@1.1.2
 iron:url@1.1.0
+jag:pince@0.0.9
 jquery@1.11.10
 launch-screen@1.1.1
 livedata@1.0.18
@@ -53,6 +59,8 @@ localstorage@1.2.0
 logging@1.1.19
 meteor@1.8.2
 meteor-base@1.2.0
+meteor-platform@1.2.6
+meteorhacks:inject-initial@1.0.4
 minifier-css@1.2.16
 minifier-js@2.2.2
 minimongo@1.4.3
@@ -66,12 +74,18 @@ mongo-dev-server@1.1.0
 mongo-id@1.0.6
 mrt:jquery-ui-sortable@1.10.3
 mrt:later@1.6.1
+msgfmt:core@2.0.0-preview.23
+msgfmt:extract@2.0.2
+msgfmt:ui@2.0.0
+msgfmt:ui-dev-only@2.0.4
+nicolaslopezj:router-layer@0.0.11
 npm-bcrypt@0.9.3
 npm-mongo@2.2.33
 observe-sequence@1.0.16
 ordered-dict@1.0.9
 pfafman:font-awesome-4@4.6.1
 promise@0.10.0
+raix:eventemitter@0.1.3
 random@1.0.10
 rate-limit@1.0.8
 reactive-dict@1.2.0
@@ -99,8 +113,6 @@ tomi:upload-server@1.3.4_3
 tracker@1.1.3
 ui@1.0.13
 underscore@1.0.10
-universe:i18n@1.13.0
-universe:i18n-blaze@1.5.1
 url@1.1.0
 useraccounts:bootstrap@1.14.2
 useraccounts:core@1.14.2

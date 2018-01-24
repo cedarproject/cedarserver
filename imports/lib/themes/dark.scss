@@ -1,0 +1,9 @@
+html, body {
+    height: 100%;
+}
+
+@import "{}/imports/lib/bootstrap/scss/_functions.scss";
+@import "{}/imports/lib/themes/dark_variables.scss";
+@import "{}/imports/lib/bootstrap/scss/bootstrap.scss";
+
+@import "{}/imports/lib/styles/index.scss";
