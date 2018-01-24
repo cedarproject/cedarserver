@@ -1,8 +1,0 @@
-#sequence-container {
-    height: 100vw;
-}
-
-.sequence-panel {
-    height: 100%;
-    overflow-y: auto;
-}
