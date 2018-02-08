@@ -1,5 +1,7 @@
 import '/imports/lib/connection';
 import '/imports/lib/loading';
+import '/imports/lib/widgets';
+import '/imports/lib/accounts/client';
 
 import '/imports/configure';
 import '/imports/control';

@@ -1,5 +1,5 @@
 <template name="layout">
-    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-success">
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-success">
         <a class="navbar-brand" href="#">{{mf 'cedar_title' 'Cedar'}}</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -21,7 +21,7 @@
                         {{mf 'content_title' 'Content'}}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbar-dropdown-content">
-                        <a class="dropdown-item" href="#">{{mf 'media_title' 'Media'}}</a>
+                        <a class="dropdown-item" href="{{pathFor 'media.browser'}}">{{mf 'media_title' 'Media'}}</a>
                     </div>
                 </li>
 
@@ -30,28 +30,34 @@
                         {{mf 'configure_title' 'Configure'}}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbar-dropdown-configure">
-                        <a class="dropdown-item" href="/stages">{{mf 'stages_title' 'Stages'}}</a>
+                        <a class="dropdown-item" href="{{pathFor 'stages.menu'}}">{{mf 'stages_title' 'Stages'}}</a>
+                        {{#if isInRole 'admin'}}
+                            <a class="dropdown-item" href="{{pathFor 'settings'}}">{{mf 'settings_title' 'Settings'}}</a>
+                        {{/if}}
                     </div>
                 </li>
             </ul>
             
-            {{#if currentUser}}{{#with currentUser}}
-                <div class="btn-group">
-                    <button type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown">
-                        {{userPrimaryEmail}}
-                    </button>
-                    <div class="dropdown-menu">
-                        <a id="switch-theme" class="dropdown-item" href="#">
-                            {{#if themeIs 'light'}}
-                                {{mf 'use_dark_theme' 'Use Dark Theme'}}
-                            {{else}}
-                                {{mf 'use_light_theme' 'Use Light Theme'}}
-                            {{/if}}
+            <ul class="navbar-nav">
+                {{#if currentUser}}{{#with currentUser}}
+                    <li class="nav-item dropdown">
+                        <a class="btn btn-outline-primary dropdown-toggle" href="#" data-toggle="dropdown">
+                            {{userPrimaryEmail}}
                         </a>
-                        <a id="logout-user" class="dropdown-item" href="#">{{mf 'logout' 'Log Out'}}</a>
-                    </div>
-                </div>
-            {{/with}}{{/if}}
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href={{pathFor 'user' _id}}>{{mf 'profile' 'Profile'}}</a>
+                            <a id="switch-theme" class="dropdown-item" href="#">
+                                {{#if themeIs 'light'}}
+                                    {{mf 'use_dark_theme' 'Use Dark Theme'}}
+                                {{else}}
+                                    {{mf 'use_light_theme' 'Use Light Theme'}}
+                                {{/if}}
+                            </a>
+                            <a id="logout-user" class="dropdown-item" href="#">{{mf 'logout' 'Log Out'}}</a>
+                        </div>
+                    </li>
+                {{/with}}{{/if}}
+            </ul>
         </div>
     </nav>
     

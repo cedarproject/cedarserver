@@ -1,0 +1,23 @@
+<template name="settings_users">
+    <ul class="list-group list-group-flush">
+        {{#each users}}
+            <li class="list-group-item">
+                <a href="{{pathFor 'user' _id}}">{{getPrimaryEmail}}</a>
+                <p>
+                    {{#if userInRole 'viewer'}}
+                        <span class="badge badge-secondary">{{mf 'role_viewer' 'Viewer'}}</span>
+                    {{/if}}
+                    {{#if userInRole 'controller'}}
+                        <span class="badge badge-info">{{mf 'role_controller' 'Controller'}}</span>
+                    {{/if}}
+                    {{#if userInRole 'editor'}}
+                        <span class="badge badge-info">{{mf 'role_editor' 'Editor'}}</span>
+                    {{/if}}
+                    {{#if userInRole 'admin'}}
+                        <span class="badge badge-success">{{mf 'role_admin' 'Admin'}}</span>
+                    {{/if}}
+                </p>
+            </li>
+        {{/each}}
+    </ul>
+</template>

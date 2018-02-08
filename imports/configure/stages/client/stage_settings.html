@@ -1,12 +1,11 @@
 <template name="stage_settings">
     <div class="container-fluid">
-        <nav class="navbar justify-content-between">
+        <nav class="navbar">
+            {{> backbutton}}
             {{#if isInRole 'admin'}}
-                {{#with title}}
-                    <div id="stage_title" class="h1">{{> editable_text}}</div>
-                {{/with}}
+                <div id="stage_title" class="h1 ml-1 mr-auto">{{> editable_text text=title css="mb-0"}}</div>
             {{else}}
-                <h1>{{title}}</h1>
+                <h1 class="ml-1 mr-auto">{{title}}</h1>
             {{/if}}
             
             {{#if isInRole 'admin'}}

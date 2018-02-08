@@ -60,7 +60,6 @@ Template.stage_settings.events({
     },
     
     'click .del-layer'(event, template) {
-        console.log(this);
         let layers = template.data.display.layers;
         layers.splice(layers.indexOf(this.toString()), 1);
         

@@ -1,0 +1,77 @@
+<template name="user">
+    <nav class="navbar navbar-light bg-light mb-3">
+        {{> backbutton}}
+        <h1 class="mr-auto">{{getPrimaryEmail}}</h1>
+        
+        <div class="btn-group">
+            <button id="reset-password" class="btn btn-outline-info" data-toggle="modal" data-target="#reset-password-modal">
+                {{mf 'reset_password_button' 'Reset Password'}}
+            </button>
+            
+            <button class="btn btn-outline-danger" data-toggle="modal" data-target="#del-user-modal">
+                {{mf 'delete_user_button' 'Delete User'}}
+            </button>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <h2>Permissions</h2>
+        <form {{!isDisabled}}>
+            <div class="form-check">
+                <input class="user-role form-check-input" type="checkbox" checked={{inRole 'viewer'}} id="viewer">
+                <label class="form-check-label" for="viewer">{{mf 'role_viewer' 'Viewer'}}</label>
+            </div>
+            <div class="form-check">
+                <input class="user-role form-check-input" type="checkbox" checked={{inRole 'controller'}} id="controller">
+                <label class="form-check-label" for="controller">{{mf 'role_controller' 'Controller'}}</label>
+            </div>
+            <div class="form-check">
+                <input class="user-role form-check-input" type="checkbox" checked={{inRole 'editor'}} id="editor">
+                <label class="form-check-label" for="editor">{{mf 'role_editor' 'Editor'}}</label>
+            </div>
+            <div class="form-check">
+                <input class="user-role form-check-input" type="checkbox" checked={{inRole 'admin'}} id="admin">
+                <label class="form-check-label" for="admin">{{mf 'role_admin' 'Admin'}}</label>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal fade" id="reset-password-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{mf 'reset_modal_title' 'Password Reset Email Sent'}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>{{mf 'reset_modal_body' 'A password reset email has been sent to {user}.' user=getPrimaryEmail}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{mf 'close' 'Close'}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="del-user-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{mf 'delete_user_title' 'Delete User?'}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>{{mf 'delete_user_body' 'Are you sure you want to delete the user "{user}"?' user=getPrimaryEmail}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="del-user" type="button" class="btn btn-danger">{{mf 'delete_user_button' 'Delete User'}}</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{mf 'cancel' 'Cancel'}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

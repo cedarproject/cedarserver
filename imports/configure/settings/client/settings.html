@@ -1,0 +1,21 @@
+<template name="settings">
+    <nav class="navbar navbar-light mb-3">
+        <h1 class="mr-3">{{mf 'settings_title' 'Settings'}}</h1>
+        
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#users">{{mf 'users_title' 'Users'}}</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container-fluid">
+        <div id="users" class="card">
+            <div class="card-header">
+                <h4 class="card-title">Users</h4>
+            </div>
+
+            {{> settings_users}}
+        </div>
+    </div>
+</template>

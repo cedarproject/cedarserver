@@ -1,6 +1,5 @@
 import { Template } from 'meteor/templating';
 
-import './editable_text.scss';
 import './editable_text.html';
 
 let toggle = function (template, val) {

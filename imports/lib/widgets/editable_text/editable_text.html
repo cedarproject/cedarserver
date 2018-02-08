@@ -1,6 +1,6 @@
 <template name="editable_text">
-    <p class="editable-text-p">
-        {{this}} <i class="fa fa-pencil editable-text-icon"></i>
+    <p class="editable-text-p {{css}}">
+        {{text}} <i class="fa fa-pencil editable-text-icon"></i>
     </p>
-    <input type="text" class="editable-text-input" value="{{this}}" hidden>
+    <input type="text" class="editable-text-input" value="{{text}}" hidden>
 </template>

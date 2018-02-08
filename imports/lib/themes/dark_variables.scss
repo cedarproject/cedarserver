@@ -91,14 +91,17 @@ $nav-tabs-link-active-border-color: $nav-tabs-border-color !default;
 
 $navbar-padding-y:                  1rem !default;
 
-$navbar-dark-color:                 $white !default;
-$navbar-dark-hover-color:           $success !default;
+$navbar-dark-color:                rgba($black,.5) !default;
+$navbar-dark-hover-color:          $black !default;
+$navbar-dark-active-color:         $black !default;
+$navbar-dark-disabled-color:       rgba($black,.3) !default;
+$navbar-dark-toggler-border-color: rgba($black,.1) !default;
 
-$navbar-light-color:                rgba($black,.5) !default;
-$navbar-light-hover-color:          $black !default;
-$navbar-light-active-color:         $black !default;
-$navbar-light-disabled-color:       rgba($black,.3) !default;
-$navbar-light-toggler-border-color: rgba($black,.1) !default;
+$navbar-light-color:                rgba($white,.5) !default;
+$navbar-light-hover-color:          $white !default;
+$navbar-light-active-color:         $white !default;
+$navbar-light-disabled-color:       rgba($white,.3) !default;
+$navbar-light-toggler-border-color: rgba($white,.1) !default;
 
 // Pagination
 
@@ -152,6 +155,9 @@ $list-group-bg:                     $gray-800 !default;
 $list-group-border-color:           $gray-700 !default;
 
 $list-group-hover-bg:               $gray-700 !default;
+
+$list-group-action-color:           $gray-200 !default;
+$list-group-action-active-color:    $gray-800 !default;
 
 // Breadcrumbs
 

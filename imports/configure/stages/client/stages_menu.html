@@ -3,7 +3,7 @@
         <nav class="navbar justify-content-between">
             <h1>{{mf 'stages_title' 'Stages'}}</h1>
             
-            {{#if isInRole 'editor'}}
+            {{#if isInRole 'admin'}}
                 <button id="new-stage" class="btn btn-outline-success">{{mf 'new_stage_button' 'New Stage'}}</button>
             {{/if}}
         </nav>

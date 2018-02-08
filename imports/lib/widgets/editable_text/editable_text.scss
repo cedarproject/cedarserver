@@ -1,5 +1,3 @@
-@import "{}/imports/lib/themes/dark.scss"; // TODO dynamically import correct theme?
-
 .editable-text-input {
     @extend .form-control;
     font-size: inherit;

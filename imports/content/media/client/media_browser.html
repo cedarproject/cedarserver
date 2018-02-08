@@ -1,0 +1,55 @@
+<template name="media_browser">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-md-12">
+                <nav class="navbar justify-content-between">
+                    <h1>{{mf 'media_title' 'Media'}}</h1>
+
+                    {{#if isInRole 'editor'}}
+                        <button id="upload" class="btn btn-outline-success">
+                            <i class="fa fa-plus"></i>
+                            {{mf 'add_playlist' 'Add Playlist'}}
+                        </button>
+                    {{/if}}
+                </nav>
+                <div class="list-group">
+                    <button class="list-group-item list-group-item-action active">{{mf 'all' 'All'}}</button>
+                    
+                    <hr>
+                    
+                    {{#each samplePlaylists}}
+                        <button class="list-group-item list-group-item-action">{{title}}</button>
+                    {{/each}}
+                </div>
+            </div>
+            
+            <div class="col-lg-9 col-md-12">
+                <nav class="navbar justify-content-between">
+                    <h1>All</h1>
+
+                    {{#if isInRole 'editor'}}
+                        <button id="upload" class="btn btn-outline-success">
+                            <i class="fa fa-upload"></i>
+                            {{mf 'upload' 'Upload'}}
+                        </button>
+                    {{/if}}
+                </nav>
+
+                <div class="list-group">
+                    {{#each sampleMedia}}
+                        {{! TODO this should be its own template}}
+                        <div class="list-group-item list-group-item-action">
+                            <div class="media">
+                                <img class="align-self-center mr-3" src="" style="width: 64px; height: 64px; background-color: black;">
+                                <div class="media-body noselect">
+                                    <h4>{{title}}</h4>
+                                    <p>video - 00:00:01</p>
+                                </div>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

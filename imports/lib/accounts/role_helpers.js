@@ -4,7 +4,7 @@ function is_viewer (context) {
         if ('ready' in context) context.ready();
         else throw new Meteor.Error('not-authorized', 'User must have the Viewer role to perform this action');
     }
-    return true;
+    else return true;
 }
 
 function is_editor (context) {
@@ -13,7 +13,7 @@ function is_editor (context) {
         if ('ready' in context) context.ready();
         else throw new Meteor.Error('not-authorized', 'User must have the Editor role to perform this action');
     }
-    return true;
+    else return true;
 }
 
 function is_controller (context) {
@@ -22,7 +22,7 @@ function is_controller (context) {
         if ('ready' in context) context.ready();
         else throw new Meteor.Error('not-authorized', 'User must have the Controller role to perform this action');
     }
-    return true;
+    else return true;
 }
 
 function is_admin (context) {
@@ -31,7 +31,7 @@ function is_admin (context) {
         if ('ready' in context) context.ready();
         else throw new Meteor.Error('not-authorized', 'User must have the Admin role to perform this action');
     }
-    return true;
+    else return true;
 }
 
-export { is_viewer, is_editor, is_controller, is_admin };2
+export { is_viewer, is_editor, is_controller, is_admin };
