@@ -1,7 +1,7 @@
 import { Cedar } from '/imports/lib/connection';
 import { Template } from 'meteor/templating';
 
-import { Media, Playlists } from '../collections.js';
+import { Media, Playlists, MediaFiles } from '../collections.js';
 import './media_browser.html';
 
 Router.route('/media', function () {

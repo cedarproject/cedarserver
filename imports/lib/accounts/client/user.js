@@ -25,8 +25,10 @@ Template.user.helpers({
         return this.emails[0].address;
     },
     
-    isDisabled() {
-        return 'disabled' ? !Roles.userIsInRole(Meteor.userId, 'admin') : '';
+    permissionsDisabled() {
+        // Admins can't remove their own admin rights
+        if (Meteor.userId() == this._id) return true;
+        else return !Roles.userIsInRole(Meteor.userId(), 'admin');
     },
     
     inRole(role) {

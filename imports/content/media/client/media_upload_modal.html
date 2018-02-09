@@ -1,0 +1,23 @@
+<template name="media_upload_modal">
+    <div class="modal" tabindex="-1" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{mf 'upload_media' 'Upload Media'}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    {{! TODO make this a better-styled widget, with translated strings etc }}
+                    <label for="file-input">Select a file</label>
+                    <input type="file" class="form-control-file" id="file-input" multiple required>
+                </div>
+                
+                
+                {{! TODO actually do this}}
+            </div>
+        </div>
+    </div>
+</template>

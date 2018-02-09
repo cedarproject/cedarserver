@@ -83,6 +83,8 @@ npm-bcrypt@0.9.3
 npm-mongo@2.2.33
 observe-sequence@1.0.16
 ordered-dict@1.0.9
+ostrio:cookies@2.2.4
+ostrio:files@1.9.6
 pfafman:font-awesome-4@4.6.1
 promise@0.10.0
 raix:eventemitter@0.1.3

@@ -1,5 +1,5 @@
 import '/imports/lib/connection';
-import '/imports/lib/accounts/server'; 
+import '/imports/lib/accounts'; 
 
 import '/imports/configure';
 import '/imports/control';

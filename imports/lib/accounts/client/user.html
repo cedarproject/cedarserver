@@ -16,21 +16,21 @@
 
     <div class="container-fluid">
         <h2>Permissions</h2>
-        <form {{!isDisabled}}>
+        <form>
             <div class="form-check">
-                <input class="user-role form-check-input" type="checkbox" checked={{inRole 'viewer'}} id="viewer">
+                <input class="user-role form-check-input" type="checkbox" checked={{inRole 'viewer'}} id="viewer" disabled={{permissionsDisabled}}>
                 <label class="form-check-label" for="viewer">{{mf 'role_viewer' 'Viewer'}}</label>
             </div>
             <div class="form-check">
-                <input class="user-role form-check-input" type="checkbox" checked={{inRole 'controller'}} id="controller">
+                <input class="user-role form-check-input" type="checkbox" checked={{inRole 'controller'}} id="controller" disabled={{permissionsDisabled}}>
                 <label class="form-check-label" for="controller">{{mf 'role_controller' 'Controller'}}</label>
             </div>
             <div class="form-check">
-                <input class="user-role form-check-input" type="checkbox" checked={{inRole 'editor'}} id="editor">
+                <input class="user-role form-check-input" type="checkbox" checked={{inRole 'editor'}} id="editor" disabled={{permissionsDisabled}}>
                 <label class="form-check-label" for="editor">{{mf 'role_editor' 'Editor'}}</label>
             </div>
             <div class="form-check">
-                <input class="user-role form-check-input" type="checkbox" checked={{inRole 'admin'}} id="admin">
+                <input class="user-role form-check-input" type="checkbox" checked={{inRole 'admin'}} id="admin" disabled={{permissionsDisabled}}>
                 <label class="form-check-label" for="admin">{{mf 'role_admin' 'Admin'}}</label>
             </div>
         </form>

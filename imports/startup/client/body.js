@@ -4,7 +4,7 @@ import { Template } from 'meteor/templating';
 import '/imports/lib/bootstrap/js/bootstrap.bundle.min.js';
 
 Meteor.autorun(function () {
-    let theme = 'dark';
+    let theme = 'light';
 
     let user = Meteor.user();
     if (user && user.theme) {
