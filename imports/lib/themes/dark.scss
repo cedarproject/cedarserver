@@ -2,6 +2,8 @@ html, body {
     height: 100%;
 }
 
+$cedar-theme: 'dark';
+
 @import "{}/imports/lib/bootstrap/scss/_functions.scss";
 @import "{}/imports/lib/themes/dark_variables.scss";
 @import "{}/imports/lib/bootstrap/scss/bootstrap.scss";

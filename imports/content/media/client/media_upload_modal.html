@@ -1,22 +1,74 @@
 <template name="media_upload_modal">
-    <div class="modal" tabindex="-1" role="dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{mf 'upload_media' 'Upload Media'}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"><i class="fa fa-close"></i></span>
-                </button>
-            </div>
-            
-            <div class="modal-body">
-                <div class="form-group">
-                    {{! TODO make this a better-styled widget, with translated strings etc }}
-                    <label for="file-input">Select a file</label>
-                    <input type="file" class="form-control-file" id="file-input" multiple required>
+    <div id="media-upload-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{mf 'upload_media' 'Upload Media'}}</h5>
+                    {{#if isUploading}}
+                        <div class="btn-group ml-auto mb-3">
+                            {{#if paused}}
+                                <button id="resume-upload" class="btn btn-primary">
+                                    <i class="fa fa-play"></i>
+                                    {{mf 'resume_upload' 'Resume'}}
+                                </button>
+                            {{else}}
+                                <button id="pause-upload" class="btn btn-primary">
+                                    <i class="fa fa-pause"></i>
+                                    {{mf 'pause_upload' 'Pause'}}
+                                </button>
+                            {{/if}}
+                            <button id="abort-upload" class="btn btn-danger">
+                                <i class="fa fa-cancel"></i>
+                                {{mf 'abort_upload' 'Abort'}}
+                            </button>
+                        </div>
+                    {{else}}
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                        </button>
+                    {{/if}}
                 </div>
                 
-                
-                {{! TODO actually do this}}
+                <div class="modal-body">
+                    {{#if uploads}}
+                        {{#if error}}
+                            <div class="alert alert-danger">
+                                {{error}}
+                            </div>
+                        {{/if}}
+                        
+                        <div class="list-group">
+                            {{#each uploads}}
+                                <div class="list-group-item">
+                                    {{#if completed}}
+                                        {{#with getMedia}}
+                                            <div class="media">
+                                                {{> media_header}}
+                                            </div>
+                                        {{/with}}
+                                    {{else}}
+                                        <p>
+                                            {{file.name}} <br>
+                                            <small>{{getTimeRemaining}}</small>
+                                        </p>
+                                        
+                                        <div class="progress" style="height: 2em;">
+                                            <div class="progress-bar" style="width: {{getProgress}}">
+                                                {{getProgress}}
+                                            </div>
+                                        </div>
+                                    {{/if}}
+                                </div>                    
+                            {{/each}}
+                        </div>
+                    {{else}}
+                        <div class="form-group">
+                            {{! TODO make this a better-styled widget, with translated strings etc }}
+                            <label for="file-input">Select a file</label>
+                            <input type="file" class="form-control-file" id="file-input" multiple required>
+                        </div>
+                    {{/if}}
+                </div>
             </div>
         </div>
     </div>

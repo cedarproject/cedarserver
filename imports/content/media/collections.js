@@ -10,8 +10,12 @@ let MediaFiles = new FilesCollection({
     collectionName: 'media.files',
     allowClientCode: false,
     onBeforeUpload(file) {
-        if (Roles.userIsInRole(Meteor.userId(), 'editor')) return true;
-        else return mf('media_upload_only_editors', 'Only users with the Editor permission may upload files');
+        if (this.userId) {
+            if (Roles.userIsInRole(this.userId, 'editor')) return true;
+            else return mf('media_upload_only_editors', 'Only users with the Editor permission may upload files');
+        } else {
+            return mf('media_upload_must_login', 'Only logged in users with the Editor permission may upload files');
+        }
     }
 });
 

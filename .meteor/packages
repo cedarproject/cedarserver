@@ -40,3 +40,4 @@ msgfmt:core@2.0.0-preview.23
 msgfmt:extract
 msgfmt:ui-dev-only
 ostrio:files
+reywood:publish-composite

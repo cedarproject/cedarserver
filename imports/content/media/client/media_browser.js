@@ -20,6 +20,11 @@ Router.route('/media', function () {
     name: 'media.browser'
 });
 
+Template.media_browser.onCreated(function () {
+    // TODO put subscription in autorun with session vars containing currently-viewed playlist and page
+    Cedar.subscribe('media.view', '', [], 0, 100);
+});
+
 Template.media_browser.helpers({
     samplePlaylists() {
         let sample = [];
@@ -31,13 +36,17 @@ Template.media_browser.helpers({
         return sample;
     },
     
-    sampleMedia() {
-        let sample = [];
-        
-        for (let i = 1; i < 25; i++) {
-            sample.push({title: `Test Media ${i}`});
+    media() {
+        return Media.find({}, {sort: [['title'], ['asc']]});
+    },
+
+    thumbURL() {
+        if (this.thumb) {
+            let file = MediaFiles.findOne({_id: this.thumb});
+            if (file) return file.link();
         }
-        
-        return sample;
+
+        // TODO make a default thumb for each media type
+        return '';
     }
 });

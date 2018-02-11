@@ -1,26 +1,61 @@
 import { Meteor } from 'meteor/meteor';
-import { is_viewer } from '/imports/lib/accounts/role_helpers.js';
-import { Media, Playlists } from '../collections.js';
+import { publishComposite } from 'meteor/reywood:publish-composite';
+
+import { is_viewer, is_editor } from '/imports/lib/accounts/role_helpers.js';
+import { Media, Playlists, MediaFiles } from '../collections.js';
 
 Meteor.publish('media.all', function () {
     if (is_viewer(this)) return Media.find();
 });
 
 // Paginated for infinite scrolling, optionally filtered by a search string and tags
-Meteor.publish('media.view', function (search, tags, skip, limit) {
-    if (is_viewer(this)) {
-        let query = {};
+publishComposite('media.view', function (search, tags, skip, limit) {
+    return {
+        find() {
+            if (is_viewer(this)) {
+                let query = {};
+                
+                if (search) query['$text'] = {$search: search};
+                if (tags && tags.length > 0) query['tags'] = {$all: tags};
+                
+                return Media.find(query, {
+                    fields: {tracks: 0, metadata: 0},
+                    skip: skip,
+                    limit: limit
+                });
+            }
+        },
         
-        if (search) query['$text'] = {$search: search};
-        if (tags && tags.length > 0) query['tags'] = {$all: tags};
+        children: [{
+            find(media) {
+                if (media.thumb) {
+                    return MediaFiles.find({_id: media.thumb}).cursor;
+                } else {
+                    return;
+                }
+            }
+        }]
+    }
+});
 
+// Media uploaded as a group, displayed in the Upload UI
+publishComposite('media.upload', function (upload_id) {
+    return {
+        find() {
+            if (is_editor(this)) {
+                return Media.find({_upload_id: upload_id});
+            }
+        },
         
-        return Media.find(query, {
-            sort: [['title', 'asc']],
-            fields: {tracks: 0, metadata: 0},
-            skip: skip,
-            limit: limit
-        });
+        children: [{
+            find(media) {
+                if (media.thumb) {
+                    return MediaFiles.find({_id: media.thumb}).cursor;
+                } else {
+                    return;
+                }
+            }
+        }]
     }
 });
 

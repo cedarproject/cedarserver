@@ -8,7 +8,7 @@
                     <h1>{{mf 'media_title' 'Media'}}</h1>
 
                     {{#if isInRole 'editor'}}
-                        <button id="upload" class="btn btn-outline-success">
+                        <button id="add-playlist" class="btn btn-outline-success">
                             <i class="fa fa-plus"></i>
                             {{mf 'add_playlist' 'Add Playlist'}}
                         </button>
@@ -30,7 +30,7 @@
                     <h1>All</h1>
 
                     {{#if isInRole 'editor'}}
-                        <button id="upload" class="btn btn-outline-success">
+                        <button id="upload" class="btn btn-outline-success" data-toggle="modal" data-target="#media-upload-modal">
                             <i class="fa fa-upload"></i>
                             {{mf 'upload' 'Upload'}}
                         </button>
@@ -38,15 +38,10 @@
                 </nav>
 
                 <div class="list-group">
-                    {{#each sampleMedia}}
-                        {{! TODO this should be its own template}}
-                        <div class="list-group-item list-group-item-action">
+                    {{#each media}}
+                        <div class="list-group-item">
                             <div class="media">
-                                <img class="align-self-center mr-3" src="" style="width: 64px; height: 64px; background-color: black;">
-                                <div class="media-body noselect">
-                                    <h4>{{title}}</h4>
-                                    <p>video - 00:00:01</p>
-                                </div>
+                                {{> media_header}}
                             </div>
                         </div>
                     {{/each}}
