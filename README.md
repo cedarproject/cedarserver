@@ -1,6 +1,6 @@
 ![](https://cedarproject.org/user/themes/quark-cedar/images/cedar-logo.svg)
 
-[Learn more at The Cedar Project's website.](https://cedarproject.org/user/themes/quark-cedar/images/cedar-logo.svg)
+[Learn more at The Cedar Project's website.](https://cedarproject.org/)
 
 Cedar is an open source show control system. Cedar handles multimedia, presentations, song lyrics, and lighting, all controlled simultaneously over a network. Built using the Meteor framework, Cedar is almost entirely web-based, allowing greater flexibility than other church media software.
 
