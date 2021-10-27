@@ -1,6 +1,6 @@
 ![](https://cedarproject.org/user/themes/quark-cedar/images/cedar-logo.svg)
 
-[Learn more at The Cedar Project's website.](https://cedarproject.org/)
+> Cedar is no longer under active development.
 
 Cedar is an open source show control system. Cedar handles multimedia, presentations, song lyrics, and lighting, all controlled simultaneously over a network. Built using the Meteor framework, Cedar is almost entirely web-based, allowing greater flexibility than other church media software.
 
@@ -25,8 +25,6 @@ Then, simply run command `meteor` in Cedar's directory. On first start, Meteor w
 
 About Cedar
 ===========
-
-> Cedar is currently in alpha status, most features work properly but with occasional bugs. -- Isaac
 
 Cedar is composed of many different parts that work together:
 
@@ -54,11 +52,9 @@ Click on any of the items added to activate them, if the action is a media, song
 
 Click the gear icon by each Action item to open its settings pane, where you can set the Action's title, configure action-specific settings, and attach trigger Actions that will be performed when the Action is clicked. Click the up-and-down-arrows icon to start moving an Action, click another action to move the first action into its place.
 
-> Note: This documentation is terrible. I'll try to fix it. Eventually. -- Isaac
-
 Credits
 =======
 
-Cedar is designed and developed by Isaac "hunternet93" Smith.
+Cedar is designed and developed by Hunter Smith.
 
 The Cedar logo was created by jilllio and released into public domain on [OpenClipArt](https://openclipart.org/detail/224342/Young-Cedar-Tree)
